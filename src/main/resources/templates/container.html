@@ -1,0 +1,446 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <table class="table table-hover table-condensed">
+            <tr class="active">
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <th><mark>Id</mark></th>
+                <td th:text="${container.id}">id</td>
+            </tr>
+            <tr>
+                <th><mark>Name</mark></th>
+                <td th:text="${container.name}">name</td>
+            </tr>
+            <tr>
+                <th><mark>Image</mark></th>
+                <td th:text="${container.image}">image</td>
+            </tr>
+            <tr>
+                <th><mark>Path</mark></th>
+                <td th:text="${container.path}">path</td>
+            </tr>
+            <tr>
+                <th><mark>Created</mark></th>
+                <td th:text="${container.created}">created</td>
+            </tr>
+
+            <!-- Config -->
+            <tr>
+                <th><mark>Config/Image</mark></th>
+                <td th:text="${container.config.image}">config</td>
+            </tr>
+            <tr>
+                <th><mark>Config/Cmd</mark></th>
+                <td>
+                    <ul th:each="cmd : ${container.config.cmd}" class="list-inline">
+                        <li th:text="${cmd}">cmd</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th><mark>Config/WorkingDir</mark></th>
+                <td th:text="${container.config.workingDir}">config</td>
+            </tr>
+            <tr>
+                <th>Config/User</th>
+                <td th:text="${container.config.user}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Domainname</th>
+                <td th:text="${container.config.domainname}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Hostname</th>
+                <td th:text="${container.config.hostname}">config</td>
+            </tr>
+            <tr>
+                <th>Config/NetworkDisabled</th>
+                <td th:text="${container.config.networkDisabled}">config</td>
+            </tr>
+            <tr>
+                <th>Config/ExposedPorts</th>
+                <td>
+                    <!-- HashMap<String, HashMap<String, String>> -->
+                    <ul th:each="port : ${container.config.exposedPorts}" class="list-inline">
+                        <li>
+                            <span th:text="${port.key}">port</span>
+                            <span>-&gt;</span>
+                            <span th:each="pt : ${port.value}">
+                                <span th:text="${pt.key} + ':' + ${pt.value}">pt</span>&nbsp;
+                            </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Config/PortSpecs</th>
+                <td th:text="${container.config.portSpecs}">config</td>
+            </tr>
+            <tr>
+                <th>Config/MacAddress</th>
+                <td th:text="${container.config.macAddress}">config</td>
+            </tr>
+            <tr>
+                <th>Config/CpuShares</th>
+                <td th:text="${container.config.cpuShares}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Cpuset</th>
+                <td th:text="${container.config.cpuset}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Memory</th>
+                <td th:text="${container.config.memory}">config</td>
+            </tr>
+            <tr>
+                <th>Config/MemorySwap</th>
+                <td th:text="${container.config.memorySwap}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Volumes</th>
+                <td th:text="${container.config.volumes}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Entrypoint</th>
+                <td th:text="${container.config.entrypoint}">config</td>
+            </tr>
+            <tr>
+                <th>Config/OnBuild</th>
+                <td>
+                    <ul th:each="onBuild : ${container.config.onBuild}" class="list-inline">
+                        <li th:text="${onBuild}">onBuild</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Config/AttachStdin</th>
+                <td th:text="${container.config.attachStdin}">config</td>
+            </tr>
+            <tr>
+                <th>Config/AttachStdout</th>
+                <td th:text="${container.config.attachStdout}">config</td>
+            </tr>
+            <tr>
+                <th>Config/AttachStderr</th>
+                <td th:text="${container.config.attachStderr}">config</td>
+            </tr>
+            <tr>
+                <th>Config/OpenStdin</th>
+                <td th:text="${container.config.openStdin}">config</td>
+            </tr>
+            <tr>
+                <th>Config/StdinOnce</th>
+                <td th:text="${container.config.stdinOnce}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Tty</th>
+                <td th:text="${container.config.tty}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Env</th>
+                <td>
+                    <ul th:each="env : ${container.config.env}" class="list-inline">
+                        <li th:text="${env}">env</li>
+                    </ul>
+                </td>
+            </tr>
+
+            <!-- NetworkSettings -->
+            <tr>
+                <th>NetworkSettings/IPAddress</th>
+                <td th:text="${container.networkSettings.ipAddress}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/IPPrefixLen</th>
+                <td th:text="${container.networkSettings.ipPrefixLen}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/GlobalIPv6Address</th>
+                <td th:text="${container.networkSettings.globalIPv6Address}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/GlobalIPv6PrefixLen</th>
+                <td th:text="${container.networkSettings.globalIPv6PrefixLen}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/LinkLocalIPv6Address</th>
+                <td th:text="${container.networkSettings.linkLocalIPv6Address}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/LinkLocalIPv6PrefixLen</th>
+                <td th:text="${container.networkSettings.linkLocalIPv6PrefixLen}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/Gateway</th>
+                <td th:text="${container.networkSettings.gateway}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/IPv6Gateway</th>
+                <td th:text="${container.networkSettings.ipv6Gateway}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/Bridge</th>
+                <td th:text="${container.networkSettings.bridge}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/MacAddress</th>
+                <td th:text="${container.networkSettings.macAddress}">networkSettings</td>
+            </tr>
+            <tr>
+                <th>NetworkSettings/PortMapping</th>
+                <td th:text="${container.networkSettings.portMapping}">networkSettings</td>
+            </tr>
+            <tr>
+                <th><mark>NetworkSettings/Ports</mark></th>
+                <td>
+                    <ul th:each="port : ${container.networkSettings.ports}" class="list-inline">
+                        <li>
+                            <span th:text="${port.key}">key</span>
+                            <span>-&gt;</span>
+                            <span th:each="pt : ${port.value}">
+                                <span th:text="${pt.hostIp} + ':' + ${pt.hostPort}">pt</span>&nbsp;
+                            </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+            <tr>
+                <th><mark>Volumes</mark></th>
+                <td>
+                    <ul th:each="volume : ${container.volumes}" class="list-inline">
+                        <li th:text="${volume.key} + ' : ' + ${volume.value}"></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th><mark>VolumesRW</mark></th>
+                <td>
+                    <ul th:each="volume : ${container.volumesRW}" class="list-inline">
+                        <li th:text="${volume.key} + ' : ' + ${volume.value}"></li>
+                    </ul>
+                </td>
+            </tr>
+
+            <!-- HostConfig -->
+            <tr>
+                <th><mark>HostConfig/Binds</mark></th>
+                <td>
+                    <ul th:each="bind : ${container.hostConfig.binds}" class="list-inline">
+                        <li th:text="${bind}">bind</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/CapAdd</th>
+                <td>
+                    <ul th:each="capAdd : ${container.hostConfig.capAdd}" class="list-inline">
+                        <li th:text="${capAdd}">capAdd</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/CapDrop</th>
+                <td>
+                    <ul th:each="capDrop : ${container.hostConfig.capDrop}" class="list-inline">
+                        <li th:text="${capDrop}">capDrop</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/ContainerIDFile</th>
+                <td th:text="${container.hostConfig.containerIDFile}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/Devices</th>
+                <td>
+                    <ul th:each="device : ${container.hostConfig.devices}" class="list-inline">
+                        <li th:text="${device}">bind</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/Dns</th>
+                <td>
+                    <ul th:each="dns : ${container.hostConfig.dns}" class="list-inline">
+                        <li th:text="${dns}">dns</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/DnsSearch</th>
+                <td>
+                    <ul th:each="dnsSearch : ${container.hostConfig.dnsSearch}" class="list-inline">
+                        <li th:text="${dnsSearch}">dns</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/ExtraHosts</th>
+                <td th:text="${container.hostConfig.extraHosts}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/IpcMode</th>
+                <td th:text="${container.hostConfig.ipcMode}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/Links</th>
+                <td th:text="${container.hostConfig.links}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/LxcConf</th>
+                <td>
+                    <ul th:each="lxcConf : ${container.hostConfig.lxcConf}" class="list-inline">
+                        <li th:text="${lxcConf.key} + ' : ' + ${lxcConf.value}">lxc</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/NetworkMode</th>
+                <td th:text="${container.hostConfig.networkMode}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/PidMode</th>
+                <td th:text="${container.hostConfig.pidMode}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/PortBindings</th>
+                <td>
+                    <ul th:each="port : ${container.config.portBindings}" class="list-inline">
+                        <li th:text="${port.key} + '->' + ${port.value.hostIp} + ':' + ${port.value.hostPort}"></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>HostConfig/Privileged</th>
+                <td th:text="${container.hostConfig.privileged}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/PublishAllPorts</th>
+                <td th:text="${container.hostConfig.publishAllPorts}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/ReadonlyRootfs</th>
+                <td th:text="${container.hostConfig.readonlyRootfs}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/RestartPolicy/MaximumRetryCount</th>
+                <td th:text="${container.hostConfig.restartPolicy.maximumRetryCount}">maximumRetryCount</td>
+            </tr>
+            <tr>
+                <th>HostConfig/RestartPolicy/Name</th>
+                <td th:text="${container.hostConfig.restartPolicy.name}">name</td>
+            </tr>
+            <tr>
+                <th>HostConfig/SecurityOpt</th>
+                <td th:text="${container.hostConfig.securityOpt}">hostConfig</td>
+            </tr>
+            <tr>
+                <th>HostConfig/VolumesFrom</th>
+                <td>
+                    <ul th:each="volumesFrom : ${container.hostConfig.volumesFrom}" class="list-inline">
+                        <li th:text="${volumesFrom}">volumesFrom</li>
+                    </ul>
+                </td>
+            </tr>
+
+            <!-- State -->
+            <tr>
+                <th>State/Pid</th>
+                <td th:text="${container.state.pid}">state</td>
+            </tr>
+            <tr>
+                <th><mark>State/StartedAt</mark></th>
+                <td th:text="${container.state.startedAt}">state</td>
+            </tr>
+            <tr>
+                <th><mark>State/FinishedAt</mark></th>
+                <td th:text="${container.state.finishedAt}">state</td>
+            </tr>
+            <tr>
+                <th><mark>State/Running</mark></th>
+                <td th:text="${container.state.running}">state</td>
+            </tr>
+            <tr>
+                <th>State/Restarting</th>
+                <td th:text="${container.state.restarting}">state</td>
+            </tr>
+            <tr>
+                <th>State/OOMKilled</th>
+                <td th:text="${container.state.oomKilled}">state</td>
+            </tr>
+            <tr>
+                <th>State/Error</th>
+                <td th:text="${container.state.error}">state</td>
+            </tr>
+            <tr>
+                <th>State/ExitCode</th>
+                <td th:text="${container.state.exitCode}">state</td>
+            </tr>
+
+            <tr>
+                <th>AppArmorProfile</th>
+                <td th:text="${container.appArmorProfile}">appArmorProfile</td>
+            </tr>
+            <tr>
+                <th>Args</th>
+                <td>
+                    <ul th:each="arg : ${container.args}" class="list-inline">
+                        <li th:text="${arg}">arg</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Driver</th>
+                <td th:text="${container.driver}">driver</td>
+            </tr>
+            <tr>
+                <th>ExecDriver</th>
+                <td th:text="${container.execDriver}">execDriver</td>
+            </tr>
+            <tr>
+                <th>ExecIDs</th>
+                <td th:text="${container.execIDs}">execIDs</td>
+            </tr>
+            <tr>
+                <th>HostnamePath</th>
+                <td th:text="${container.hostnamePath}" class="text-justify">hostnamePath</td>
+            </tr>
+            <tr>
+                <th>HostsPath</th>
+                <td th:text="${container.hostsPath}" class="text-justify">hostsPath</td>
+            </tr>
+            <tr>
+                <th>MountLabel</th>
+                <td th:text="${container.mountLabel}">mountLabel</td>
+            </tr>
+            <tr>
+                <th>ProcessLabel</th>
+                <td th:text="${container.processLabel}">processLabel</td>
+            </tr>
+            <tr>
+                <th>ResolvConfPath</th>
+                <td th:text="${container.resolvConfPath}">resolvConfPath</td>
+            </tr>
+            <tr>
+                <th>RestartCount</th>
+                <td th:text="${container.restartCount}">restartCount</td>
+            </tr>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+</body>
+</html>

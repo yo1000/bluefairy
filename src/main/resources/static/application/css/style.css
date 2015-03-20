@@ -1,0 +1,24 @@
+body {
+    padding-top: 50px;
+}
+.subject {
+    padding: 20px 15px;
+    text-align: center;
+}
+
+table ul {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+table li {
+    list-style: none;
+}
+
+tr:hover {
+    cursor: pointer;
+}
+
+tr:hover:first-child {
+    cursor: auto;
+}

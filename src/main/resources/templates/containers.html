@@ -1,0 +1,130 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <!-- #start-modal -->
+    <div id="action-modal" class="modal fade" tabindex="-1"
+         role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-title">Start container</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-message"></p>
+                    <form action="action" method="POST" class="form-horizontal"
+                          th:action="@{/container/$id/run}">
+                        <div class="form-group">
+                            <label for="modal-id" class="col-sm-4 control-label">Id</label>
+                            <div class="col-sm-8">
+                                <p id="modal-id-label" class="form-control-static">id</p>
+                                <input id="modal-id" type="hidden" name="id"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="modal-ok" type="button" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/#runModal-->
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <table id="container-table" class="table table-hover table-condensed">
+            <tr class="active">
+                <th>Id</th>
+                <th>Image</th>
+                <th>Names</th>
+                <th>Ports</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th></th>
+            </tr>
+            <tr class="clickable-rows" th:each="container : ${containers}">
+                <td th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
+                <td th:text="${container.image}">image</td>
+                <td>
+                    <ul th:each="name : ${container.names}">
+                        <li th:text="${name}">name</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul th:each="port : ${container.ports}">
+                        <li th:text="${port.type} + ': ' + ${port.publicPort} + '->' + ${port.privatePort}">1234 -> 9876</li>
+                    </ul>
+                </td>
+                <td th:text="${container.status}">status</td>
+                <td th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-xs btn-danger"
+                            data-toggle="modal" data-target="#action-modal"
+                            data-action="/stop" data-message="Stop the container:"
+                            data-ok="Stop" data-ok-class="btn-danger"
+                            th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
+                            th:if="${#strings.startsWith(container.status,'Up')}"
+                            >Stop</button>
+                    <button type="button" class="btn btn-default btn-xs"
+                            data-toggle="modal" data-target="#action-modal"
+                            data-action="/start" data-message="Start the container:"
+                            data-ok="Start" data-ok-class="btn-primary"
+                            th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
+                            th:if="${#strings.startsWith(container.status,'Exited')}"
+                            >Start</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+/**
+ * show start modal
+ */
+$("#modal-ok").click(function () {
+    $("#action-modal form").submit();
+});
+$("#action-modal").on("show.bs.modal", function (event) {
+    var url = /*[[ @{/container/} ]]*/ "#";
+    var $button = $(event.relatedTarget);
+    var id = $button.data("id");
+    var idShort = $button.data("id-short");
+    var action = $button.data("action")
+    var message = $button.data("message");
+    var ok = $button.data("ok");
+    var okClass = $button.data("ok-class");
+
+    var $modal = $(this);
+    $modal.find("#modal-id").val(id);
+    $modal.find("#modal-id-label").text(idShort);
+    $modal.find("#modal-message").text(message);
+    $modal.find("#modal-ok").text(ok)
+            .removeClass("btn-primary").removeClass("btn-danger")
+            .addClass(okClass);
+
+    $("#action-modal form").attr("action", url + id + action);
+});
+
+$("#container-table td:not(:has(button))").on("click", function () {
+    var url = /*[[ @{/container/} ]]*/ "#";
+    var $row = $(this).closest("tr");
+    var $cell = $row.find("td[data-id]");
+
+    location.href = url + $cell.data("id");
+});
+/*]]>*/
+</script>
+</body>
+</html>

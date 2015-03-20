@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title='Version - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1>Version</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <table class="table table-hover table-condensed">
+            <tr class="active">
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <th>Version</th>
+                <td th:text="${version.version}">version</td>
+            </tr>
+            <tr>
+                <th>API Version</th>
+                <td th:text="${version.apiVersion}">apiVersion</td>
+            </tr>
+            <tr>
+                <th>Git Commit</th>
+                <td th:text="${version.gitCommit}">gitCommit</td>
+            </tr>
+            <tr>
+                <th>OS</th>
+                <td th:text="${version.os}">os</td>
+            </tr>
+            <tr>
+                <th>Kernel Version</th>
+                <td th:text="${version.kernelVersion}">kernelVersion</td>
+            </tr>
+            <tr>
+                <th>Arch</th>
+                <td th:text="${version.arch}">arch</td>
+            </tr>
+            <tr>
+                <th>Go Lang Version</th>
+                <td th:text="${version.goVersion}">goVersion</td>
+            </tr>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+</body>
+</html>

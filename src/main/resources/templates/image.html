@@ -1,0 +1,305 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <table class="table table-hover table-condensed">
+            <tr class="active">
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <th><mark>Id</mark></th>
+                <td th:text="${image.id}">id</td>
+            </tr>
+            <tr>
+                <th><mark>Parent</mark></th>
+                <td th:text="${image.parent}">parent</td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td th:text="${image.author}">author</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td th:text="${image.comment}">comment</td>
+            </tr>
+            <tr>
+                <th><mark>Size</mark></th>
+                <td th:text="${image.size}">size</td>
+            </tr>
+            <tr>
+                <th><mark>VirtualSize</mark></th>
+                <td th:text="${image.virtualSize}">virtualSize</td>
+            </tr>
+            <tr>
+                <th><mark>Created</mark></th>
+                <td th:text="${image.created}">created</td>
+            </tr>
+            <tr>
+                <th><mark>DockerVersion</mark></th>
+                <td th:text="${image.dockerVersion}">DockerVersion</td>
+            </tr>
+            <tr>
+                <th><mark>Os</mark></th>
+                <td th:text="${image.os}">os</td>
+            </tr>
+            <tr>
+                <th><mark>Architecture</mark></th>
+                <td th:text="${image.architecture}">architecture</td>
+            </tr>
+
+            <!-- Config -->
+            <tr>
+                <th><mark>Config/Image</mark></th>
+                <td th:text="${image.config.image}">config</td>
+            </tr>
+            <tr>
+                <th><mark>Config/Cmd</mark></th>
+                <td>
+                    <ul th:each="cmd : ${image.config.cmd}" class="list-inline">
+                        <li th:text="${cmd}">cmd</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th><mark>Config/WorkingDir</mark></th>
+                <td th:text="${image.config.workingDir}">config</td>
+            </tr>
+            <tr>
+                <th>Config/User</th>
+                <td th:text="${image.config.user}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Domainname</th>
+                <td th:text="${image.config.domainname}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Hostname</th>
+                <td th:text="${image.config.hostname}">config</td>
+            </tr>
+            <tr>
+                <th>Config/NetworkDisabled</th>
+                <td th:text="${image.config.networkDisabled}">config</td>
+            </tr>
+            <tr>
+                <th>Config/ExposedPorts</th>
+                <td>
+                    <!-- HashMap<String, HashMap<String, String>> -->
+                    <ul th:each="port : ${image.config.exposedPorts}" class="list-inline">
+                        <li>
+                            <span th:text="${port.key}">port</span>
+                            <span>-&gt;</span>
+                            <span th:each="pt : ${port.value}">
+                                <span th:text="${pt.key} + ':' + ${pt.value}">pt</span>&nbsp;
+                            </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Config/PortSpecs</th>
+                <td th:text="${image.config.portSpecs}">config</td>
+            </tr>
+            <tr>
+                <th>Config/MacAddress</th>
+                <td th:text="${image.config.macAddress}">config</td>
+            </tr>
+            <tr>
+                <th>Config/CpuShares</th>
+                <td th:text="${image.config.cpuShares}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Cpuset</th>
+                <td th:text="${image.config.cpuset}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Memory</th>
+                <td th:text="${image.config.memory}">config</td>
+            </tr>
+            <tr>
+                <th>Config/MemorySwap</th>
+                <td th:text="${image.config.memorySwap}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Volumes</th>
+                <td th:text="${image.config.volumes}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Entrypoint</th>
+                <td th:text="${image.config.entrypoint}">config</td>
+            </tr>
+            <tr>
+                <th>Config/OnBuild</th>
+                <td>
+                    <ul th:each="onBuild : ${image.config.onBuild}" class="list-inline">
+                        <li th:text="${onBuild}">onBuild</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Config/AttachStdin</th>
+                <td th:text="${image.config.attachStdin}">config</td>
+            </tr>
+            <tr>
+                <th>Config/AttachStdout</th>
+                <td th:text="${image.config.attachStdout}">config</td>
+            </tr>
+            <tr>
+                <th>Config/AttachStderr</th>
+                <td th:text="${image.config.attachStderr}">config</td>
+            </tr>
+            <tr>
+                <th>Config/OpenStdin</th>
+                <td th:text="${image.config.openStdin}">config</td>
+            </tr>
+            <tr>
+                <th>Config/StdinOnce</th>
+                <td th:text="${image.config.stdinOnce}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Tty</th>
+                <td th:text="${image.config.tty}">config</td>
+            </tr>
+            <tr>
+                <th>Config/Env</th>
+                <td>
+                    <ul th:each="env : ${image.config.env}" class="list-inline">
+                        <li th:text="${env}">env</li>
+                    </ul>
+                </td>
+            </tr>
+
+            <!-- Container Config -->
+            <tr>
+                <th><mark>ContainerConfig/Image</mark></th>
+                <td th:text="${image.containerConfig.image}">config</td>
+            </tr>
+            <tr>
+                <th><mark>ContainerConfig/Cmd</mark></th>
+                <td>
+                    <ul th:each="cmd : ${image.containerConfig.cmd}" class="list-inline">
+                        <li th:text="${cmd}">cmd</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th><mark>ContainerConfig/WorkingDir</mark></th>
+                <td th:text="${image.containerConfig.workingDir}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/User</th>
+                <td th:text="${image.containerConfig.user}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Domainname</th>
+                <td th:text="${image.containerConfig.domainname}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Hostname</th>
+                <td th:text="${image.containerConfig.hostname}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/NetworkDisabled</th>
+                <td th:text="${image.containerConfig.networkDisabled}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/ExposedPorts</th>
+                <td>
+                    <!-- HashMap<String, HashMap<String, String>> -->
+                    <ul th:each="port : ${image.containerConfig.exposedPorts}" class="list-inline">
+                        <li>
+                            <span th:text="${port.key}">port</span>
+                            <span>-&gt;</span>
+                            <span th:each="pt : ${port.value}">
+                                <span th:text="${pt.key} + ':' + ${pt.value}">pt</span>&nbsp;
+                            </span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/PortSpecs</th>
+                <td th:text="${image.containerConfig.portSpecs}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/MacAddress</th>
+                <td th:text="${image.containerConfig.macAddress}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/CpuShares</th>
+                <td th:text="${image.containerConfig.cpuShares}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Cpuset</th>
+                <td th:text="${image.containerConfig.cpuset}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Memory</th>
+                <td th:text="${image.containerConfig.memory}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/MemorySwap</th>
+                <td th:text="${image.containerConfig.memorySwap}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Volumes</th>
+                <td th:text="${image.containerConfig.volumes}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Entrypoint</th>
+                <td th:text="${image.containerConfig.entrypoint}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/OnBuild</th>
+                <td>
+                    <ul th:each="onBuild : ${image.containerConfig.onBuild}" class="list-inline">
+                        <li th:text="${onBuild}">onBuild</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/AttachStdin</th>
+                <td th:text="${image.containerConfig.attachStdin}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/AttachStdout</th>
+                <td th:text="${image.containerConfig.attachStdout}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/AttachStderr</th>
+                <td th:text="${image.containerConfig.attachStderr}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/OpenStdin</th>
+                <td th:text="${image.containerConfig.openStdin}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/StdinOnce</th>
+                <td th:text="${image.containerConfig.stdinOnce}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Tty</th>
+                <td th:text="${image.containerConfig.tty}">config</td>
+            </tr>
+            <tr>
+                <th>ContainerConfig/Env</th>
+                <td>
+                    <ul th:each="env : ${image.containerConfig.env}" class="list-inline">
+                        <li th:text="${env}">env</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+</body>
+</html>
