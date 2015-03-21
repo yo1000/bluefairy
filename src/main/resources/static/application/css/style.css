@@ -1,6 +1,7 @@
 body {
     padding-top: 50px;
 }
+
 .subject {
     padding: 20px 15px;
     text-align: center;
@@ -11,14 +12,14 @@ table ul {
     margin-bottom: 0;
 }
 
-table li {
+table ul li {
     list-style: none;
 }
 
-tr:hover {
+.table-list tr:hover {
     cursor: pointer;
 }
 
-tr:hover:first-child {
+.table-list tr:hover:first-child {
     cursor: auto;
 }

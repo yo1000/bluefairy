@@ -91,13 +91,12 @@
             <tr>
                 <th>Config/ExposedPorts</th>
                 <td>
-                    <!-- HashMap<String, HashMap<String, String>> -->
-                    <ul th:each="port : ${image.config.exposedPorts}" class="list-inline">
+                    <ul th:each="port, status : ${image.config.exposedPorts}" class="list-inline">
                         <li>
-                            <span th:text="${port.key}">port</span>
-                            <span>-&gt;</span>
-                            <span th:each="pt : ${port.value}">
-                                <span th:text="${pt.key} + ':' + ${pt.value}">pt</span>&nbsp;
+                            <span th:text="${port.key}">port</span><span>-&gt;</span><span
+                                th:each="pt : ${port.value}"><span
+                                th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
+                                th:if="${status.index &gt; 0}">,</span>
                             </span>
                         </li>
                     </ul>
@@ -212,13 +211,12 @@
             <tr>
                 <th>ContainerConfig/ExposedPorts</th>
                 <td>
-                    <!-- HashMap<String, HashMap<String, String>> -->
-                    <ul th:each="port : ${image.containerConfig.exposedPorts}" class="list-inline">
+                    <ul th:each="port, status : ${image.containerConfig.exposedPorts}" class="list-inline">
                         <li>
-                            <span th:text="${port.key}">port</span>
-                            <span>-&gt;</span>
-                            <span th:each="pt : ${port.value}">
-                                <span th:text="${pt.key} + ':' + ${pt.value}">pt</span>&nbsp;
+                            <span th:text="${port.key}">port</span><span>-&gt;</span><span
+                                th:each="pt : ${port.value}"><span
+                                th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
+                                th:if="${status.index &gt; 0}">,</span>
                             </span>
                         </li>
                     </ul>

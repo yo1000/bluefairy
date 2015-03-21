@@ -1,5 +1,6 @@
 package com.yo1000.bluefairy.model.repository.rest;
 
+import com.yo1000.bluefairy.Application;
 import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,10 +14,10 @@ public class AbstractRestDockerRepository {
     private RestTemplate restTemplate;
 
     @Resource
-    private String dockerRemoteApi;
+    private Application.DockerConfiguration dockerConfiguration;
 
     protected String makeDockerRemoteApiEndpoint(String resource) {
-        String baseUrl = this.getDockerRemoteApi();
+        String baseUrl = this.getDockerConfiguration().getRemoteApi();
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
@@ -33,7 +34,7 @@ public class AbstractRestDockerRepository {
         return restTemplate;
     }
 
-    protected String getDockerRemoteApi() {
-        return dockerRemoteApi;
+    protected Application.DockerConfiguration getDockerConfiguration() {
+        return dockerConfiguration;
     }
 }

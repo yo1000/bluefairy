@@ -4,9 +4,9 @@
 <body>
 <nav th:replace="_fragment :: navigator"></nav>
 <div class="container">
-    <!-- #run-modal -->
-    <div class="modal fade" id="run-modal" tabindex="-1"
-         role="dialog" aria-labelledby="run-modal-label" aria-hidden="true">
+    <!-- #action-modal -->
+    <div id="action-modal" class="modal fade" tabindex="-1"
+         role="dialog" aria-labelledby="action-modal-label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,35 +18,35 @@
                     <form action="run" method="POST" class="form-horizontal"
                           th:action="@{/container/run}">
                         <div class="form-group">
-                            <label for="runModalId" class="col-sm-4 control-label">Id</label>
+                            <label for="actionModalId" class="col-sm-4 control-label">Id</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static run-modal-id">id</p>
-                                <input type="hidden" name="id" class="run-modal-id"/>
+                                <p class="form-control-static action-modal-id">id</p>
+                                <input type="hidden" name="id" class="action-modal-id"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="runModalRepotags" class="col-sm-4 control-label">Repo Tags</label>
+                            <label for="actionModalRepotags" class="col-sm-4 control-label">Repo Tags</label>
                             <div class="col-sm-8">
-                                <p class="form-control-static run-modal-repotags">repo tags</p>
-                                <input type="hidden" name="repoTags" class="run-modal-repotags"/>
+                                <p class="form-control-static action-modal-repotags">repo tags</p>
+                                <input type="hidden" name="repoTags" class="action-modal-repotags"/>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="run-modal-btn">Run</button>
+                    <button type="button" class="btn btn-primary" id="action-modal-btn">Run</button>
                 </div>
             </div>
         </div>
     </div>
-    <!--/#run-modal-->
+    <!-- /#action-modal -->
     <div class="subject">
         <h1 th:text="${title}">title</h1>
         <p class="lead"></p>
     </div>
     <div>
-        <table id="image-table" class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-list">
             <tr class="active">
                 <th>Id</th>
                 <th>Repo Tags</th>
@@ -69,12 +69,12 @@
                 <td th:text="${#dates.format(image.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
                 <td>
                     <button type="button" class="btn btn-default btn-xs"
-                            data-toggle="modal" data-target="#run-modal"
+                            data-toggle="modal" data-target="#action-modal"
                             th:attr="data-id=${image.idToShort}, data-repotags=${!#arrays.isEmpty(image.repoTags)}? ${image.repoTags[0]} :'' "
                             th:if="${not #arrays.contains(image.repoTags, '&lt;none&gt;:&lt;none&gt;')}"
                             >Run</button>
                     <button type="button" class="btn btn-default btn-xs btn-warning"
-                            data-toggle="modal" data-target="#run-modal"
+                            data-toggle="modal" data-target="#action-modal"
                             th:attr="data-id=${image.idToShort}, data-repotags=${!#arrays.isEmpty(image.repoTags)}? ${image.repoTags[0]} :'' "
                             th:if="${#arrays.contains(image.repoTags, '&lt;none&gt;:&lt;none&gt;')}"
                             >Run</button>
@@ -87,23 +87,23 @@
 <footer th:replace="_fragment :: footer"></footer>
 <script th:inline="javascript">
 /*<![CDATA[*/
-$("#run-modal-btn").click(function () {
-    $("#run-modal form").submit();
+$("#action-modal-btn").click(function () {
+    $("#action-modal form").submit();
 });
 
-$("#run-modal").on("show.bs.modal", function (event) {
+$("#action-modal").on("show.bs.modal", function (event) {
     var button = $(event.relatedTarget);
-    var runModalId = button.data("id");
-    var runModalRepoTags = button.data("repotags");
+    var actionModalId = button.data("id");
+    var actionModalRepoTags = button.data("repotags");
 
     var modal = $(this)
-    modal.find('p.run-modal-id').text(runModalId);
-    modal.find('p.run-modal-repotags').text(runModalRepoTags);
-    modal.find('input.run-modal-id').val(runModalId);
-    modal.find('input.run-modal-repotags').val(runModalRepoTags);
+    modal.find('p.action-modal-id').text(actionModalId);
+    modal.find('p.action-modal-repotags').text(actionModalRepoTags);
+    modal.find('input.action-modal-id').val(actionModalId);
+    modal.find('input.action-modal-repotags').val(actionModalRepoTags);
 });
 
-$("#image-table td:not(:has(button))").on("click", function() {
+$(".table-list td:not(:has(button))").on("click", function() {
     var url = /*[[ @{/image/} ]]*/ "#";
     var $row = $(this).closest("tr");
     var $cell = $row.find("td[data-id]");

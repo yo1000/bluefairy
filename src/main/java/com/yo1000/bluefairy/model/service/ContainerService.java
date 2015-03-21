@@ -52,8 +52,8 @@ public class ContainerService {
         container.setCpuShares(0);
         container.setCpuset("0");
         container.setAttachStdin(false);
-        container.setAttachStdout(false);//e.g. true
-        container.setAttachStderr(false);//e.g. true
+        container.setAttachStdout(false);
+        container.setAttachStderr(false);
         container.setTty(false);
         container.setOpenStdin(false);
         container.setStdinOnce(false);
@@ -65,29 +65,23 @@ public class ContainerService {
             {
 
             }
-        });//e.g. "/tmp":{}
+        });
         container.setWorkingDir("");
         container.setNetworkDisabled(false);
-        container.setMacAddress(null);//e.g. "12:34:56:78:9a:bc"
+        container.setMacAddress(null);
         container.setExposedPorts(new HashMap<String, HashMap<String, String>>() {
             {
 
             }
-        });//e.g. "22/tcp":{}
+        });
         container.setSecurityOpts(new String[] {""});
 
         HostConfig hostConfig = new HostConfig();
         container.setHostConfig(hostConfig);
 
-        hostConfig.setBinds(new String[]{});//["/tmp:/tmp"]
-        hostConfig.setLinks(new String[]{});//["redis3:redis"]
-        hostConfig.setLxcConf(new HashMap[] {
-            new HashMap<String, String>() {
-                {
-                    this.put("lxc.utsname", "docker");
-                }
-            }
-        });
+        hostConfig.setBinds(new String[]{});
+        hostConfig.setLinks(new String[]{});
+
         hostConfig.setPortBindings(new HashMap<String, PortBinding[]>());
         hostConfig.setPublishAllPorts(true);
         hostConfig.setPrivileged(false);
@@ -96,8 +90,8 @@ public class ContainerService {
         hostConfig.setDnsSearch(new String[]{});
         hostConfig.setExtraHosts(null);
         hostConfig.setVolumesFrom(new String[]{});
-        hostConfig.setCapAdd(new String[]{});//"NET_ADMIN"
-        hostConfig.setCapDrop(new String[]{});//"MKNOD"
+        hostConfig.setCapAdd(new String[]{});
+        hostConfig.setCapDrop(new String[]{});
 
         HostConfig.RestartPolicy restartPolicy = new HostConfig.RestartPolicy();
         hostConfig.setRestartPolicy(restartPolicy);

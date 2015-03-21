@@ -4,7 +4,7 @@
 <body>
 <nav th:replace="_fragment :: navigator"></nav>
 <div class="container">
-    <!-- #start-modal -->
+    <!-- #action-modal -->
     <div id="action-modal" class="modal fade" tabindex="-1"
          role="dialog" aria-labelledby="modal-label" aria-hidden="true">
         <div class="modal-dialog">
@@ -34,13 +34,13 @@
             </div>
         </div>
     </div>
-    <!--/#runModal-->
+    <!-- /#action-modal -->
     <div class="subject">
         <h1 th:text="${title}">title</h1>
         <p class="lead"></p>
     </div>
     <div>
-        <table id="container-table" class="table table-hover table-condensed">
+        <table class="table table-hover table-condensed table-list">
             <tr class="active">
                 <th>Id</th>
                 <th>Image</th>
@@ -50,7 +50,7 @@
                 <th>Created</th>
                 <th></th>
             </tr>
-            <tr class="clickable-rows" th:each="container : ${containers}">
+            <tr th:each="container : ${containers}">
                 <td th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
                 <td th:text="${container.image}">image</td>
                 <td>
@@ -60,7 +60,7 @@
                 </td>
                 <td>
                     <ul th:each="port : ${container.ports}">
-                        <li th:text="${port.type} + ': ' + ${port.publicPort} + '->' + ${port.privatePort}">1234 -> 9876</li>
+                        <li th:text="${port.type} + ':' + ${port.publicPort} + '->' + ${port.privatePort}">1234 -> 9876</li>
                     </ul>
                 </td>
                 <td th:text="${container.status}">status</td>
@@ -78,7 +78,7 @@
                             data-action="/start" data-message="Start the container:"
                             data-ok="Start" data-ok-class="btn-primary"
                             th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
-                            th:if="${#strings.startsWith(container.status,'Exited')}"
+                            th:if="${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)}"
                             >Start</button>
                 </td>
             </tr>
@@ -117,7 +117,7 @@ $("#action-modal").on("show.bs.modal", function (event) {
     $("#action-modal form").attr("action", url + id + action);
 });
 
-$("#container-table td:not(:has(button))").on("click", function () {
+$(".table-list td:not(:has(button))").on("click", function () {
     var url = /*[[ @{/container/} ]]*/ "#";
     var $row = $(this).closest("tr");
     var $cell = $row.find("td[data-id]");

@@ -10,11 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.*;
 
 /**
  * Created by yoichi.kikuchi on 15/02/22.
@@ -28,8 +29,8 @@ public class Application {
     }
 
     @Bean
-    public String dockerRemoteApi() {
-        return "http://10.37.129.10:2376/";
+    public DockerConfiguration docker() {
+        return new DockerConfiguration();
     }
 
     @Bean
@@ -46,5 +47,18 @@ public class Application {
         return HttpClientBuilder.create()
                 .setConnectionManager(new PoolingHttpClientConnectionManager())
                 .build();
+    }
+
+    @ConfigurationProperties(prefix = "bluefairy.docker")
+    public static class DockerConfiguration {
+        private String remoteApi = "http://localhost:2376/";
+
+        public String getRemoteApi() {
+            return remoteApi;
+        }
+
+        public void setRemoteApi(String remoteApi) {
+            this.remoteApi = remoteApi;
+        }
     }
 }
