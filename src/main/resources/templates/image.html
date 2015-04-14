@@ -256,7 +256,11 @@
             </tr>
             <tr>
                 <th>ContainerConfig/Entrypoint</th>
-                <td th:text="${image.containerConfig.entrypoint}">config</td>
+                <td>
+                    <ul th:each="entrypoint : ${image.containerConfig.entrypoint}" class="list-unstyled">
+                        <li th:text="${entrypoint}">entrypoint</li>
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <th>ContainerConfig/OnBuild</th>
