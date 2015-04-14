@@ -1,0 +1,30 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <form action="run" method="POST" class="form-horizontal"
+              th:action="@{/container/run}">
+            <table class="table table-hover table-condensed">
+                <tr class="active">
+                    <th>Username</th>
+                    <th>Password</th>
+                </tr>
+                <tr>
+                    <td><input name="username" type="text" /></td>
+                    <td><input name="password" type="password" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+</body>
+</html>

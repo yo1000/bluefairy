@@ -19,6 +19,7 @@ public class InfoController {
     @RequestMapping("/")
     public String index(Model model) {
         model.addAttribute("info", this.getInfoService().getInfo());
+        model.addAttribute("title", "Info");
 
         return "info";
     }

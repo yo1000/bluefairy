@@ -260,7 +260,7 @@ public class Info {
         }
 
         public static class IndexConfigs {
-            @JsonProperty("docker.io")
+            @JsonProperty("dockerConfiguration.io")
             private DockerIO dockerIO;
             @JsonProperty("InsecureRegistryCIDRs")
             private String[] insecureRegistryCIDRs;
