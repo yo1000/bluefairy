@@ -23,7 +23,7 @@ public class Config {
     @JsonProperty("Domainname")
     private String domainname;
     @JsonProperty("Entrypoint")
-    private String entrypoint;
+    private String[] entrypoint;
     @JsonProperty("Env")
     private String[] env;
     @JsonProperty("ExposedPorts")
@@ -115,11 +115,11 @@ public class Config {
         this.domainname = domainname;
     }
 
-    public String getEntrypoint() {
+    public String[] getEntrypoint() {
         return entrypoint;
     }
 
-    public void setEntrypoint(String entrypoint) {
+    public void setEntrypoint(String[] entrypoint) {
         this.entrypoint = entrypoint;
     }
 

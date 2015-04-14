@@ -59,7 +59,7 @@ public class ContainerService {
         container.setStdinOnce(false);
         container.setEnv(null);
         container.setCmd(new String[] {});
-        container.setEntrypoint("");
+        container.setEntrypoint(new String[] {});
         container.setImage(image);
         container.setVolumes(new HashMap<String, HashMap<String, String>>() {
             {

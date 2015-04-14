@@ -63,7 +63,7 @@
             <tr>
                 <th><mark>Config/Cmd</mark></th>
                 <td>
-                    <ul th:each="cmd : ${image.config.cmd}" class="list-inline">
+                    <ul th:each="cmd : ${image.config.cmd}" class="list-unstyled">
                         <li th:text="${cmd}">cmd</li>
                     </ul>
                 </td>
@@ -91,7 +91,7 @@
             <tr>
                 <th>Config/ExposedPorts</th>
                 <td>
-                    <ul th:each="port, status : ${image.config.exposedPorts}" class="list-inline">
+                    <ul th:each="port, status : ${image.config.exposedPorts}" class="list-unstyled">
                         <li>
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
@@ -132,12 +132,16 @@
             </tr>
             <tr>
                 <th>Config/Entrypoint</th>
-                <td th:text="${image.config.entrypoint}">config</td>
+                <td>
+                    <ul th:each="entrypoint : ${image.config.entrypoint}" class="list-unstyled">
+                        <li th:text="${entrypoint}">entrypoint</li>
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <th>Config/OnBuild</th>
                 <td>
-                    <ul th:each="onBuild : ${image.config.onBuild}" class="list-inline">
+                    <ul th:each="onBuild : ${image.config.onBuild}" class="list-unstyled">
                         <li th:text="${onBuild}">onBuild</li>
                     </ul>
                 </td>
@@ -169,7 +173,7 @@
             <tr>
                 <th>Config/Env</th>
                 <td>
-                    <ul th:each="env : ${image.config.env}" class="list-inline">
+                    <ul th:each="env : ${image.config.env}" class="list-unstyled">
                         <li th:text="${env}">env</li>
                     </ul>
                 </td>
@@ -183,7 +187,7 @@
             <tr>
                 <th><mark>ContainerConfig/Cmd</mark></th>
                 <td>
-                    <ul th:each="cmd : ${image.containerConfig.cmd}" class="list-inline">
+                    <ul th:each="cmd : ${image.containerConfig.cmd}" class="list-unstyled">
                         <li th:text="${cmd}">cmd</li>
                     </ul>
                 </td>
@@ -211,7 +215,7 @@
             <tr>
                 <th>ContainerConfig/ExposedPorts</th>
                 <td>
-                    <ul th:each="port, status : ${image.containerConfig.exposedPorts}" class="list-inline">
+                    <ul th:each="port, status : ${image.containerConfig.exposedPorts}" class="list-unstyled">
                         <li>
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
@@ -257,7 +261,7 @@
             <tr>
                 <th>ContainerConfig/OnBuild</th>
                 <td>
-                    <ul th:each="onBuild : ${image.containerConfig.onBuild}" class="list-inline">
+                    <ul th:each="onBuild : ${image.containerConfig.onBuild}" class="list-unstyled">
                         <li th:text="${onBuild}">onBuild</li>
                     </ul>
                 </td>
@@ -289,7 +293,7 @@
             <tr>
                 <th>ContainerConfig/Env</th>
                 <td>
-                    <ul th:each="env : ${image.containerConfig.env}" class="list-inline">
+                    <ul th:each="env : ${image.containerConfig.env}" class="list-unstyled">
                         <li th:text="${env}">env</li>
                     </ul>
                 </td>
