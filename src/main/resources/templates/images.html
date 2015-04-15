@@ -59,8 +59,12 @@
             <tr th:each="image : ${images}">
                 <td th:text="${image.idToShort}" th:attr="data-id=${image.id}">id</td>
                 <td>
-                    <ul th:each="repoTag : ${image.repoTags}">
-                        <li th:text="${repoTag}">name</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.repoTags != null
+                            and #arrays.length(image.repoTags) &gt;= 2} ? 'more'">
+                        <li th:each="repoTag : ${image.repoTags}">
+                            <span th:text="${repoTag}">name</span>
+                        </li>
                     </ul>
                 </td>
                 <td th:text="${image.size}">size</td>

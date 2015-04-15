@@ -43,8 +43,12 @@
             <tr>
                 <th><mark>Config/Cmd</mark></th>
                 <td>
-                    <ul th:each="cmd, status : ${container.config.cmd}" class="list-unstyled">
-                        <li th:text="${cmd}" th:classappend="${status.size &gt;= 2} ? 'more'">cmd</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.config.cmd != null
+                            and #arrays.length(container.config.cmd) &gt;= 2} ? 'more'">
+                        <li th:each="cmd, status : ${container.config.cmd}">
+                            <span th:text="${cmd}">cmd</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -71,9 +75,10 @@
             <tr>
                 <th>Config/ExposedPorts</th>
                 <td>
-                    <ul class="list-unstyled">
-                        <li th:each="port, status : ${container.config.exposedPorts}"
-                            th:classappend="${status.size &gt;= 2} ? 'more'">
+                    <ul class="list-unstyled"
+                        th:classappend="${container.config.exposedPorts != null
+                            and #arrays.length(container.config.exposedPorts) &gt;= 2} ? 'more'">
+                        <li th:each="port, status : ${container.config.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>&lt;-</span><span
                                   th:each="pt : ${port.value}"><span
                                   th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
@@ -114,16 +119,24 @@
             <tr>
                 <th>Config/Entrypoint</th>
                 <td>
-                    <ul th:each="entrypoint, status : ${container.config.entrypoint}" class="list-unstyled">
-                        <li th:text="${entrypoint}" th:classappend="${status.size &gt;= 2} ? 'more'">entrypoint</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.config.entrypoint != null
+                            and #arrays.length(container.config.entrypoint) &gt;= 2} ? 'more'">
+                        <li th:each="entrypoint, status : ${container.config.entrypoint}">
+                            <span th:text="${entrypoint}">entrypoint</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
             <tr>
                 <th>Config/OnBuild</th>
                 <td>
-                    <ul th:each="onBuild, status : ${container.config.onBuild}" class="list-unstyled">
-                        <li th:text="${onBuild}" th:classappend="${status.size &gt;= 2} ? 'more'">onBuild</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.config.entrypoint != null
+                            and #arrays.length(container.config.entrypoint) &gt;= 2} ? 'more'">
+                        <li th:each="onBuild, status : ${container.config.onBuild}">
+                            <span th:text="${onBuild}">onBuild</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -154,8 +167,12 @@
             <tr>
                 <th>Config/Env</th>
                 <td>
-                    <ul th:each="env, status : ${container.config.env}" class="list-unstyled">
-                        <li th:text="${env}" th:classappend="${status.size &gt;= 2} ? 'more'">env</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.config.env != null
+                            and #arrays.length(container.config.env) &gt;= 2} ? 'more'">
+                        <li th:each="env, status : ${container.config.env}">
+                            <span th:text="${env}">env</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -208,9 +225,10 @@
             <tr>
                 <th><mark>NetworkSettings/Ports</mark></th>
                 <td>
-                    <ul class="list-unstyled">
-                        <li th:each="port, status : ${container.networkSettings.ports}"
-                            th:classappend="${status.size &gt;= 2} ? 'more'">
+                    <ul class="list-unstyled"
+                        th:classappend="${container.networkSettings.ports != null
+                            and #arrays.length(container.networkSettings.ports) &gt;= 2} ? 'more'">
+                        <li th:each="port, status : ${container.networkSettings.ports}">
                             <span th:text="${port.key}">key</span><span>&lt;-</span><span
                                 th:each="pt : ${port.value}"><span
                                 th:text="${pt.hostIp} + ':' + ${pt.hostPort}">pt</span><span
@@ -224,18 +242,24 @@
             <tr>
                 <th><mark>Volumes</mark></th>
                 <td>
-                    <ul th:each="volume, status : ${container.volumes}" class="list-unstyled">
-                        <li th:text="${volume.key} + ' : ' + ${volume.value}"
-                            th:classappend="${status.size &gt;= 2} ? 'more'"></li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.volumes != null
+                            and #arrays.length(container.volumes) &gt;= 2} ? 'more'">
+                        <li th:each="volume, status : ${container.volumes}">
+                            <span th:text="${volume.key} + ' : ' + ${volume.value}">volume</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
             <tr>
                 <th><mark>VolumesRW</mark></th>
                 <td>
-                    <ul th:each="volume, status : ${container.volumesRW}" class="list-unstyled">
-                        <li th:text="${volume.key} + ' : ' + ${volume.value}"
-                            th:classappend="${status.size &gt;= 2} ? 'more'"></li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.volumesRW != null
+                            and #arrays.length(container.volumesRW) &gt;= 2} ? 'more'">
+                        <li th:each="volume, status : ${container.volumesRW}">
+                            <span th:text="${volume.key} + ' : ' + ${volume.value}">volumeRW</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -244,24 +268,36 @@
             <tr>
                 <th><mark>HostConfig/Binds</mark></th>
                 <td>
-                    <ul th:each="bind, status : ${container.hostConfig.binds}" class="list-unstyled">
-                        <li th:text="${bind}" th:classappend="${status.size &gt;= 2} ? 'more'">bind</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.binds != null
+                            and #arrays.length(container.hostConfig.binds) &gt;= 2} ? 'more'">
+                        <li th:each="bind, status : ${container.hostConfig.binds}">
+                            <span th:text="${bind}">bind</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
             <tr>
                 <th>HostConfig/CapAdd</th>
                 <td>
-                    <ul th:each="capAdd, status : ${container.hostConfig.capAdd}" class="list-unstyled">
-                        <li th:text="${capAdd}" th:classappend="${status.size &gt;= 2} ? 'more'">capAdd</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.capAdd != null
+                            and #arrays.length(container.hostConfig.capAdd) &gt;= 2} ? 'more'">
+                        <li th:each="capAdd, status : ${container.hostConfig.capAdd}">
+                            <span th:text="${capAdd}">capAdd</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
             <tr>
                 <th>HostConfig/CapDrop</th>
                 <td>
-                    <ul th:each="capDrop, status : ${container.hostConfig.capDrop}" class="list-unstyled">
-                        <li th:text="${capDrop}" th:classappend="${status.size &gt;= 2} ? 'more'">capDrop</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.capDrop != null
+                            and #arrays.length(container.hostConfig.capDrop) &gt;= 2} ? 'more'">
+                        <li th:each="capDrop, status : ${container.hostConfig.capDrop}">
+                            <span th:text="${capDrop}">capDrop</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -272,24 +308,36 @@
             <tr>
                 <th>HostConfig/Devices</th>
                 <td>
-                    <ul th:each="device, status : ${container.hostConfig.devices}" class="list-unstyled">
-                        <li th:text="${device}" th:classappend="${status.size &gt;= 2} ? 'more'">bind</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.devices != null
+                            and #arrays.length(container.hostConfig.devices) &gt;= 2} ? 'more'">
+                        <li th:each="device, status : ${container.hostConfig.devices}">
+                            <span th:text="${device}">bind</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
             <tr>
                 <th>HostConfig/Dns</th>
                 <td>
-                    <ul th:each="dns, status : ${container.hostConfig.dns}" class="list-unstyled">
-                        <li th:text="${dns}" th:classappend="${status.size &gt;= 2} ? 'more'">dns</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.dns != null
+                            and #arrays.length(container.hostConfig.dns) &gt;= 2} ? 'more'">
+                        <li th:each="dns, status : ${container.hostConfig.dns}">
+                            <span th:text="${dns}">dns</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
             <tr>
                 <th>HostConfig/DnsSearch</th>
                 <td>
-                    <ul th:each="dnsSearch, status : ${container.hostConfig.dnsSearch}" class="list-unstyled">
-                        <li th:text="${dnsSearch}" th:classappend="${status.size &gt;= 2} ? 'more'">dns</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.dnsSearch != null
+                            and #arrays.length(container.hostConfig.dnsSearch) &gt;= 2} ? 'more'">
+                        <li th:each="dnsSearch, status : ${container.hostConfig.dnsSearch}">
+                            <span th:text="${dnsSearch}">dns</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -308,9 +356,12 @@
             <tr>
                 <th>HostConfig/LxcConf</th>
                 <td>
-                    <ul th:each="lxcConf, status : ${container.hostConfig.lxcConf}" class="list-unstyled">
-                        <li th:text="${lxcConf.key} + ' : ' + ${lxcConf.value}"
-                            th:classappend="${status.size &gt;= 2} ? 'more'">lxc</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.lxcConf != null
+                            and #arrays.length(container.hostConfig.lxcConf) &gt;= 2} ? 'more'">
+                        <li th:each="lxcConf, status : ${container.hostConfig.lxcConf}">
+                            <span th:text="${lxcConf.key} + ' : ' + ${lxcConf.value}">lxc</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -325,9 +376,12 @@
             <tr>
                 <th>HostConfig/PortBindings</th>
                 <td>
-                    <ul th:each="port, status : ${container.config.portBindings}" class="list-unstyled">
-                        <li th:text="${port.key} + '->' + ${port.value.hostIp} + ':' + ${port.value.hostPort}"
-                            th:classappend="${status.size &gt;= 2} ? 'more'"></li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.config.portBindings != null
+                            and #arrays.length(container.config.portBindings) &gt;= 2} ? 'more'">
+                        <li th:each="port, status : ${container.config.portBindings}">
+                            <span th:text="${port.key} + '->' + ${port.value.hostIp} + ':' + ${port.value.hostPort}">port</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -358,8 +412,12 @@
             <tr>
                 <th>HostConfig/VolumesFrom</th>
                 <td>
-                    <ul th:each="volumesFrom, status : ${container.hostConfig.volumesFrom}" class="list-unstyled">
-                        <li th:text="${volumesFrom}" th:classappend="${status.size &gt;= 2} ? 'more'">volumesFrom</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.volumesFrom != null
+                            and #arrays.length(container.hostConfig.volumesFrom) &gt;= 2} ? 'more'">
+                        <li th:each="volumesFrom, status : ${container.hostConfig.volumesFrom}">
+                            <span th:text="${volumesFrom}">volumesFrom</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -405,8 +463,12 @@
             <tr>
                 <th>Args</th>
                 <td>
-                    <ul th:each="arg, status : ${container.args}" class="list-unstyled">
-                        <li th:text="${arg}" th:classappend="${status.size &gt;= 2} ? 'more'">arg</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.args != null
+                            and #arrays.length(container.args) &gt;= 2} ? 'more'">
+                        <li th:each="arg, status : ${container.args}">
+                            <span th:text="${arg}">arg</span>
+                        </li>
                     </ul>
                 </td>
             </tr>

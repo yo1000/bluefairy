@@ -33,9 +33,13 @@
             <tr>
                 <th>Driver Status</th>
                 <td>
-                    <ul th:each="driverStatus : ${info.driverStatus}" class="list-inline">
-                        <li th:each="status : ${driverStatus}">
-                            <span th:text="${status}">status</span>
+                    <ul class="list-inline"
+                        th:classappend="${info.driverStatus != null
+                            and #arrays.length(info.driverStatus) &gt;= 2} ? 'more'">
+                        <li th:each="driverStatus : ${info.driverStatus}">
+                            <div th:each="status : ${driverStatus}">
+                                <span th:text="${status}">status</span>
+                            </div>
                         </li>
                     </ul>
                 </td>

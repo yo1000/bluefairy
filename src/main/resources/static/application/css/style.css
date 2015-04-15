@@ -31,7 +31,7 @@ table ul li {
 
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-nav>li>a {
-    color: #f0f0f0;
+    color: #f8f8f8;
 }
 
 .navbar-inverse .navbar-nav>.open>a,
@@ -40,23 +40,20 @@ table ul li {
 }
 
 .navbar-brand img {
-    -webkit-filter:brightness(94%);
+    -webkit-filter:brightness(97.25%);
 }
 
 .navbar-brand:hover img {
     -webkit-filter:brightness(100%);
 }
 
-td ul {
-    height: 1.43em;
+td .more {
     overflow: hidden;
-}
-
-td ul .more {
+    height: 1.43em;
     font-weight: bold;
 }
 
-tr:hover td ul {
+tr:hover td .more {
     height:auto;
     font-weight: normal;
 }
