@@ -47,14 +47,14 @@ table ul li {
     -webkit-filter:brightness(100%);
 }
 
-td .more {
+.more {
     overflow: hidden;
     height: 1.43em;
     font-weight: bold;
 }
 
-tr:hover td .more {
+.more:hover {
     overflow: auto;
-    height:auto;
+    height: auto;
     font-weight: normal;
 }
