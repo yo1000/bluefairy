@@ -26,21 +26,18 @@ table ul li {
 
 .navbar-inverse {
     background-color: #36c;
-    border-color: #25b;
+    border-color: #2548b2;
 }
 
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-nav>li>a {
-    color: #f8f8f8;
+    color: #fff;
 }
 
+.navbar-inverse .navbar-nav>li>a:hover,
 .navbar-inverse .navbar-nav>.open>a,
 .navbar-inverse .navbar-nav>.open>a:hover {
     background-color: #47d;
-}
-
-.navbar-brand img {
-    -webkit-filter:brightness(97.25%);
 }
 
 .navbar-brand:hover img {
