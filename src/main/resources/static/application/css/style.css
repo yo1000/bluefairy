@@ -54,6 +54,7 @@ td .more {
 }
 
 tr:hover td .more {
+    overflow: auto;
     height:auto;
     font-weight: normal;
 }
