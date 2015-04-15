@@ -97,7 +97,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${image.config.exposedPorts != null
-                            and #arrays.length(image.config.exposedPorts) &gt;= 2} ? 'more'">
+                            and #maps.size(image.config.exposedPorts) &gt;= 2} ? 'more'">
                         <li th:each="port, status : ${image.config.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
@@ -239,7 +239,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${image.containerConfig.exposedPorts != null
-                            and #arrays.length(image.containerConfig.exposedPorts) &gt;= 2} ? 'more'">
+                            and #maps.size(image.containerConfig.exposedPorts) &gt;= 2} ? 'more'">
                         <li th:each="port, status : ${image.containerConfig.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span

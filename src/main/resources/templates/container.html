@@ -77,7 +77,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.config.exposedPorts != null
-                            and #arrays.length(container.config.exposedPorts) &gt;= 2} ? 'more'">
+                            and #maps.size(container.config.exposedPorts) &gt;= 2} ? 'more'">
                         <li th:each="port, status : ${container.config.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>&lt;-</span><span
                                   th:each="pt : ${port.value}"><span
@@ -227,7 +227,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.networkSettings.ports != null
-                            and #arrays.length(container.networkSettings.ports) &gt;= 2} ? 'more'">
+                            and #maps.size(container.networkSettings.ports) &gt;= 2} ? 'more'">
                         <li th:each="port, status : ${container.networkSettings.ports}">
                             <span th:text="${port.key}">key</span><span>&lt;-</span><span
                                 th:each="pt : ${port.value}"><span
@@ -244,7 +244,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.volumes != null
-                            and #arrays.length(container.volumes) &gt;= 2} ? 'more'">
+                            and #maps.size(container.volumes) &gt;= 2} ? 'more'">
                         <li th:each="volume, status : ${container.volumes}">
                             <span th:text="${volume.key} + ' : ' + ${volume.value}">volume</span>
                         </li>
@@ -256,7 +256,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.volumesRW != null
-                            and #arrays.length(container.volumesRW) &gt;= 2} ? 'more'">
+                            and #maps.size(container.volumesRW) &gt;= 2} ? 'more'">
                         <li th:each="volume, status : ${container.volumesRW}">
                             <span th:text="${volume.key} + ' : ' + ${volume.value}">volumeRW</span>
                         </li>
@@ -358,7 +358,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.hostConfig.lxcConf != null
-                            and #arrays.length(container.hostConfig.lxcConf) &gt;= 2} ? 'more'">
+                            and #maps.size(container.hostConfig.lxcConf) &gt;= 2} ? 'more'">
                         <li th:each="lxcConf, status : ${container.hostConfig.lxcConf}">
                             <span th:text="${lxcConf.key} + ' : ' + ${lxcConf.value}">lxc</span>
                         </li>
@@ -378,7 +378,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.config.portBindings != null
-                            and #arrays.length(container.config.portBindings) &gt;= 2} ? 'more'">
+                            and #maps.size(container.config.portBindings) &gt;= 2} ? 'more'">
                         <li th:each="port, status : ${container.config.portBindings}">
                             <span th:text="${port.key} + '->' + ${port.value.hostIp} + ':' + ${port.value.hostPort}">port</span>
                         </li>
