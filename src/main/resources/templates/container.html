@@ -358,7 +358,7 @@
                 <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.hostConfig.lxcConf != null
-                            and #maps.size(container.hostConfig.lxcConf) &gt;= 2} ? 'more'">
+                            and #arrays.length(container.hostConfig.lxcConf) &gt;= 2} ? 'more'">
                         <li th:each="lxcConf, status : ${container.hostConfig.lxcConf}">
                             <span th:text="${lxcConf.key} + ' : ' + ${lxcConf.value}">lxc</span>
                         </li>
