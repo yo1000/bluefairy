@@ -5,13 +5,14 @@
 <nav th:replace="_fragment :: navigator"></nav>
 <div class="container">
     <!-- #action-modal -->
-    <div id="action-modal" class="modal fade" tabindex="-1"
-         role="dialog" aria-labelledby="action-modal-label" aria-hidden="true">
+    <div id="action-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="action-modal-label" aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            data-loading-text="&times;" autocomplete="off"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="modal-title">Run container</h4>
                 </div>
                 <div class="modal-body">
@@ -31,24 +32,19 @@
                                 <input type="hidden" name="repoTags" class="action-modal-repotags"/>
                             </div>
                         </div>
-
-                        <!--
-                        TODO: impl any options.
-                        -->
                         <div class="form-group">
-                            <label for="actionModalRepotags" class="col-sm-4 control-label">Exposable Ports</label>
+                            <label for="exposablePorts" class="col-sm-4 control-label">Exposable Ports</label>
                             <div class="col-sm-8">
                                 <div id="exposable-ports"></div>
                             </div>
                         </div>
-                        <!--
-                        TODO: impl any options.
-                        -->
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="action-modal-btn">Run</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                            data-loading-text="Cancel" autocomplete="off">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="action-modal-btn"
+                            data-loading-text="Please wait.." autocomplete="off">Run</button>
                 </div>
             </div>
         </div>
@@ -104,7 +100,12 @@
 <footer th:replace="_fragment :: footer"></footer>
 <script th:inline="javascript">
 /*<![CDATA[*/
+$.ajaxSetup({
+    timeout: 4000
+});
+
 $("#action-modal-btn").click(function () {
+    $("#action-modal button").button('loading');
     var exposablePorts = $("#action-modal form input[name='exposablePorts']").val();
     var exposePorts = $("#action-modal form input[name='exposePorts']").val();
     var exposedPorts = {};
@@ -116,7 +117,6 @@ $("#action-modal-btn").click(function () {
         "HostPort" : exposePorts
     });
 
-    // TODO: check by ajax, after run.
     var submitData = {
         Hostname        : "",
         Domainname      : "",
@@ -184,9 +184,17 @@ $("#action-modal-btn").click(function () {
             }
         }
     }).done(function(data, textStatus, jqXHR) {
-        console.dir(data);
+        var url = /*[[ @{/container/} ]]*/ "#";
+        location.href = url + data.Id;
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        var $alert = $("<div class='alert alert-danger alert-dismissible' role='alert'>" +
+            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+            "<span aria-hidden='true'>&times;</span></button>" +
+            "<strong>Error:</strong> Failed to run the container.</div>");
+        $("#action-modal .modal-body").prepend($alert);
+    }).always(function() {
+        $("#action-modal button").button('reset');
     });
-//    $("#action-modal form").submit();
 });
 
 $("#action-modal").on("show.bs.modal", function (event) {
