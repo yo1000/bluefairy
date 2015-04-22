@@ -101,8 +101,7 @@
                         <li th:each="port, status : ${image.config.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
-                                th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
-                                th:if="${status.index &gt; 0}">,</span>
+                                th:text="${pt.key} + ':' + ${pt.value}">pt</span>
                             </span>
                         </li>
                     </ul>
@@ -243,8 +242,7 @@
                         <li th:each="port, status : ${image.containerConfig.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
-                                th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
-                                th:if="${status.index &gt; 0}">,</span>
+                                th:text="${pt.key} + ':' + ${pt.value}">pt</span>
                             </span>
                         </li>
                     </ul>
