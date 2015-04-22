@@ -39,7 +39,7 @@ public class ContainerCreate {
     @JsonProperty("Cmd")
     private String[] cmd;
     @JsonProperty("Entrypoint")
-    private String entrypoint;
+    private String[] entrypoint;
     @JsonProperty("Image")
     private String image;
     @JsonProperty("Volumes")
@@ -177,11 +177,11 @@ public class ContainerCreate {
         this.cmd = cmd;
     }
 
-    public String getEntrypoint() {
+    public String[] getEntrypoint() {
         return entrypoint;
     }
 
-    public void setEntrypoint(String entrypoint) {
+    public void setEntrypoint(String[] entrypoint) {
         this.entrypoint = entrypoint;
     }
 

@@ -54,13 +54,21 @@
                 <td th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
                 <td th:text="${container.image}">image</td>
                 <td>
-                    <ul th:each="name : ${container.names}">
-                        <li th:text="${name}">name</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.names != null
+                            and #arrays.length(container.names) &gt;= 2} ? 'more'">
+                        <li th:each="name : ${container.names}">
+                            <span th:text="${name}">name</span>
+                        </li>
                     </ul>
                 </td>
                 <td>
-                    <ul th:each="port : ${container.ports}">
-                        <li th:text="${port.type} + ':' + ${port.publicPort} + '->' + ${port.privatePort}">1234 -> 9876</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.ports != null
+                            and #arrays.length(container.ports) &gt;= 2} ? 'more'">
+                        <li th:each="port : ${container.ports}">
+                            <span th:text="${port.type} + ':' + ${port.publicPort} + '->' + ${port.privatePort}">1234 -> 9876</span>
+                        </li>
                     </ul>
                 </td>
                 <td th:text="${container.status}">status</td>
