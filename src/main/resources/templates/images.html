@@ -31,6 +31,19 @@
                                 <input type="hidden" name="repoTags" class="action-modal-repotags"/>
                             </div>
                         </div>
+
+                        <!--
+                        TODO: impl any options.
+                        -->
+                        <div class="form-group">
+                            <label for="actionModalRepotags" class="col-sm-4 control-label">Exposable Ports</label>
+                            <div class="col-sm-8">
+                                <div id="exposable-ports"></div>
+                            </div>
+                        </div>
+                        <!--
+                        TODO: impl any options.
+                        -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -92,13 +105,133 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
 $("#action-modal-btn").click(function () {
-    $("#action-modal form").submit();
+    var exposablePorts = $("#action-modal form input[name='exposablePorts']").val();
+    var exposePorts = $("#action-modal form input[name='exposePorts']").val();
+    var exposedPorts = {};
+    var portBindings = {};
+
+    exposedPorts[exposablePorts] = {};
+    portBindings[exposablePorts] = new Array();
+    portBindings[exposablePorts].push({
+        "HostPort" : exposePorts
+    });
+
+    // TODO: check by ajax, after run.
+    var submitData = {
+        Hostname        : "",
+        Domainname      : "",
+        User            : "",
+        Memory          : 0,
+        MemorySwap      : 0,
+        CpuShares       : 0,
+        Cpuset          : "0",
+        AttachStdin     : false,
+        AttachStdout    : false,
+        AttachStderr    : false,
+        Tty             : false,
+        OpenStdin       : false,
+        StdinOnce       : false,
+        Env             : null,
+        Cmd             : [],
+        Entrypoint      : [],
+        Image           : $("#action-modal form input[name='repoTags']").val(),
+        Volumes         : {}, // :HashMap<String, HashMap<String, String>>
+        WorkingDir      : "",
+        NetworkDisabled : false,
+        MacAddress      : null,
+        ExposedPorts    : exposedPorts, // :HashMap<protoAndPort:String, HashMap<expIp:String, expPort:String>>
+        SecurityOpts    : [""],
+        HostConfig      : {
+            Binds           : [],
+            //IpcMode         : null,
+            //PidMode         : null,
+            Links           : [],
+            LxcConf         : [],
+            PortBindings    : portBindings,
+            PublishAllPorts : true,
+            Privileged      : false,
+            ReadonlyRootfs  : false,
+            Dns             : [],
+            DnsSearch       : [],
+            ExtraHosts      : null,
+            VolumesFrom     : [],
+            CapAdd          : [],
+            CapDrop         : [],
+            //ContainerIDFile : null,
+            RestartPolicy   : {
+                Name              : "",
+                MaximumRetryCount : 0
+            },
+            NetworkMode     : "bridge",
+            //SecurityOpt     : null,
+            Devices         : []
+        }
+    };
+
+    $.ajax({
+        // endpoint
+        type    : "POST",
+        url     : /*[[ @{/api/v1/container/create} ]]*/ "#",
+        // request
+        contentType : "application/json",
+        processData : false,
+        data        : JSON.stringify(submitData),
+        // response
+        dataType: "json",
+        statusCode: {
+            404: function() {
+                alert("page not found");
+            }
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        console.dir(data);
+    });
+//    $("#action-modal form").submit();
 });
 
 $("#action-modal").on("show.bs.modal", function (event) {
     var button = $(event.relatedTarget);
     var actionModalId = button.data("id");
     var actionModalRepoTags = button.data("repotags");
+
+    var url = /*[[ @{/api/v1/image/} ]]*/ "#";
+
+    $.ajax({
+        // endpoint
+        type    : "GET",
+        url     : url + actionModalId,
+        // request
+        contentType : "application/json",
+        processData : false,
+        // response
+        dataType: "json",
+        statusCode: {
+            404: function() {
+                alert("page not found");
+            }
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        // data:PlainObject, textStatus:String, jqXHR:jqXHR
+        console.dir(data);
+        var $exports = $("#exposable-ports");
+        $exports.children().remove();
+
+        for (key in data.ContainerConfig.ExposedPorts){
+            var $exportsGroup = $("<div class='form-inline'>");
+            var $exportsHidden = $("<input type='hidden' name='exposablePorts'/>");
+            var $exportsInput = $("<input type='input' name='exposePorts' class='form-control input-sm'/>");
+            var $exportsSpan = $("<span> -&gt; </span>");
+            var $exportsLabel = $("<p class='form-control-static' style='padding-left:0;'></p>");
+
+            $exportsInput.attr("placeholder", key.replace(/\/.*/, ""));
+            $exportsLabel.text(key);
+            $exportsHidden.val(key);
+
+            $exportsGroup.append($exportsHidden).append($exportsInput)
+                    .append($exportsSpan).append($exportsLabel);
+            $exports.append($exportsGroup);
+        }
+    });
 
     var modal = $(this)
     modal.find('p.action-modal-id').text(actionModalId);
