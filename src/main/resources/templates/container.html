@@ -349,7 +349,7 @@
             </tr>
             <tr>
                 <th>HostConfig/Links</th>
-                <td th:text="${container.hostConfig.links}">
+                <td>
                     <ul class="list-unstyled"
                         th:classappend="${container.hostConfig.links != null
                             and #arrays.length(container.hostConfig.links) &gt;= 2} ? 'more'">
