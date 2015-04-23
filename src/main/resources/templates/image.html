@@ -63,8 +63,12 @@
             <tr>
                 <th><mark>Config/Cmd</mark></th>
                 <td>
-                    <ul th:each="cmd : ${image.config.cmd}" class="list-inline">
-                        <li th:text="${cmd}">cmd</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.config.cmd != null
+                            and #arrays.length(image.config.cmd) &gt;= 2} ? 'more'">
+                        <li th:each="cmd : ${image.config.cmd}">
+                            <span th:text="${cmd}">cmd</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -91,12 +95,13 @@
             <tr>
                 <th>Config/ExposedPorts</th>
                 <td>
-                    <ul th:each="port, status : ${image.config.exposedPorts}" class="list-inline">
-                        <li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.config.exposedPorts != null
+                            and #maps.size(image.config.exposedPorts) &gt;= 2} ? 'more'">
+                        <li th:each="port, status : ${image.config.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
-                                th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
-                                th:if="${status.index &gt; 0}">,</span>
+                                th:text="${pt.key} + ':' + ${pt.value}">pt</span>
                             </span>
                         </li>
                     </ul>
@@ -132,13 +137,25 @@
             </tr>
             <tr>
                 <th>Config/Entrypoint</th>
-                <td th:text="${image.config.entrypoint}">config</td>
+                <td>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.config.entrypoint != null
+                            and #arrays.length(image.config.entrypoint) &gt;= 2} ? 'more'">
+                        <li th:each="entrypoint : ${image.config.entrypoint}">
+                            <span th:text="${entrypoint}">entrypoint</span>
+                        </li>
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <th>Config/OnBuild</th>
                 <td>
-                    <ul th:each="onBuild : ${image.config.onBuild}" class="list-inline">
-                        <li th:text="${onBuild}">onBuild</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.config.onBuild != null
+                            and #arrays.length(image.config.onBuild) &gt;= 2} ? 'more'">
+                        <li th:each="onBuild : ${image.config.onBuild}">
+                            <span th:text="${onBuild}">onBuild</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -169,8 +186,12 @@
             <tr>
                 <th>Config/Env</th>
                 <td>
-                    <ul th:each="env : ${image.config.env}" class="list-inline">
-                        <li th:text="${env}">env</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.config.env != null
+                            and #arrays.length(image.config.env) &gt;= 2} ? 'more'">
+                        <li th:each="env : ${image.config.env}">
+                            <span th:text="${env}">env</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -183,8 +204,12 @@
             <tr>
                 <th><mark>ContainerConfig/Cmd</mark></th>
                 <td>
-                    <ul th:each="cmd : ${image.containerConfig.cmd}" class="list-inline">
-                        <li th:text="${cmd}">cmd</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.containerConfig.cmd != null
+                            and #arrays.length(image.containerConfig.cmd) &gt;= 2} ? 'more'">
+                        <li th:each="cmd : ${image.containerConfig.cmd}">
+                            <span th:text="${cmd}">cmd</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -211,12 +236,13 @@
             <tr>
                 <th>ContainerConfig/ExposedPorts</th>
                 <td>
-                    <ul th:each="port, status : ${image.containerConfig.exposedPorts}" class="list-inline">
-                        <li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.containerConfig.exposedPorts != null
+                            and #maps.size(image.containerConfig.exposedPorts) &gt;= 2} ? 'more'">
+                        <li th:each="port, status : ${image.containerConfig.exposedPorts}">
                             <span th:text="${port.key}">port</span><span>-&gt;</span><span
                                 th:each="pt : ${port.value}"><span
-                                th:text="${pt.key} + ':' + ${pt.value}">pt</span><span
-                                th:if="${status.index &gt; 0}">,</span>
+                                th:text="${pt.key} + ':' + ${pt.value}">pt</span>
                             </span>
                         </li>
                     </ul>
@@ -252,13 +278,25 @@
             </tr>
             <tr>
                 <th>ContainerConfig/Entrypoint</th>
-                <td th:text="${image.containerConfig.entrypoint}">config</td>
+                <td>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.containerConfig.entrypoint != null
+                            and #arrays.length(image.containerConfig.entrypoint) &gt;= 2} ? 'more'">
+                        <li th:each="entrypoint : ${image.containerConfig.entrypoint}">
+                            <span th:text="${entrypoint}">entrypoint</span>
+                        </li>
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <th>ContainerConfig/OnBuild</th>
                 <td>
-                    <ul th:each="onBuild : ${image.containerConfig.onBuild}" class="list-inline">
-                        <li th:text="${onBuild}">onBuild</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.containerConfig.onBuild != null
+                            and #arrays.length(image.containerConfig.onBuild) &gt;= 2} ? 'more'">
+                        <li th:each="onBuild : ${image.containerConfig.onBuild}">
+                            <span th:text="${onBuild}">onBuild</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -289,8 +327,12 @@
             <tr>
                 <th>ContainerConfig/Env</th>
                 <td>
-                    <ul th:each="env : ${image.containerConfig.env}" class="list-inline">
-                        <li th:text="${env}">env</li>
+                    <ul class="list-unstyled"
+                        th:classappend="${image.containerConfig.env != null
+                            and #arrays.length(image.containerConfig.env) &gt;= 2} ? 'more'">
+                        <li th:each="env : ${image.containerConfig.env}">
+                            <span th:text="${env}">env</span>
+                        </li>
                     </ul>
                 </td>
             </tr>

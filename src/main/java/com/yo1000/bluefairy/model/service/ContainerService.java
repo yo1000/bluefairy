@@ -36,13 +36,24 @@ public class ContainerService {
     }
 
     public ContainerCreated runContainer(String image) {
-        ContainerCreated container = this.newContainer(image);
+        ContainerCreated container = this.createContainer(image);
         this.startContainer(container.getId());
 
         return container;
     }
 
-    protected ContainerCreated newContainer(String image) {
+    public ContainerCreated runContainer(ContainerCreate containerCreate) {
+        ContainerCreated container = this.createContainer(containerCreate);
+        this.startContainer(container.getId());
+
+        return container;
+    }
+
+    public ContainerCreated createContainer(ContainerCreate container) {
+        return this.getContainerRepository().postCreate(container);
+    }
+
+    public ContainerCreated createContainer(String image) {
         ContainerCreate container = new ContainerCreate();
         container.setHostname("");
         container.setDomainname("");
@@ -59,7 +70,7 @@ public class ContainerService {
         container.setStdinOnce(false);
         container.setEnv(null);
         container.setCmd(new String[] {});
-        container.setEntrypoint("");
+        container.setEntrypoint(new String[] {});
         container.setImage(image);
         container.setVolumes(new HashMap<String, HashMap<String, String>>() {
             {
@@ -103,7 +114,7 @@ public class ContainerService {
         hostConfig.setNetworkMode("bridge");
         hostConfig.setDevices(new String[]{});
 
-        return this.getContainerRepository().postCreate(container);
+        return this.createContainer(container);
     }
 
     protected ContainerRepository getContainerRepository() {

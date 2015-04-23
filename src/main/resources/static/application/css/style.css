@@ -23,3 +23,35 @@ table ul li {
 .table-list tr:hover:first-child {
     cursor: auto;
 }
+
+.navbar-inverse {
+    background-color: #36c;
+    border-color: #2548b2;
+}
+
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover,
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open>a:hover {
+    background-color: #47d;
+}
+
+.navbar-brand:hover img {
+    -webkit-filter:brightness(100%);
+}
+
+.more {
+    overflow: hidden;
+    height: 1.43em;
+    font-weight: bold;
+}
+
+.more:hover {
+    overflow: auto;
+    height: auto;
+    font-weight: normal;
+}
