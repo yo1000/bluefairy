@@ -104,17 +104,22 @@ $.ajaxSetup({
     timeout: 4000
 });
 
-$("#action-modal-btn").click(function () {
+$("#action-modal-btn").click(function() {
     $("#action-modal button").button('loading');
-    var exposablePorts = $("#action-modal form input[name='exposablePorts']").val();
-    var exposePorts = $("#action-modal form input[name='exposePorts']").val();
+    var $portGroup = $("#action-modal form div:has(input[name='exposablePorts'])");
+
     var exposedPorts = {};
     var portBindings = {};
 
-    exposedPorts[exposablePorts] = {};
-    portBindings[exposablePorts] = new Array();
-    portBindings[exposablePorts].push({
-        "HostPort" : exposePorts
+    $portGroup.each(function() {
+        var exposablePorts = $(this).find("input[name='exposablePorts']").val();
+        var exposePorts = $(this).find("input[name='exposePorts']").val();
+
+        exposedPorts[exposablePorts] = {};
+        portBindings[exposablePorts] = new Array();
+        portBindings[exposablePorts].push({
+            "HostPort" : exposePorts
+        });
     });
 
     var submitData = {
@@ -225,7 +230,7 @@ $("#action-modal").on("show.bs.modal", function (event) {
         $exports.children().remove();
 
         for (key in data.ContainerConfig.ExposedPorts){
-            var $exportsGroup = $("<div class='form-inline'>");
+            var $exportsGroup = $("<div class='form-inline'></div>");
             var $exportsHidden = $("<input type='hidden' name='exposablePorts'/>");
             var $exportsInput = $("<input type='input' name='exposePorts' class='form-control input-sm'/>");
             var $exportsSpan = $("<span> -&gt; </span>");
