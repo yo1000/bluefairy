@@ -13,6 +13,7 @@ public interface ContainerRepository {
     public Container[] getJson(boolean all);
     public ContainerInspect getInspect(String id);
     public ContainerCreated postCreate(ContainerCreate containerCreate);
+    public ContainerCreated postCreate(ContainerCreate containerCreate, String name);
     public void postStart(String id);
     public void postStop(String id);
     public void postStop(String id, long wait);

@@ -41,10 +41,17 @@ public class RestContainerRepository extends AbstractRestDockerRepository
 
     @Override
     public ContainerCreated postCreate(ContainerCreate containerCreate) {
+        return this.postCreate(containerCreate, null);
+    }
+
+    @Override
+    public ContainerCreated postCreate(ContainerCreate containerCreate, String name) {
         return this.getRestTemplate().postForObject(
-                this.makeDockerRemoteApiEndpoint("containers/create"),
+                this.makeDockerRemoteApiEndpoint("containers/create" +
+                        (name != null && !name.isEmpty() ? "?name={name}" : "")),
                 containerCreate,
-                ContainerCreated.class
+                ContainerCreated.class,
+                name
         );
     }
 
