@@ -36,8 +36,9 @@ public class ContainerRestController {
     @RequestMapping(value = "create", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
-    public ContainerCreated postCreate(@RequestBody ContainerCreate containerCreate) {
-        return this.getContainerService().runContainer(containerCreate);
+    public ContainerCreated postCreate(@RequestBody ContainerCreate containerCreate,
+                                       @RequestParam String name) {
+        return this.getContainerService().runContainer(containerCreate, name);
     }
 
     //    @RequestMapping("{id:(?!^all$).+}")
