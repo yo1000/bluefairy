@@ -122,6 +122,7 @@ $("#action-modal").on("show.bs.modal", function (event) {
             .removeClass("btn-primary").removeClass("btn-danger")
             .addClass(okClass);
 
+    $("#modal-title").text(ok + " container");
     $("#action-modal form").attr("action", url + id + action);
 });
 
