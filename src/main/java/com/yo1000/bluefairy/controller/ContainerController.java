@@ -54,18 +54,25 @@ public class ContainerController {
         return "redirect:/container/" + container.getId();
     }
 
-    @RequestMapping(value = "{id:(?!^all$).+}/start", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}/start", method = RequestMethod.POST)
     public String start(@PathVariable String id) {
         this.getContainerService().startContainer(id);
 
         return "redirect:/container/" + id;
     }
 
-    @RequestMapping(value = "{id:(?!^all$).+}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}/stop", method = RequestMethod.POST)
     public String stop(@PathVariable String id) {
         this.getContainerService().stopContainer(id);
 
-        return "redirect:/container/" + id;
+        return "redirect:/container/all";
+    }
+
+    @RequestMapping(value = "{id}/remove", method = RequestMethod.POST)
+    public String remove(@PathVariable String id) {
+        this.getContainerService().removeContainer(id);
+
+        return "redirect:/container/all";
     }
 
     protected ContainerService getContainerService() {

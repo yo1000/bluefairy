@@ -17,4 +17,6 @@ public interface ContainerRepository {
     public void postStart(String id);
     public void postStop(String id);
     public void postStop(String id, long wait);
+    public void deleteRemove(String id);
+    public void deleteRemove(String id, boolean volume, boolean force);
 }

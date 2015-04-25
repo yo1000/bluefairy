@@ -5,10 +5,7 @@ import com.yo1000.bluefairy.model.entity.docker.ContainerCreate;
 import com.yo1000.bluefairy.model.entity.docker.ContainerCreated;
 import com.yo1000.bluefairy.model.entity.docker.ContainerInspect;
 import com.yo1000.bluefairy.model.repository.ContainerRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
 
 /**
  * Created by yoichi.kikuchi on 15/03/12.
@@ -75,6 +72,19 @@ public class RestContainerRepository extends AbstractRestDockerRepository
                 this.makeDockerRemoteApiEndpoint("containers/{id}/stop?t={wait}"),
                 null,
                 id, wait
+        );
+    }
+
+    @Override
+    public void deleteRemove(String id) {
+        this.deleteRemove(id, false, false);
+    }
+
+    @Override
+    public void deleteRemove(String id, boolean volume, boolean force) {
+        this.getRestTemplate().delete(
+                this.makeDockerRemoteApiEndpoint("containers/{id}?v={volume}&force={force}"),
+                id, volume, force
         );
     }
 }
