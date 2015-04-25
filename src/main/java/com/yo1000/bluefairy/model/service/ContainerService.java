@@ -35,6 +35,10 @@ public class ContainerService {
         this.getContainerRepository().postStop(id);
     }
 
+    public void removeContainer(String id) {
+        this.getContainerRepository().deleteRemove(id);
+    }
+
     public ContainerCreated runContainer(String image) {
         ContainerCreated container = this.createContainer(image);
         this.startContainer(container.getId());

@@ -1,6 +1,5 @@
 package com.yo1000.bluefairy.controller.rest.v1;
 
-import com.yo1000.bluefairy.exception.IllegalRegexFormatException;
 import com.yo1000.bluefairy.model.entity.docker.Container;
 import com.yo1000.bluefairy.model.entity.docker.ContainerCreate;
 import com.yo1000.bluefairy.model.entity.docker.ContainerCreated;
