@@ -55,3 +55,17 @@ table ul li {
     height: auto;
     font-weight: normal;
 }
+
+th div.filter,
+th div.filter input {
+    display: inline;
+}
+
+th div.filter input {
+    margin-left: 0.5em;
+}
+
+th input.form-control.input-sm {
+    height: 1.7em;
+    width: 6.0em;
+}
