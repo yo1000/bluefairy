@@ -40,20 +40,23 @@
         <p class="lead"></p>
     </div>
     <div>
-        <table class="table table-hover table-condensed table-list">
-            <tr class="active">
-                <th>Id</th>
-                <th>Image</th>
-                <th>Names</th>
-                <th>Ports</th>
-                <th>Status</th>
-                <th>Created</th>
+        <table id="table" class="table table-hover table-condensed table-list">
+            <thead>
+            <tr>
+                <th class="fott-col-id">Id</th>
+                <th class="fott-col-image">Image</th>
+                <th class="fott-col-names">Names</th>
+                <th class="fott-col-ports">Ports</th>
+                <th class="fott-col-status">Status</th>
+                <th class="fott-col-created">Created</th>
                 <th></th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="container : ${containers}">
-                <td th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
-                <td th:text="${container.image}">image</td>
-                <td>
+                <td class="fott-id filter-value" th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
+                <td class="fott-image filter-value" th:text="${container.image}">image</td>
+                <td class="fott-names filter-value">
                     <ul class="list-unstyled"
                         th:classappend="${container.names != null
                             and #arrays.length(container.names) &gt;= 2} ? 'more'">
@@ -62,7 +65,7 @@
                         </li>
                     </ul>
                 </td>
-                <td>
+                <td class="fott-ports filter-value">
                     <ul class="list-unstyled"
                         th:classappend="${container.ports != null
                             and #arrays.length(container.ports) &gt;= 2} ? 'more'">
@@ -71,8 +74,8 @@
                         </li>
                     </ul>
                 </td>
-                <td th:text="${container.status}">status</td>
-                <td th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
+                <td class="fott-status filter-value" th:text="${container.status}">status</td>
+                <td class="fott-created filter-value" th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
                 <td>
                     <button type="button" class="btn btn-xs btn-danger"
                             data-toggle="modal" data-target="#action-modal"
@@ -97,6 +100,7 @@
                             >Remove</button>
                 </td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div><!-- /.container -->
@@ -106,7 +110,17 @@
 /*<![CDATA[*/
 
 /**
- * show start modal
+ * fott
+ */
+$(".fott-col-id").fott({fieldFilter: "fott-id", inputClasses: "form-control input-sm", placeholder: "id"});
+$(".fott-col-image").fott({fieldFilter: "fott-image", inputClasses: "form-control input-sm", placeholder: "image"});
+$(".fott-col-names").fott({fieldFilter: "fott-names", inputClasses: "form-control input-sm", placeholder: "names"});
+$(".fott-col-ports").fott({fieldFilter: "fott-ports", inputClasses: "form-control input-sm", placeholder: "ports"});
+$(".fott-col-status").fott({fieldFilter: "fott-status", inputClasses: "form-control input-sm", placeholder: "status"});
+$(".fott-col-created").fott({fieldFilter: "fott-created", inputClasses: "form-control input-sm", placeholder: "created"});
+
+/**
+ * show modal
  */
 $("#modal-ok").click(function () {
     $("#action-modal form").submit();
