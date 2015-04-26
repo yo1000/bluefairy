@@ -23,16 +23,16 @@ public class ContainerController {
 
     @RequestMapping("")
     public String index(Model model) {
-        model.addAttribute("containers", this.getContainerService().getContainers());
         model.addAttribute("title", "Containers");
+        model.addAttribute("containers", this.getContainerService().getContainers());
 
         return "containers";
     }
 
     @RequestMapping("all")
     public String all(Model model) {
-        model.addAttribute("containers", this.getContainerService().getContainersAll());
         model.addAttribute("title", "All Containers");
+        model.addAttribute("containers", this.getContainerService().getContainersAll());
 
         return "containers";
     }
@@ -41,8 +41,8 @@ public class ContainerController {
     public String id(@PathVariable String id, Model model) {
         ContainerInspect container = this.getContainerService().getContainer(id);
 
-        model.addAttribute("container", container);
         model.addAttribute("title", "Container " + container.getIdToShort());
+        model.addAttribute("container", container);
 
         return "container";
     }
