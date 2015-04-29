@@ -67,9 +67,8 @@
             <tbody>
             <tr th:each="sch : ${search}">
                 <td class="fott-name filter-value" th:text="${sch.name}">name</td>
-                <td class="fott-desc filter-value ellipsis search-desc"
+                <td class="fott-desc filter-value ellipsis cell-desc"
                     th:text="${sch.description}"
-                    th:attr="data-content=${sch.description}"
                     data-container="body" data-toggle="popover"
                     data-placement="top" data-trigger="hover">description</td>
                 <td class="fott-official filter-value" th:text="${sch.official}">official</td>
@@ -109,7 +108,11 @@ $(".fott-col-star").fott({fieldFilter: "fott-star", inputClasses: "form-control 
 /**
  * popover
  */
-$("[data-toggle='popover']").popover();
+$("[data-toggle='popover']").popover({
+    content:function() {
+        return $(this).text();
+    }
+});
 
 var submitSearch = function() {
     var url = /*[[ @{/search/} ]]*/ "#";
