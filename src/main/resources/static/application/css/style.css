@@ -16,12 +16,8 @@ table ul li {
     list-style: none;
 }
 
-.table-list tr:hover {
+.table-list tbody tr:hover {
     cursor: pointer;
-}
-
-.table-list tr:hover:first-child {
-    cursor: auto;
 }
 
 .navbar-inverse {
@@ -44,18 +40,6 @@ table ul li {
     -webkit-filter:brightness(100%);
 }
 
-.more {
-    overflow: hidden;
-    height: 1.43em;
-    font-weight: bold;
-}
-
-.more:hover {
-    overflow: auto;
-    height: auto;
-    font-weight: normal;
-}
-
 th div.filter,
 th div.filter input {
     display: inline;
@@ -76,6 +60,12 @@ th input.form-control.input-sm {
     text-overflow: ellipsis;
 }
 
-.search-desc {
-    max-width:30.0em;
+.cell-desc {
+    max-width: 32.0em;
+}
+
+.cell-repoTags,
+.cell-names,
+.cell-ports {
+    max-width: 16.0em;
 }
