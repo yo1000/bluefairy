@@ -63,18 +63,21 @@
     </div>
     <div>
         <table class="table table-hover table-condensed table-list">
+            <thead>
             <tr class="active">
-                <th>Id</th>
-                <th>Repo Tags</th>
-                <th>Size</th>
-                <th>Virtual Size</th>
-                <th>Parent Id</th>
-                <th>Created</th>
+                <th class="fott-col-id">Id</th>
+                <th class="fott-col-repo">Repo Tags</th>
+                <th class="fott-col-size">Size</th>
+                <th class="fott-col-vsize">Virtual Size</th>
+                <th class="fott-col-pid">Parent Id</th>
+                <th class="fott-col-created">Created</th>
                 <th></th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="image : ${images}">
-                <td th:text="${image.idToShort}" th:attr="data-id=${image.id}">id</td>
-                <td>
+                <td class="fott-id filter-value" th:text="${image.idToShort}" th:attr="data-id=${image.id}">id</td>
+                <td class="fott-repo filter-value">
                     <ul class="list-unstyled"
                         th:classappend="${image.repoTags != null
                             and #arrays.length(image.repoTags) &gt;= 2} ? 'more'">
@@ -83,10 +86,10 @@
                         </li>
                     </ul>
                 </td>
-                <td th:text="${image.size}">size</td>
-                <td th:text="${image.virtualSize}">virtualSize</td>
-                <td th:text="${image.parentIdToShort}" th:attr="data-id=${image.parentId}">parentId</td>
-                <td th:text="${#dates.format(image.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
+                <td class="fott-size filter-value" th:text="${image.size}">size</td>
+                <td class="fott-vsise filter-value" th:text="${image.virtualSize}">virtualSize</td>
+                <td class="fott-pid filter-value" th:text="${image.parentIdToShort}" th:attr="data-id=${image.parentId}">parentId</td>
+                <td class="fott-created filter-value" th:text="${#dates.format(image.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
                 <td>
                     <button type="button" class="btn btn-default btn-xs"
                             data-toggle="modal" data-target="#action-modal"
@@ -100,6 +103,7 @@
                             >Run</button>
                 </td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div><!-- /.container -->
@@ -110,6 +114,16 @@
 $.ajaxSetup({
     timeout: 4000
 });
+
+/**
+ * fott
+ */
+$(".fott-col-id").fott({fieldFilter: "fott-id", inputClasses: "form-control input-sm", placeholder: "id"});
+$(".fott-col-repo").fott({fieldFilter: "fott-repo", inputClasses: "form-control input-sm", placeholder: "tags"});
+$(".fott-col-size").fott({fieldFilter: "fott-size", inputClasses: "form-control input-sm", placeholder: "size"});
+$(".fott-col-vsize").fott({fieldFilter: "fott-vsize", inputClasses: "form-control input-sm", placeholder: "vsize"});
+$(".fott-col-pid").fott({fieldFilter: "fott-pid", inputClasses: "form-control input-sm", placeholder: "parent"});
+$(".fott-col-created").fott({fieldFilter: "fott-created", inputClasses: "form-control input-sm", placeholder: "created"});
 
 $("#action-modal-btn").click(function() {
     var $portGroup = $("#action-modal form div:has(input[name='exposablePorts'])");

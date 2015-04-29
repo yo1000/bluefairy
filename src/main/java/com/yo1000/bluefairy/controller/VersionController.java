@@ -18,6 +18,7 @@ public class VersionController {
 
     @RequestMapping("/")
     public String index(Model model) {
+        model.addAttribute("title", "Version");
         model.addAttribute("version", this.getVersionService().getVersion());
 
         return "version";
