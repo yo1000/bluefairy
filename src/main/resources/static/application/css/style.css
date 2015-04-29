@@ -69,3 +69,13 @@ th input.form-control.input-sm {
     height: 1.7em;
     width: 6.0em;
 }
+
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.search-desc {
+    max-width:30.0em;
+}
