@@ -28,10 +28,15 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
-                            data-loading-text="Cancel" autocomplete="off">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="action-modal-btn"
-                            data-loading-text="Please wait.." autocomplete="off">Pull</button>
+                    <button id="modal-btn-close" type="button" class="btn btn-default"
+                            data-dismiss="modal" data-loading-text="Cancel"
+                            autocomplete="off">Close</button>
+                    <button id="modal-btn-cancel" type="button" class="btn btn-default"
+                            data-dismiss="modal" data-loading-text="Cancel"
+                            autocomplete="off">Cancel</button>
+                    <button id="modal-btn-action" type="button" class="btn btn-primary"
+                            data-loading-text="Please wait.."
+                            autocomplete="off">Pull</button>
                 </div>
             </div>
         </div>
@@ -49,24 +54,27 @@
     </div>
     <div>
         <table class="table table-hover table-condensed table-list">
+            <thead>
             <tr class="active">
-                <th>Name</th>
-                <th>Description</th>
-                <th>Official</th>
-                <th>Automated</th>
-                <th>Star</th>
+                <th class="fott-col-name">Name</th>
+                <th class="fott-col-desc">Description</th>
+                <th class="fott-col-official">Official</th>
+                <th class="fott-col-auto">Automated</th>
+                <th class="fott-col-star">Star</th>
                 <th></th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="sch : ${search}">
-                <td th:text="${sch.name}">name</td>
-                <td th:text="${sch.description}"
+                <td class="fott-name filter-value" th:text="${sch.name}">name</td>
+                <td class="fott-desc filter-value ellipsis search-desc"
+                    th:text="${sch.description}"
                     th:attr="data-content=${sch.description}"
-                    class="ellipsis search-desc"
                     data-container="body" data-toggle="popover"
                     data-placement="top" data-trigger="hover">description</td>
-                <td th:text="${sch.official}">official</td>
-                <td th:text="${sch.automated}">automated</td>
-                <td th:text="${sch.starCount}">starCount</td>
+                <td class="fott-official filter-value" th:text="${sch.official}">official</td>
+                <td class="fott-auto filter-value" th:text="${sch.automated}">automated</td>
+                <td class="fott-star filter-value" th:text="${sch.starCount}">starCount</td>
                 <td>
                     <button type="button" class="btn btn-default btn-xs"
                             data-toggle="modal" data-target="#action-modal"
@@ -80,6 +88,7 @@
                             >Pull</button>
                 </td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div><!-- /.container -->
@@ -87,10 +96,19 @@
 <footer th:replace="_fragment :: footer"></footer>
 <script th:inline="javascript">
 /*<![CDATA[*/
-$.ajaxSetup({
-    timeout: 4000
-});
 
+/**
+ * fott
+ */
+$(".fott-col-name").fott({fieldFilter: "fott-name", inputClasses: "form-control input-sm", placeholder: "name"});
+$(".fott-col-desc").fott({fieldFilter: "fott-desc", inputClasses: "form-control input-sm", placeholder: "desc"});
+$(".fott-col-official").fott({fieldFilter: "fott-official", inputClasses: "form-control input-sm", placeholder: "official"});
+$(".fott-col-auto").fott({fieldFilter: "fott-auto", inputClasses: "form-control input-sm", placeholder: "auto"});
+$(".fott-col-star").fott({fieldFilter: "fott-star", inputClasses: "form-control input-sm", placeholder: "star"});
+
+/**
+ * popover
+ */
 $("[data-toggle='popover']").popover();
 
 var submitSearch = function() {
@@ -111,183 +129,75 @@ $("#btn-search").on("click", function() {
     submitSearch();
 });
 
-$("#action-modal-btn").click(function() {
-//    var url = /*[[ @{/api/v1/container/create} ]]*/ "#";
-    var url = /*[[ @{/image/pull/} ]]*/ "#";
+$("#modal-btn-action").click(function() {
+    var url = /*[[ @{/api/v1/image/pull/} ]]*/ "#";
     var name = $("#action-modal form input[name='name']").val();
 
-    var $form = $("#action-modal form");
-    $form.attr("action", url + name);
-    $form.submit();
+    var message = function(message, status) {
+        var statusMap = {
+            success : {css: "alert-success", head: "Success:"},
+            warn    : {css: "alert-warning", head: "Warning:"},
+            error   : {css: "alert-danger" , head: "Error:"}
+        };
 
-//    var $portGroup = $("#action-modal form div:has(input[name='exposablePorts'])");
-//
-//    var exposedPorts = {};
-//    var portBindings = {};
-//
-//    $portGroup.each(function() {
-//        var exposablePorts = $(this).find("input[name='exposablePorts']").val();
-//        var exposePorts = $(this).find("input[name='exposePorts']").val();
-//
-//        exposedPorts[exposablePorts] = {};
-//        portBindings[exposablePorts] = new Array();
-//        portBindings[exposablePorts].push({
-//            "HostPort" : exposePorts
-//        });
-//    });
-//
-//    var submitData = {
-//        Hostname        : "",
-//        Domainname      : "",
-//        User            : "",
-//        Memory          : 0,
-//        MemorySwap      : 0,
-//        CpuShares       : 0,
-//        Cpuset          : "0",
-//        AttachStdin     : false,
-//        AttachStdout    : false,
-//        AttachStderr    : false,
-//        Tty             : false,
-//        OpenStdin       : false,
-//        StdinOnce       : false,
-//        Env             : null,
-//        Cmd             : [],
-//        Entrypoint      : [],
-//        Image           : $("#action-modal form input[name='repoTags']").val(),
-//        Volumes         : {}, // :HashMap<String, HashMap<String, String>>
-//        WorkingDir      : "",
-//        NetworkDisabled : false,
-//        MacAddress      : null,
-//        ExposedPorts    : exposedPorts, // :HashMap<protoAndPort:String, HashMap<expIp:String, expPort:String>>
-//        SecurityOpts    : [""],
-//        HostConfig      : {
-//            Binds           : [],
-//            //IpcMode         : null,
-//            //PidMode         : null,
-//            Links           : [],
-//            LxcConf         : [],
-//            PortBindings    : portBindings,
-//            PublishAllPorts : true,
-//            Privileged      : false,
-//            ReadonlyRootfs  : false,
-//            Dns             : [],
-//            DnsSearch       : [],
-//            ExtraHosts      : null,
-//            VolumesFrom     : [],
-//            CapAdd          : [],
-//            CapDrop         : [],
-//            //ContainerIDFile : null,
-//            RestartPolicy   : {
-//                Name              : "",
-//                MaximumRetryCount : 0
-//            },
-//            NetworkMode     : "bridge",
-//            //SecurityOpt     : null,
-//            Devices         : []
-//        }
-//    };
-//
-//    var alertRunError = function() {
-//        var $alert = $("<div class='alert alert-danger alert-dismissible' role='alert'>" +
-//        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
-//        "<span aria-hidden='true'>&times;</span></button>" +
-//        "<strong>Error:</strong> Failed to run the container.</div>");
-//        $("#action-modal .modal-body").prepend($alert);
-//    };
-//
-//    var url = /*[[ @{/api/v1/container/create} ]]*/ "#";
-//    var name = $("#action-modal form input[name='name']").val();
-//
-//    if (name !== "" && !name.match(/^\/?[a-zA-Z0-9_-]+$/)) {
-//        alertRunError();
-//        return;
-//    }
-//
-//    $("#action-modal button").button('loading');
-//
-//    $.ajax({
-//        // endpoint
-//        type    : "POST",
-//        url     : url + "?name=" + name,
-//        // request
-//        contentType : "application/json",
-//        processData : false,
-//        data        : JSON.stringify(submitData),
-//        // response
-//        dataType: "json",
-//        statusCode: {
-//            404: function() {
-//                alert("page not found");
-//            }
-//        }
-//    }).done(function(data, textStatus, jqXHR) {
-//        var url = /*[[ @{/container/} ]]*/ "#";
-//        location.href = url + data.Id;
-//    }).fail(function(jqXHR, textStatus, errorThrown) {
-//        alertRunError();
-//    }).always(function() {
-//        $("#action-modal button").button('reset');
-//    });
+        $("#action-modal .modal-body").prepend(
+                "<div class='alert " + statusMap[status].css + " alert-dismissible' role='alert'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                "<span aria-hidden='true'>&times;</span></button>" +
+                "<strong>" + statusMap[status].head + "</strong> " + message + "</div>"
+        );
+    };
+
+    $("#action-modal button").button('loading');
+
+    $.ajax({
+        // endpoint
+        type: "POST",
+        url : url + name,
+        // request
+        contentType: "application/json",
+        processData: false,
+        // response
+        dataType: "json",
+        statusCode: {
+            404: function() {
+                alert("page not found");
+            }
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        if (data.error !== null && data.error !== "") {
+            message(data.error, "error");
+            return;
+        }
+
+        if (!data.status.match(/^Pulling/)) {
+            message(data.status, "warn");
+            return;
+        }
+
+        message(data.status, "success");
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        message("Failed to pull the image.", "error");
+    }).always(function(data) {
+        $("#modal-btn-action").addClass("hidden");
+        $("#modal-btn-cancel").addClass("hidden");
+        $("#modal-btn-close").removeClass("hidden");
+
+        $("#action-modal button").button("reset");
+    });
 });
 
 $("#action-modal").on("show.bs.modal", function (event) {
     var $button = $(event.relatedTarget);
     var actionModalName = $button.data("name");
 
-    $(this).find("[name='name']").val(actionModalName);
+    $(this).find(".action-modal-name").val(actionModalName);
+    $(this).find(".action-modal-name").text(actionModalName);
+    $(this).find(".alert").remove();
 
-//    var url = /*[[ @{/api/v1/image/} ]]*/ "#";
-//    var url = /*[[ @{/image/pull/} ]]*/ "#";
-
-//    $.ajax({
-//        // endpoint
-//        type    : "GET",
-//        url     : url + actionModalId,
-//        // request
-//        contentType : "application/json",
-//        processData : false,
-//        // response
-//        dataType: "json",
-//        statusCode: {
-//            404: function() {
-//                alert("page not found");
-//            }
-//        }
-//    }).done(function(data, textStatus, jqXHR) {
-//        // data:PlainObject, textStatus:String, jqXHR:jqXHR
-//        var $exports = $("#exposable-ports");
-//        $exports.children().remove();
-//
-//        for (key in data.ContainerConfig.ExposedPorts){
-//            var $exportsGroup = $("<div class='form-inline'></div>");
-//            var $exportsHidden = $("<input type='hidden' name='exposablePorts'/>");
-//            var $exportsInput = $("<input type='input' name='exposePorts' class='form-control input-sm'/>");
-//            var $exportsSpan = $("<span> -&gt; </span>");
-//            var $exportsLabel = $("<p class='form-control-static' style='padding-left:0;'></p>");
-//
-//            $exportsInput.attr("placeholder", key.replace(/\/.*/, ""));
-//            $exportsLabel.text(key);
-//            $exportsHidden.val(key);
-//
-//            $exportsGroup.append($exportsHidden).append($exportsInput)
-//                    .append($exportsSpan).append($exportsLabel);
-//            $exports.append($exportsGroup);
-//        }
-//    });
-//
-//    var modal = $(this)
-//    modal.find('p.action-modal-id').text(actionModalId);
-//    modal.find('p.action-modal-repotags').text(actionModalRepoTags);
-//    modal.find('input.action-modal-id').val(actionModalId);
-//    modal.find('input.action-modal-repotags').val(actionModalRepoTags);
-});
-
-$(".table-list td:not(:has(button))").on("click", function() {
-    var url = /*[[ @{/image/} ]]*/ "#";
-    var $row = $(this).closest("tr");
-    var $cell = $row.find("td[data-id]");
-
-    location.href = url + $cell.data("id");
+    $("#modal-btn-action").removeClass("hidden");
+    $("#modal-btn-cancel").removeClass("hidden");
+    $("#modal-btn-close").addClass("hidden");
 });
 /*]]>*/
 </script>

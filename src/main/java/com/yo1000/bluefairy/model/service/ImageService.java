@@ -2,6 +2,7 @@ package com.yo1000.bluefairy.model.service;
 
 import com.yo1000.bluefairy.model.entity.docker.Image;
 import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
+import com.yo1000.bluefairy.model.entity.docker.ImageCreated;
 import com.yo1000.bluefairy.model.entity.docker.ImageSearch;
 import com.yo1000.bluefairy.model.repository.ImageRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ImageService {
         return this.getImageRepository().getSearch(keyword);
     }
 
-    public Object createImage(String image) {
+    public ImageCreated createImage(String image) {
         return this.getImageRepository().postCreate(image);
     }
 
