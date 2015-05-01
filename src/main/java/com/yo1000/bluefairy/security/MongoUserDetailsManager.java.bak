@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 
 /**
  * Created by yoichi.kikuchi on 15/03/22.
@@ -41,6 +43,8 @@ public class MongoUserDetailsManager implements UserDetailsManager {
     public void updateUser(UserDetails userDetails) {
         Assert.isTrue(this.getUserRepository().exists(userDetails.getUsername()));
 
+        User user = this.getUserRepository().findByUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
         this.getUserRepository().update(userDetails);
     }
 
@@ -55,8 +59,8 @@ public class MongoUserDetailsManager implements UserDetailsManager {
 
         if (currentUser == null) {
             // This would indicate bad coding somewhere
-            throw new AccessDeniedException("Can't change password as no Authentication object found in context " +
-                    "for current user.");
+            throw new AccessDeniedException(
+                    "Can't change password as no Authentication object found in context for current user.");
         }
 
         String username = currentUser.getName();
@@ -73,17 +77,16 @@ public class MongoUserDetailsManager implements UserDetailsManager {
             logger.debug("No authentication manager set. Password won't be re-checked.");
         }
 
-        UserDetails userDetails = this.getUserRepository().findByUsername(username);
+        User user = this.getUserRepository().findByUsername(username);
 
         if (userDetails == null) {
             throw new IllegalStateException("Current user doesn't exist in database.");
         }
 
-        Assert.isInstanceOf(User.class, userDetails);
+        Assert.isInstanceOf(User.class, user);
 
-        User identUser = (User) userDetails;
-        identUser.setPassword(newPassword);
-        this.getUserRepository().update(identUser);
+        user.setPasswordToSha256(newPassword);
+        this.getUserRepository().update(user);
     }
 
     @Override
@@ -93,7 +96,12 @@ public class MongoUserDetailsManager implements UserDetailsManager {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.getUserRepository().findByUsername(username);
+        User user = this.getUserRepository().findByUsername(username);
+        org.springframework.security.core.userdetails.User userDetails =
+                new org.springframework.security.core.userdetails.User(
+                        user.getUsername(), user.getPassword(),
+                        Arrays.asList(new SimpleGrantedAuthority(user.getRole())));
+        return userDetails;
     }
 
     public AuthenticationManager getAuthenticationManager() {

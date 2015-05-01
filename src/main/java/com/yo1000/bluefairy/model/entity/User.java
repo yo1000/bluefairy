@@ -1,6 +1,7 @@
 package com.yo1000.bluefairy.model.entity;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 

@@ -40,7 +40,7 @@ public class MongoUserRepository implements UserRepository {
                 .where("id").is(user.getId())), Update
                 .update("username", user.getUsername())
                 .addToSet("password", user.getPassword())
-                .addToSet("role", user.getRole())
+                .addToSet("role", user.getRole()),
                 User.class);
     }
 

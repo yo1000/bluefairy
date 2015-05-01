@@ -18,7 +18,7 @@ public class AuthController {
     }
 
     @RequestMapping("/logout")
-    public String index(Model model) {
+    public String logout(Model model) {
         return "redirect:/auth/login/";
     }
 }
