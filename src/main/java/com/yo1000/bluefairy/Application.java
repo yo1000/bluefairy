@@ -68,7 +68,7 @@ public class Application {
         return new Mongo(new MongoURI(this.mongoConfiguration().getUri()));
     }
 
-    @ConfigurationProperties(prefix = "bluefairy.dockerConfiguration")
+    @ConfigurationProperties(prefix = "bluefairy.docker")
     public static class DockerConfiguration {
         private String remoteApi = "http://localhost:2376/";
 
