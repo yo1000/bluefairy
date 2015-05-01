@@ -6,7 +6,7 @@
 <div class="container">
     <div class="subject">
         <h1 th:text="${title}">title</h1>
-        <p class="lead"></p>
+        <p th:text="${container.name}" class="lead">name</p>
     </div>
     <div>
         <table class="table table-hover table-condensed">
@@ -349,7 +349,15 @@
             </tr>
             <tr>
                 <th>HostConfig/Links</th>
-                <td th:text="${container.hostConfig.links}">hostConfig</td>
+                <td>
+                    <ul class="list-unstyled"
+                        th:classappend="${container.hostConfig.links != null
+                            and #arrays.length(container.hostConfig.links) &gt;= 2} ? 'more'">
+                        <li th:each="link, status : ${container.hostConfig.links}">
+                            <span th:text="${link}">links</span>
+                        </li>
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <th>HostConfig/LxcConf</th>

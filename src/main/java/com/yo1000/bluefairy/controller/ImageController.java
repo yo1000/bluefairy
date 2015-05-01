@@ -22,16 +22,16 @@ public class ImageController {
 
     @RequestMapping("/")
     public String index(Model model) {
-        model.addAttribute("images", this.getImageService().getImages());
         model.addAttribute("title", "Images");
+        model.addAttribute("images", this.getImageService().getImages());
 
         return "images";
     }
 
     @RequestMapping("all")
     public String all(Model model) {
-        model.addAttribute("images", this.getImageService().getImagesAll());
         model.addAttribute("title", "All Images");
+        model.addAttribute("images", this.getImageService().getImagesAll());
 
         return "images";
     }
@@ -40,10 +40,17 @@ public class ImageController {
     public String id(@PathVariable String id, Model model) {
         ImageInspect image = this.getImageService().getImage(id);
 
-        model.addAttribute("image", image);
         model.addAttribute("title", "Image " + image.getIdToShort());
+        model.addAttribute("image", image);
 
         return "image";
+    }
+
+    @RequestMapping("pull/{image}")
+    public String pull(@PathVariable String image, Model model) {
+        this.getImageService().createImage(image);
+
+        return "redirect:/image/";
     }
 
     protected ImageService getImageService() {

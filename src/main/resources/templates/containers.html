@@ -40,56 +40,63 @@
         <p class="lead"></p>
     </div>
     <div>
-        <table class="table table-hover table-condensed table-list">
+        <table id="table" class="table table-hover table-condensed table-list">
+            <thead>
             <tr class="active">
-                <th>Id</th>
-                <th>Image</th>
-                <th>Names</th>
-                <th>Ports</th>
-                <th>Status</th>
-                <th>Created</th>
+                <th class="fott-col-id">Id</th>
+                <th class="fott-col-image">Image</th>
+                <th class="fott-col-names">Names</th>
+                <th class="fott-col-ports">Ports</th>
+                <th class="fott-col-status">Status</th>
+                <th class="fott-col-created">Created</th>
                 <th></th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="container : ${containers}">
-                <td th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
-                <td th:text="${container.image}">image</td>
-                <td>
-                    <ul class="list-unstyled"
-                        th:classappend="${container.names != null
-                            and #arrays.length(container.names) &gt;= 2} ? 'more'">
-                        <li th:each="name : ${container.names}">
-                            <span th:text="${name}">name</span>
-                        </li>
-                    </ul>
+                <td class="fott-id filter-value" th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
+                <td class="fott-image filter-value" th:text="${container.image}">image</td>
+                <td class="fott-names filter-value ellipsis cell-names"
+                    data-container="body" data-toggle="popover"
+                    data-placement="top" data-trigger="hover">
+                    <span th:each="name, status : ${container.names}"
+                          th:text="${status.first} ? ${name} : ${', ' + name}">name</span>
                 </td>
-                <td>
-                    <ul class="list-unstyled"
-                        th:classappend="${container.ports != null
-                            and #arrays.length(container.ports) &gt;= 2} ? 'more'">
-                        <li th:each="port : ${container.ports}">
-                            <span th:text="${port.type} + ':' + ${port.publicPort} + '->' + ${port.privatePort}">1234 -> 9876</span>
-                        </li>
-                    </ul>
+                <td class="fott-ports filter-value ellipsis cell-ports"
+                    data-container="body" data-toggle="popover"
+                    data-placement="top" data-trigger="hover">
+                    <span th:each="port, status : ${container.ports}"
+                          th:text="${status.first}
+                          ? (${port.type} + ':' + ${port.publicPort} + '->' + ${port.privatePort})
+                          : (${', ' + port.type} + ':' + ${port.publicPort} + '->' + ${port.privatePort})">tcp:11->9999</span>
                 </td>
-                <td th:text="${container.status}">status</td>
-                <td th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
+                <td class="fott-status filter-value" th:text="${container.status}">status</td>
+                <td class="fott-created filter-value" th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-xs btn-danger"
+                    <button type="button" class="btn btn-xs btn-danger"
                             data-toggle="modal" data-target="#action-modal"
                             data-action="/stop" data-message="Stop the container:"
                             data-ok="Stop" data-ok-class="btn-danger"
                             th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
                             th:if="${#strings.startsWith(container.status,'Up')}"
                             >Stop</button>
-                    <button type="button" class="btn btn-default btn-xs"
+                    <button type="button" class="btn btn-xs btn-default"
                             data-toggle="modal" data-target="#action-modal"
                             data-action="/start" data-message="Start the container:"
                             data-ok="Start" data-ok-class="btn-primary"
                             th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
                             th:if="${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)}"
                             >Start</button>
+                    <button type="button" class="btn btn-xs btn-danger"
+                            data-toggle="modal" data-target="#action-modal"
+                            data-action="/remove" data-message="Remove the container:"
+                            data-ok="Remove" data-ok-class="btn-danger"
+                            th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
+                            th:if="${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)}"
+                            >Remove</button>
                 </td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div><!-- /.container -->
@@ -99,7 +106,26 @@
 /*<![CDATA[*/
 
 /**
- * show start modal
+ * fott
+ */
+$(".fott-col-id").fott({fieldFilter: "fott-id", inputClasses: "form-control input-sm", placeholder: "id"});
+$(".fott-col-image").fott({fieldFilter: "fott-image", inputClasses: "form-control input-sm", placeholder: "image"});
+$(".fott-col-names").fott({fieldFilter: "fott-names", inputClasses: "form-control input-sm", placeholder: "names"});
+$(".fott-col-ports").fott({fieldFilter: "fott-ports", inputClasses: "form-control input-sm", placeholder: "ports"});
+$(".fott-col-status").fott({fieldFilter: "fott-status", inputClasses: "form-control input-sm", placeholder: "status"});
+$(".fott-col-created").fott({fieldFilter: "fott-created", inputClasses: "form-control input-sm", placeholder: "created"});
+
+/**
+ * popover
+ */
+$("[data-toggle='popover']").popover({
+    content:function() {
+        return $(this).text();
+    }
+});
+
+/**
+ * show modal
  */
 $("#modal-ok").click(function () {
     $("#action-modal form").submit();
@@ -122,6 +148,7 @@ $("#action-modal").on("show.bs.modal", function (event) {
             .removeClass("btn-primary").removeClass("btn-danger")
             .addClass(okClass);
 
+    $("#modal-title").text(ok + " container");
     $("#action-modal form").attr("action", url + id + action);
 });
 

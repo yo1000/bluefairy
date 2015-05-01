@@ -23,16 +23,16 @@ public class ContainerController {
 
     @RequestMapping("")
     public String index(Model model) {
-        model.addAttribute("containers", this.getContainerService().getContainers());
         model.addAttribute("title", "Containers");
+        model.addAttribute("containers", this.getContainerService().getContainers());
 
         return "containers";
     }
 
     @RequestMapping("all")
     public String all(Model model) {
-        model.addAttribute("containers", this.getContainerService().getContainersAll());
         model.addAttribute("title", "All Containers");
+        model.addAttribute("containers", this.getContainerService().getContainersAll());
 
         return "containers";
     }
@@ -41,8 +41,8 @@ public class ContainerController {
     public String id(@PathVariable String id, Model model) {
         ContainerInspect container = this.getContainerService().getContainer(id);
 
-        model.addAttribute("container", container);
         model.addAttribute("title", "Container " + container.getIdToShort());
+        model.addAttribute("container", container);
 
         return "container";
     }
@@ -54,18 +54,25 @@ public class ContainerController {
         return "redirect:/container/" + container.getId();
     }
 
-    @RequestMapping(value = "{id:(?!^all$).+}/start", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}/start", method = RequestMethod.POST)
     public String start(@PathVariable String id) {
         this.getContainerService().startContainer(id);
 
         return "redirect:/container/" + id;
     }
 
-    @RequestMapping(value = "{id:(?!^all$).+}/stop", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}/stop", method = RequestMethod.POST)
     public String stop(@PathVariable String id) {
         this.getContainerService().stopContainer(id);
 
-        return "redirect:/container/" + id;
+        return "redirect:/container/all";
+    }
+
+    @RequestMapping(value = "{id}/remove", method = RequestMethod.POST)
+    public String remove(@PathVariable String id) {
+        this.getContainerService().removeContainer(id);
+
+        return "redirect:/container/all";
     }
 
     protected ContainerService getContainerService() {

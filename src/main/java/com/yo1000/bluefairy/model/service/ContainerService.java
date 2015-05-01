@@ -35,6 +35,10 @@ public class ContainerService {
         this.getContainerRepository().postStop(id);
     }
 
+    public void removeContainer(String id) {
+        this.getContainerRepository().deleteRemove(id);
+    }
+
     public ContainerCreated runContainer(String image) {
         ContainerCreated container = this.createContainer(image);
         this.startContainer(container.getId());
@@ -43,14 +47,22 @@ public class ContainerService {
     }
 
     public ContainerCreated runContainer(ContainerCreate containerCreate) {
-        ContainerCreated container = this.createContainer(containerCreate);
+        return this.runContainer(containerCreate, null);
+    }
+
+    public ContainerCreated runContainer(ContainerCreate containerCreate, String name) {
+        ContainerCreated container = this.createContainer(containerCreate, name);
         this.startContainer(container.getId());
 
         return container;
     }
 
     public ContainerCreated createContainer(ContainerCreate container) {
-        return this.getContainerRepository().postCreate(container);
+        return this.createContainer(container, null);
+    }
+
+    public ContainerCreated createContainer(ContainerCreate container, String name) {
+        return this.getContainerRepository().postCreate(container, name);
     }
 
     public ContainerCreated createContainer(String image) {

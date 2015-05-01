@@ -1,0 +1,208 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <!-- #action-modal -->
+    <div id="action-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="action-modal-label" aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            data-loading-text="&times;" autocomplete="off"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-title">Run container</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="image/pull/" method="POST" class="form-horizontal"
+                          th:action="@{/image/pull/}">
+                        <div class="form-group">
+                            <label for="actionModalName" class="col-sm-4 control-label">Name</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static action-modal-name">name</p>
+                                <input type="hidden" name="name" class="action-modal-name"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-btn-close" type="button" class="btn btn-default"
+                            data-dismiss="modal" data-loading-text="Cancel"
+                            autocomplete="off">Close</button>
+                    <button id="modal-btn-cancel" type="button" class="btn btn-default"
+                            data-dismiss="modal" data-loading-text="Cancel"
+                            autocomplete="off">Cancel</button>
+                    <button id="modal-btn-action" type="button" class="btn btn-primary"
+                            data-loading-text="Please wait.."
+                            autocomplete="off">Pull</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#action-modal -->
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead">
+        <div class="form-inline form-group">
+            <input id="txt-search" type="text" class="form-control" placeholder="keyword"
+                   th:value="${keyword}"/>&nbsp;
+            <button id="btn-search" type="button" class="btn btn-primary">Search</button>
+        </div>
+        </p>
+    </div>
+    <div>
+        <table class="table table-hover table-condensed table-list">
+            <thead>
+            <tr class="active">
+                <th class="fott-col-name">Name</th>
+                <th class="fott-col-desc">Description</th>
+                <th class="fott-col-official">Official</th>
+                <th class="fott-col-auto">Automated</th>
+                <th class="fott-col-star">Star</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sch : ${search}">
+                <td class="fott-name filter-value" th:text="${sch.name}">name</td>
+                <td class="fott-desc filter-value ellipsis cell-desc"
+                    th:text="${sch.description}"
+                    data-container="body" data-toggle="popover"
+                    data-placement="top" data-trigger="hover">description</td>
+                <td class="fott-official filter-value" th:text="${sch.official}">official</td>
+                <td class="fott-auto filter-value" th:text="${sch.automated}">automated</td>
+                <td class="fott-star filter-value" th:text="${sch.starCount}">starCount</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-xs"
+                            data-toggle="modal" data-target="#action-modal"
+                            th:attr="data-name=${sch.name}, data-official=${sch.official}"
+                            th:if="${sch.official}"
+                            >Pull</button>
+                    <button type="button" class="btn btn-default btn-xs btn-warning"
+                            data-toggle="modal" data-target="#action-modal"
+                            th:attr="data-name=${sch.name}, data-official=${sch.official}"
+                            th:if="${not sch.official}"
+                            >Pull</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+/**
+ * fott
+ */
+$(".fott-col-name").fott({fieldFilter: "fott-name", inputClasses: "form-control input-sm", placeholder: "name"});
+$(".fott-col-desc").fott({fieldFilter: "fott-desc", inputClasses: "form-control input-sm", placeholder: "desc"});
+$(".fott-col-official").fott({fieldFilter: "fott-official", inputClasses: "form-control input-sm", placeholder: "official"});
+$(".fott-col-auto").fott({fieldFilter: "fott-auto", inputClasses: "form-control input-sm", placeholder: "auto"});
+$(".fott-col-star").fott({fieldFilter: "fott-star", inputClasses: "form-control input-sm", placeholder: "star"});
+
+/**
+ * popover
+ */
+$("[data-toggle='popover']").popover({
+    content:function() {
+        return $(this).text();
+    }
+});
+
+var submitSearch = function() {
+    var url = /*[[ @{/search/} ]]*/ "#";
+    var keyword = $("#txt-search").val();
+
+    location.href = url + keyword;
+};
+
+$("#txt-search").on("keyup", function(event) {
+    if (event.keyCode !== 0x0D) {
+        return;
+    }
+    submitSearch();
+});
+
+$("#btn-search").on("click", function() {
+    submitSearch();
+});
+
+$("#modal-btn-action").click(function() {
+    var url = /*[[ @{/api/v1/image/pull/} ]]*/ "#";
+    var name = $("#action-modal form input[name='name']").val();
+
+    var message = function(message, status) {
+        var statusMap = {
+            success : {css: "alert-success", head: "Success:"},
+            warn    : {css: "alert-warning", head: "Warning:"},
+            error   : {css: "alert-danger" , head: "Error:"}
+        };
+
+        $("#action-modal .modal-body").prepend(
+                "<div class='alert " + statusMap[status].css + " alert-dismissible' role='alert'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                "<span aria-hidden='true'>&times;</span></button>" +
+                "<strong>" + statusMap[status].head + "</strong> " + message + "</div>"
+        );
+    };
+
+    $("#action-modal button").button('loading');
+
+    $.ajax({
+        // endpoint
+        type: "POST",
+        url : url + name,
+        // request
+        contentType: "application/json",
+        processData: false,
+        // response
+        dataType: "json",
+        statusCode: {
+            404: function() {
+                alert("page not found");
+            }
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        if (data.error !== null && data.error !== "") {
+            message(data.error, "error");
+            return;
+        }
+
+        if (!data.status.match(/^Pulling/)) {
+            message(data.status, "warn");
+            return;
+        }
+
+        message(data.status, "success");
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        message("Failed to pull the image.", "error");
+    }).always(function(data) {
+        $("#modal-btn-action").addClass("hidden");
+        $("#modal-btn-cancel").addClass("hidden");
+        $("#modal-btn-close").removeClass("hidden");
+
+        $("#action-modal button").button("reset");
+    });
+});
+
+$("#action-modal").on("show.bs.modal", function (event) {
+    var $button = $(event.relatedTarget);
+    var actionModalName = $button.data("name");
+
+    $(this).find(".action-modal-name").val(actionModalName);
+    $(this).find(".action-modal-name").text(actionModalName);
+    $(this).find(".alert").remove();
+
+    $("#modal-btn-action").removeClass("hidden");
+    $("#modal-btn-cancel").removeClass("hidden");
+    $("#modal-btn-close").addClass("hidden");
+});
+/*]]>*/
+</script>
+</body>
+</html>
