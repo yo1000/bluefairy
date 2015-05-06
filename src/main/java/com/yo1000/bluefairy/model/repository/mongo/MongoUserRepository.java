@@ -52,6 +52,11 @@ public class MongoUserRepository implements UserRepository {
     }
 
     @Override
+    public long count() {
+        return this.getMongoTemplate().count(new Query(), User.class);
+    }
+
+    @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         return this.getMongoTemplate().findOne(Query.query(Criteria
                 .where("username").is(username)),

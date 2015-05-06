@@ -11,5 +11,6 @@ public interface UserRepository {
     public void delete(String username);
     public void update(User user);
     public boolean exists(String username);
+    public long count();
     public User findByUsername(String username) throws UsernameNotFoundException;
 }

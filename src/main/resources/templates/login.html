@@ -9,18 +9,39 @@
         <p class="lead"></p>
     </div>
     <div>
-        <form action="run" method="POST" class="form-horizontal"
-              th:action="@{/container/run}">
-            <table class="table table-hover table-condensed">
-                <tr class="active">
-                    <th>Username</th>
-                    <th>Password</th>
-                </tr>
-                <tr>
-                    <td><input name="username" type="text" /></td>
-                    <td><input name="password" type="password" /></td>
-                </tr>
-            </table>
+        <form action="auth/login" method="POST" class="form-horizontal"
+              th:action="@{/auth/login}">
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="modal-username">Username</label>
+                <div class="col-sm-2">
+                    <input name="username" type="text"
+                           class="form-control input-sm"
+                           placeholder="username"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="modal-password">Password</label>
+                <div class="col-sm-2">
+                    <input name="password" type="password"
+                           class="form-control input-sm"
+                           placeholder="password"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary"
+                            type="submit">Login</button>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
         </form>
     </div>
 </div><!-- /.container -->

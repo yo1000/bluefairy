@@ -15,9 +15,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.security.authentication.dao.ReflectionSaltSource;
+import org.springframework.security.authentication.dao.SaltSource;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,13 +59,29 @@ public class Application {
     }
 
     @Bean
+    public ShaPasswordEncoder shaPasswordEncoder() {
+        return new ShaPasswordEncoder(256);
+    }
+
+    @Bean
+    public SaltSource saltSource() {
+        ReflectionSaltSource saltSource = new ReflectionSaltSource();
+        saltSource.setUserPropertyToUse("username");
+
+        return saltSource;
+    }
+
+    @Bean
     public MongoConfiguration mongoConfiguration() {
         return new MongoConfiguration();
     }
 
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
-        return new MongoTemplate(this.mongo(), this.mongoConfiguration().getDatabase());
+        return new MongoTemplate(this.mongo(),
+                this.mongoConfiguration().getDatabase(), new UserCredentials(
+                this.mongoConfiguration().getUsername(),
+                this.mongoConfiguration().getPassword()));
     }
 
     @Bean
@@ -85,6 +106,8 @@ public class Application {
     public static class MongoConfiguration {
         private String uri = "mongodb://localhost:27017/";
         private String database = "bluefairy";
+        private String username = "admin";
+        private String password = "password";
 
         public String getUri() {
             return uri;
@@ -100,6 +123,22 @@ public class Application {
 
         public void setDatabase(String database) {
             this.database = database;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
 }

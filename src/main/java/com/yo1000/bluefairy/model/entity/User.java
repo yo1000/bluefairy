@@ -19,20 +19,10 @@ public class User {
     public User() {}
 
     public User(ObjectId id, String username, String password, String role) {
-        this(id, username, password, role, false);
-    }
-
-    public User(ObjectId id, String username, String password, String role, boolean toSha256) {
         this.setId(id);
         this.setUsername(username);
+        this.setPassword(password);
         this.setRole(role);
-
-        if (toSha256) {
-            this.setPasswordToSha256(password);
-        }
-        else {
-            this.setPassword(password);
-        }
     }
 
     public ObjectId getId() {
@@ -56,11 +46,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.setPassword(password);
-    }
-
-    public void setPasswordToSha256(String passwordByCleartext) {
-        this.setPassword(DigestUtils.sha256Hex(passwordByCleartext));
+        this.password = password;
     }
 
     public String getRole() {
