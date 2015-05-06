@@ -20,6 +20,7 @@ public class VersionController {
     public String index(Model model) {
         model.addAttribute("title", "Version");
         model.addAttribute("version", this.getVersionService().getVersion());
+        model.addAttribute("title", "Version");
 
         return "version";
     }

@@ -20,6 +20,7 @@ public class InfoController {
     public String index(Model model) {
         model.addAttribute("title", "Info");
         model.addAttribute("info", this.getInfoService().getInfo());
+        model.addAttribute("title", "Info");
 
         return "info";
     }

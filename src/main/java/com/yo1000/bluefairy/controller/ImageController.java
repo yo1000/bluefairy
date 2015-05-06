@@ -47,7 +47,7 @@ public class ImageController {
     }
 
     @RequestMapping("pull/{image}")
-    public String pull(@PathVariable String image, Model model) {
+    public String pull(@PathVariable String image) {
         this.getImageService().createImage(image);
 
         return "redirect:/image/";

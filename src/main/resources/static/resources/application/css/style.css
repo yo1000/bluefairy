@@ -36,8 +36,11 @@ table ul li {
     background-color: #47d;
 }
 
-.navbar-brand:hover img {
-    -webkit-filter:brightness(100%);
+.navbar-brand img {
+    float:left;
+    margin-left:-6px;
+    margin-right:8px;
+    margin-top:-2px;
 }
 
 th div.filter,

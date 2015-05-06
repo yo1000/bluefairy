@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <form action="auth/register" method="POST" class="form-horizontal"
+              th:action="@{/auth/register}">
+            <div class="form-group">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6" id="alert"></div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="modal-username">Username</label>
+                <div class="col-sm-2">
+                    <input name="username" type="text"
+                           class="form-control input-sm"
+                           placeholder="username"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="modal-password">Password</label>
+                <div class="col-sm-2">
+                    <input name="password" type="password"
+                           class="form-control input-sm"
+                           placeholder="password"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="modal-password-confirm">Confirm Password</label>
+                <div class="col-sm-2">
+                    <input name="passwordConfirm" type="password"
+                           class="form-control input-sm"
+                           placeholder="confirm password"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                    <button class="btn btn-danger" type="submit">Register</button>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </form>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+$("form").on("submit", function() {
+    var passwordValue = $("[name='password']").val();
+    var confirmValue = $("[name='passwordConfirm']").val();
+
+    var alertError = function(message) {
+        var $alert = $("<div class='alert alert-danger alert-dismissible' role='alert'>" +
+        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+        "<span aria-hidden='true'>&times;</span></button>" +
+        "<strong>Error:</strong> " + message + "</div>");
+        $("#alert").append($alert);
+    };
+
+    $(".alert").remove();
+
+    if (!passwordValue || passwordValue === "") {
+        alertError("Password is empty.");
+        return false;
+    }
+
+    if (passwordValue !== confirmValue) {
+        alertError("Passwords are mismatched.");
+        return false;
+    }
+});
+/*]]>*/
+</script>
+</body>
+</html>

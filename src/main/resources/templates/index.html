@@ -1,11 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="_fragment :: header (title=Index)"></head>
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
 <body>
 <nav th:replace="_fragment :: navigator"></nav>
 <div class="container">
     <div class="subject">
-        <h1>Index</h1>
+        <h1 th:text="${title}">title</h1>
         <p class="lead"></p>
     </div>
     <div>
