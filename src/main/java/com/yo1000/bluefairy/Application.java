@@ -66,7 +66,7 @@ public class Application {
     @Bean
     public SaltSource saltSource() {
         ReflectionSaltSource saltSource = new ReflectionSaltSource();
-        saltSource.setUserPropertyToUse("username");
+        saltSource.setUserPropertyToUse("salt");
 
         return saltSource;
     }

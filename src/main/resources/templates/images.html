@@ -110,7 +110,9 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
 $.ajaxSetup({
-    timeout: 4000
+    headers: {
+        "X-CSRF-TOKEN": /*[[ ${_csrf.token} ]]*/ "tokentoken"
+    }
 });
 
 /**

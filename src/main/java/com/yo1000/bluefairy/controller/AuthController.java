@@ -37,7 +37,7 @@ public class AuthController {
             throw new IllegalStateException("Already exists users.");
         }
 
-        this.getUserService().registerUser(username, password, "ADMIN");
+        this.getUserService().registerUser(username, password);
 
         return "redirect:/auth/logout/";
     }

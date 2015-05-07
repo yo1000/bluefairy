@@ -95,6 +95,11 @@
 <footer th:replace="_fragment :: footer"></footer>
 <script th:inline="javascript">
 /*<![CDATA[*/
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": /*[[ ${_csrf.token} ]]*/ "tokentoken"
+    }
+});
 
 /**
  * fott
