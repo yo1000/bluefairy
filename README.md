@@ -4,5 +4,6 @@ A simple docker web client.
 # Usage
 
 1. Enable DockerRemoteAPI.
-2. Set the API endpoint in the `application.properties`
-3. `mvn spring-boot:run`
+2. Installation of MongoDB. And configured to allow remote access.
+3. Set the DockerAPI endpoint and MongoDB connection info in the `application.properties`
+4. `mvn spring-boot:run`
