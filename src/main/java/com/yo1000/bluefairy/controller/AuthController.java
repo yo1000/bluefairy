@@ -24,7 +24,7 @@ public class AuthController {
     @RequestMapping("/login")
     public String index(Model model) {
         if (!this.getUserService().existsUser()) {
-            model.addAttribute("title", "Admin User Register");
+            model.addAttribute("title", "Admin user registration");
             model.addAttribute("first", true);
 
             return "user/register";

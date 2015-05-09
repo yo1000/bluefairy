@@ -50,7 +50,7 @@ public class UserController {
 
     @RequestMapping(value = "register", method = RequestMethod.GET)
     public String register(Model model) {
-        model.addAttribute("title", "Register user");
+        model.addAttribute("title", "User registration");
 
         return "user/register";
     }
