@@ -1,5 +1,6 @@
 package com.yo1000.bluefairy.controller;
 
+import com.yo1000.bluefairy.Security;
 import com.yo1000.bluefairy.model.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by yoichi.kikuchi on 15/03/31.
@@ -21,9 +24,10 @@ public class AuthController {
     @RequestMapping("/login")
     public String index(Model model) {
         if (!this.getUserService().existsUser()) {
-            model.addAttribute("title", "Register admin user");
+            model.addAttribute("title", "Admin User Register");
+            model.addAttribute("first", true);
 
-            return "register";
+            return "user/register";
         }
 
         model.addAttribute("title", "Login");
@@ -37,13 +41,14 @@ public class AuthController {
             throw new IllegalStateException("Already exists users.");
         }
 
-        this.getUserService().registerUser(username, password);
+        this.getUserService().registerUser(username, password, "ADMIN");
 
-        return "redirect:/auth/logout/";
+        return "redirect:/auth/login/";
     }
 
     @RequestMapping("/logout")
-    public String logout() {
+    public String logout(HttpServletRequest request) throws ServletException {
+        request.logout();
         return "redirect:/auth/login/";
     }
 

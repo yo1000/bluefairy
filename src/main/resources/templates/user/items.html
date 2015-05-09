@@ -1,0 +1,222 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <!-- #modal-form -->
+    <div id="modal-form" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="modal-form-label" aria-hidden="true"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            data-loading-text="&times;" autocomplete="off"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-title">Edit user</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="user/update/" method="PUT" class="form-horizontal"
+                          th:action="@{/user/update/}">
+                        <div class="form-group">
+                            <label for="modalId" class="col-sm-4 control-label">Id</label>
+                            <div class="col-sm-6">
+                                <p class="form-control-static modal-form-id">id</p>
+                                <input type="hidden" name="id" class="modal-form-id"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="modalUsername"
+                                   class="col-sm-4 control-label">Username</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="username"
+                                       placeholder="username"
+                                       class="form-control modal-form-username"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="modalPassword"
+                                   class="col-sm-4 control-label">Password</label>
+                            <div class="col-sm-6">
+                                <input type="password" name="password"
+                                       placeholder="password"
+                                       class="form-control modal-form-password"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="modalConfirmPassword"
+                                   class="col-sm-4 control-label">Confirm Password</label>
+                            <div class="col-sm-6">
+                                <input type="password" name="passwordConfirm"
+                                       placeholder="confirm password"
+                                       class="form-control modal-form-passwordConfirm"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="modalRole" class="col-sm-4 control-label">Role</label>
+                            <div class="col-sm-6">
+                                <select name="role" class="form-control modal-form-role">
+                                    <option value="ADMIN">Administrator</option>
+                                    <option value="DEVEL">Developer</option>
+                                    <option value="USER">User</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="modal-btn-close" type="button" class="btn btn-default"
+                            data-dismiss="modal" data-loading-text="Cancel"
+                            autocomplete="off">Close</button>
+                    <button id="modal-btn-cancel" type="button" class="btn btn-default"
+                            data-dismiss="modal" data-loading-text="Cancel"
+                            autocomplete="off">Cancel</button>
+                    <button id="modal-btn-ok" type="button" class="btn btn-primary"
+                            data-loading-text="Please wait.."
+                            autocomplete="off">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#modal-form -->
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <table class="table table-hover table-condensed table-list">
+            <thead>
+            <tr class="active">
+                <th class="fott-col-id">Id</th>
+                <th class="fott-col-username">Username</th>
+                <th class="fott-col-role">Role</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td class="fott-id filter-value"
+                    th:text="${user.id}" th:attr="data-id=${user.id}">id</td>
+                <td class="fott-username filter-value" th:text="${user.username}">username</td>
+                <td class="fott-role filter-value" th:text="${user.role}">role</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-xs"
+                            data-toggle="modal" data-target="#modal-form"
+                            th:attr="data-id=${user.id}, data-username=${user.username}, data-role=${user.role}"
+                            >Edit</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+<script th:inline="javascript">
+/*<![CDATA[*/
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": /*[[ ${_csrf.token} ]]*/ "tokentoken"
+    }
+});
+
+/**
+ * fott
+ */
+$(".fott-col-id").fott({fieldFilter: "fott-id", inputClasses: "form-control input-sm", placeholder: "id"});
+$(".fott-col-username").fott({fieldFilter: "fott-username", inputClasses: "form-control input-sm", placeholder: "name"});
+$(".fott-col-role").fott({fieldFilter: "fott-role", inputClasses: "form-control input-sm", placeholder: "role"});
+
+$("#modal-btn-ok").click(function() {
+    var url = /*[[ @{/api/v1/user/} ]]*/ "#";
+    var id = $("#modal-form form [name='id']").val();
+    var username = $("#modal-form form [name='username']").val();
+    var password = $("#modal-form form [name='password']").val();
+    var passwordConfirm = $("#modal-form form [name='passwordConfirm']").val();
+    var role = $("#modal-form form [name='role']").val();
+
+    var message = function(message, status) {
+        var statusMap = {
+            success : {css: "alert-success", head: "Success:"},
+            warn    : {css: "alert-warning", head: "Warning:"},
+            error   : {css: "alert-danger" , head: "Error:"}
+        };
+
+        $("#modal-form .alert").remove();
+        $("#modal-form .modal-body").prepend(
+                "<div class='alert " + statusMap[status].css + " alert-dismissible' role='alert'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+                "<span aria-hidden='true'>&times;</span></button>" +
+                "<strong>" + statusMap[status].head + "</strong> " + message + "</div>"
+        );
+    };
+
+    if (password !== passwordConfirm) {
+        message("Passwords are mismatched.", "warn");
+        return false;
+    }
+
+    var requestData = {
+        username : username,
+        password : password,
+        role     : role
+    };
+
+    $("#modal-form button").button('loading');
+
+    $.ajax({
+        // endpoint
+        type: "PUT",
+        url : url + id,
+        // request
+        contentType: "application/json",
+        processData: false,
+        data: JSON.stringify(requestData),
+        // response
+        dataType: "json",
+        statusCode: {
+            404: function() {
+                alert("page not found");
+            }
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        var url = /*[[ @{/user/} ]]*/ "#";
+        location.href = url + id;
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.dir(textStatus);
+        console.dir(errorThrown);
+        message("Failed to update user.", "error");
+    }).always(function(data) {
+        $("#modal-form button").button("reset");
+    });
+});
+
+$("#modal-form").on("show.bs.modal", function (event) {
+    var $button = $(event.relatedTarget);
+    var id = $button.data("id");
+    var username = $button.data("username");
+    var role = $button.data("role");
+
+    $(this).find(".modal-form-id").val(id);
+    $(this).find(".modal-form-id").text(id);
+    $(this).find(".modal-form-username").val(username);
+    $(this).find(".modal-form-role").val(role);
+
+    $(this).find(".alert").remove();
+
+    $("#modal-btn-ok").removeClass("hidden");
+    $("#modal-btn-cancel").removeClass("hidden");
+    $("#modal-btn-close").addClass("hidden");
+});
+
+$(".table-list td:not(:has(button))").on("click", function() {
+    var url = /*[[ @{/user/} ]]*/ "#";
+    var $row = $(this).closest("tr");
+    var $cell = $row.find("td[data-id]");
+
+    location.href = url + $cell.data("id");
+});
+/*]]>*/
+</script>
+</body>
+</html>

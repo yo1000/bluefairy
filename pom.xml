@@ -10,6 +10,7 @@
 
     <properties>
         <apache.httpclient.version>4.3.6</apache.httpclient.version>
+        <thymeleaf.extras.springsecurity3.version>2.1.2.RELEASE</thymeleaf.extras.springsecurity3.version>
     </properties>
 
     <parent>
@@ -17,6 +18,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.2.2.RELEASE</version>
     </parent>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,6 +60,10 @@
             <artifactId>httpclient</artifactId>
             <version>${apache.httpclient.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity3</artifactId>
+            <version>${thymeleaf.extras.springsecurity3.version}</version>
+        </dependency>
     </dependencies>
 </project>

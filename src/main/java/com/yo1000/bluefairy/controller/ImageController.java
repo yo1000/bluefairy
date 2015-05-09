@@ -30,7 +30,7 @@ public class ImageController {
 
     @RequestMapping("all")
     public String all(Model model) {
-        model.addAttribute("title", "All Images");
+        model.addAttribute("title", "All images");
         model.addAttribute("images", this.getImageService().getImagesAll());
 
         return "images";

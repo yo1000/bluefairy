@@ -26,6 +26,8 @@ table ul li {
 }
 
 .navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-text,
+.navbar-inverse .navbar-link,
 .navbar-inverse .navbar-nav>li>a {
     color: #fff;
 }
@@ -36,11 +38,20 @@ table ul li {
     background-color: #47d;
 }
 
+.navbar-inverse .navbar-text.navbar-right a:hover {
+    text-decoration: none;
+}
+
 .navbar-brand img {
-    float:left;
-    margin-left:-6px;
-    margin-right:8px;
-    margin-top:-2px;
+    float: left;
+    margin-left: -6px;
+    margin-right: 8px;
+    margin-top: -2px;
+}
+
+.navbar-right .glyphicon {
+    margin-left: 8px;
+    margin-right: -6px;
 }
 
 th div.filter,

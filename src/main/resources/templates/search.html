@@ -148,6 +148,7 @@ $("#modal-btn-action").click(function() {
             error   : {css: "alert-danger" , head: "Error:"}
         };
 
+        $("#modal-form .alert").remove();
         $("#action-modal .modal-body").prepend(
                 "<div class='alert " + statusMap[status].css + " alert-dismissible' role='alert'>" +
                 "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
@@ -184,13 +185,13 @@ $("#modal-btn-action").click(function() {
         }
 
         message(data.status, "success");
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        message("Failed to pull the image.", "error");
-    }).always(function(data) {
+
         $("#modal-btn-action").addClass("hidden");
         $("#modal-btn-cancel").addClass("hidden");
         $("#modal-btn-close").removeClass("hidden");
-
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        message("Failed to pull the image.", "error");
+    }).always(function(data) {
         $("#action-modal button").button("reset");
     });
 });

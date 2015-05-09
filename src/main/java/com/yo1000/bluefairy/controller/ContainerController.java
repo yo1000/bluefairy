@@ -31,7 +31,7 @@ public class ContainerController {
 
     @RequestMapping("all")
     public String all(Model model) {
-        model.addAttribute("title", "All Containers");
+        model.addAttribute("title", "All containers");
         model.addAttribute("containers", this.getContainerService().getContainersAll());
 
         return "containers";

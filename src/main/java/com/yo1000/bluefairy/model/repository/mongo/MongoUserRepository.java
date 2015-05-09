@@ -21,33 +21,9 @@ public class MongoUserRepository implements UserRepository {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public void create(User user) {
-        Assert.isInstanceOf(User.class, user);
-
-        this.getMongoTemplate().insert(user);
-    }
-
-    @Override
-    public void delete(String username) {
-        this.getMongoTemplate().remove(Query.query(Criteria
-                .where("username").is(username)),
-                User.class);
-    }
-
-    @Override
-    public void update(User user) {
-        this.getMongoTemplate().updateFirst(Query.query(Criteria
-                .where("id").is(user.getId())), Update
-                .update("username", user.getUsername())
-                .addToSet("password", user.getPassword())
-                .addToSet("role", user.getRole()),
-                User.class);
-    }
-
-    @Override
     public boolean exists(String username) {
         return this.getMongoTemplate().exists(Query.query(Criteria
-                .where("username").is(username)),
+                        .where("username").is(username)),
                 User.class);
     }
 
@@ -57,9 +33,45 @@ public class MongoUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUsername(String username) throws UsernameNotFoundException {
+    public User[] find() {
+        return this.getMongoTemplate().findAll(User.class).toArray(new User[] {});
+    }
+
+    @Override
+    public User findById(String id) {
         return this.getMongoTemplate().findOne(Query.query(Criteria
-                .where("username").is(username)),
+                        .where("id").is(id)),
+                User.class);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return this.getMongoTemplate().findOne(Query.query(Criteria
+                        .where("username").is(username)),
+                User.class);
+    }
+
+    @Override
+    public void create(User user) {
+        Assert.isInstanceOf(User.class, user);
+
+        this.getMongoTemplate().insert(user);
+    }
+
+    @Override
+    public void delete(String username) {
+        this.getMongoTemplate().remove(Query.query(Criteria
+                        .where("username").is(username)),
+                User.class);
+    }
+
+    @Override
+    public void update(User user) {
+        this.getMongoTemplate().updateFirst(Query.query(Criteria
+                .where("id").is(user.getId())), Update
+                .update("username", user.getUsername())
+                .set("password", user.getPassword())
+                .set("role", user.getRole()),
                 User.class);
     }
 

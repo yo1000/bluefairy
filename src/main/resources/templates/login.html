@@ -47,5 +47,12 @@
 </div><!-- /.container -->
 
 <footer th:replace="_fragment :: footer"></footer>
+<script th:inline="javascript">
+/*<![CDATA[*/
+$(document).ready(function() {
+    $("[name='username']").focus();
+});
+/*]]>*/
+</script>
 </body>
 </html>

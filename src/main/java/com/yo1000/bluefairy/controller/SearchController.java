@@ -20,7 +20,7 @@ public class SearchController {
 
     @RequestMapping("")
     public String index(Model model) {
-        model.addAttribute("title", "Image Search");
+        model.addAttribute("title", "Search image");
         model.addAttribute("search", new ImageSearch[] {});
 
         return "search";
@@ -28,7 +28,7 @@ public class SearchController {
 
     @RequestMapping("{keyword}")
     public String keyword(@PathVariable String keyword, Model model) {
-        model.addAttribute("title", "Image Search");
+        model.addAttribute("title", "Search image");
         model.addAttribute("keyword", keyword);
         model.addAttribute("search", this.getImageService().getImageSearch(keyword));
 
