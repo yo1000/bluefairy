@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head lang="ja" th:fragment="header (title)">
     <meta charset="UTF-8"/>
     <title th:text="${title}">title</title>
@@ -11,28 +12,21 @@
 <nav th:fragment="navigator" class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="#" th:href="@{/}"><img
                     src="resources/application/img/bluefairy.png"
                     th:src="@{/resources/application/img/bluefairy.png}"
                     width="24px" height="24px"/> bluefairy</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav"
+                sec:authorize="isAuthenticated()">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                        data-hover="dropdown" data-delay="50" data-close-others="false"
                        role="button" aria-expanded="false">Containers <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#" th:href="@{/container/}">Containers</a></li>
-                        <li><a href="#" th:href="@{/container/all}">All Containers</a></li>
+                        <li><a href="#" th:href="@{/container/all}">All containers</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -41,12 +35,43 @@
                        role="button" aria-expanded="false">Images <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#" th:href="@{/image/}">Images</a></li>
-                        <li><a href="#" th:href="@{/image/all}">All Images</a></li>
+                        <li><a href="#" th:href="@{/image/all}">All images</a></li>
                     </ul>
                 </li>
                 <li><a href="#" th:href="@{/search/}">Search</a></li>
                 <li><a href="#" th:href="@{/info/}">Info</a></li>
                 <li><a href="#" th:href="@{/version/}">Version</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"
+                    sec:authorize="isAuthenticated()">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       data-hover="dropdown" data-delay="50" data-close-others="false"
+                       role="button" aria-expanded="false">Users <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" th:href="@{/user/}">Users</a></li>
+                        <li><a href="#" th:href="@{/user/register}">User registration</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle navbar-link" data-toggle="dropdown"
+                       data-hover="dropdown" data-delay="50" data-close-others="false"
+                       role="button" aria-expanded="false">
+                        <span sec:authentication="name">username</span><span
+                            class="glyphicon glyphicon-king" aria-hidden="true"
+                            sec:authorize="hasRole('ADMIN')"></span><span
+                            class="glyphicon glyphicon-knight" aria-hidden="true"
+                            sec:authorize="hasRole('DEVEL')"></span><span
+                            class="glyphicon glyphicon-pawn" aria-hidden="true"
+                            sec:authorize="hasRole('USER')"></span><span
+                            class="glyphicon glyphicon-question-sign" aria-hidden="true"
+                            sec:authorize="isAnonymous()"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu"
+                        sec:authorize="isAuthenticated()">
+                        <li><a href="#" th:href="@{/auth/logout}">Logout</a></li>
+                    </ul>
+                </li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

@@ -10,7 +10,7 @@
     </div>
     <div>
         <form action="auth/register" method="POST" class="form-horizontal"
-              th:action="@{/auth/register}">
+              th:action="${first} ? @{/auth/register} : @{/user/register}">
             <div class="form-group">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6" id="alert"></div>
@@ -19,7 +19,7 @@
             <div class="form-group">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-2 control-label"
-                       for="modal-username">Username</label>
+                       for="username">Username</label>
                 <div class="col-sm-2">
                     <input name="username" type="text"
                            class="form-control input-sm"
@@ -30,7 +30,7 @@
             <div class="form-group">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-2 control-label"
-                       for="modal-password">Password</label>
+                       for="password">Password</label>
                 <div class="col-sm-2">
                     <input name="password" type="password"
                            class="form-control input-sm"
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <div class="col-sm-4"></div>
                 <label class="col-sm-2 control-label"
-                       for="modal-password-confirm">Confirm Password</label>
+                       for="password-confirm">Confirm Password</label>
                 <div class="col-sm-2">
                     <input name="passwordConfirm" type="password"
                            class="form-control input-sm"
@@ -51,9 +51,22 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="role">Role</label>
+                <div class="col-sm-2">
+                    <select name="role" class="form-control">
+                        <option value="ADMIN">Administrator</option>
+                        <option value="DEVEL">Developer</option>
+                        <option value="USER">User</option>
+                    </select>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
-                    <button class="btn btn-danger" type="submit">Register</button>
+                    <button class="btn btn-primary" type="submit">Register</button>
                 </div>
                 <div class="col-sm-4"></div>
             </div>
@@ -64,13 +77,12 @@
 <footer th:replace="_fragment :: footer"></footer>
 <script th:inline="javascript">
 /*<![CDATA[*/
-
 $("form").on("submit", function() {
     var passwordValue = $("[name='password']").val();
     var confirmValue = $("[name='passwordConfirm']").val();
 
     var alertError = function(message) {
-        var $alert = $("<div class='alert alert-danger alert-dismissible' role='alert'>" +
+        var $alert = $("<div class='alert alert-warning alert-dismissible' role='alert'>" +
         "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
         "<span aria-hidden='true'>&times;</span></button>" +
         "<strong>Error:</strong> " + message + "</div>");
@@ -93,3 +105,4 @@ $("form").on("submit", function() {
 </script>
 </body>
 </html>
+

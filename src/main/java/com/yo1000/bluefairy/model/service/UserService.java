@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.getUserRepository().findByUsername(username);
+        User user = this.getUserByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException(
@@ -50,15 +50,26 @@ public class UserService implements UserDetailsService {
                 user.getSalt(), authorities);
     }
 
+    public User getUserById(String id) {
+        return this.getUserRepository().findById(id);
+    }
+
+    public User getUserByUsername(String username) {
+        return this.getUserRepository().findByUsername(username);
+    }
+
+    public User[] getUsersAll() {
+        return this.getUserRepository().find();
+    }
+
     public boolean existsUser() {
         return this.getUserRepository().count() > 0L;
     }
 
-    public void registerUser(String username, String password) {
+    public void registerUser(String username, String password, String role) {
         byte[] rnd = new byte[32];
         new SecureRandom().nextBytes(rnd);
         String salt = String.valueOf(Hex.encode(rnd));
-        String role = "ADMIN";
 
         User user = new User();
         user.setUsername(username);
@@ -67,6 +78,29 @@ public class UserService implements UserDetailsService {
         user.setRole(role);
 
         this.getUserRepository().create(user);
+    }
+
+    public void updateUser(String id, String username, String password, String role) {
+        User user = this.getUserById(id);
+
+        if (user == null) {
+            throw new NullPointerException("User is not found.");
+        }
+
+        if (username != null && !username.isEmpty() && !username.equals(user.getUsername())) {
+            user.setUsername(username);
+        }
+
+        if (role != null && !role.isEmpty() && !role.equals(user.getRole())) {
+            user.setRole(role);
+        }
+
+        if (password != null && !password.isEmpty()) {
+            user.setPassword(this.encodePassword(user.getUsername(),
+                    password, user.getSalt(), user.getRole()));
+        }
+
+        this.getUserRepository().update(user);
     }
 
     protected String encodePassword(String username, String password, String salt, String role) {

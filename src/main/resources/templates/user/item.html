@@ -1,0 +1,35 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <table class="table table-hover table-condensed">
+            <tr class="active">
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td th:text="${user.id}">id</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td th:text="${user.username}">username</td>
+            </tr>
+            <tr>
+                <th>Role</th>
+                <td th:text="${user.role}">role</td>
+            </tr>
+        </table>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+</body>
+</html>
