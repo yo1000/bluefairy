@@ -76,33 +76,32 @@
 
 <footer th:replace="_fragment :: footer"></footer>
 <script th:inline="javascript">
-    /*<![CDATA[*/
+/*<![CDATA[*/
+$("form").on("submit", function() {
+    var passwordValue = $("[name='password']").val();
+    var confirmValue = $("[name='passwordConfirm']").val();
 
-    $("form").on("submit", function() {
-        var passwordValue = $("[name='password']").val();
-        var confirmValue = $("[name='passwordConfirm']").val();
+    var alertError = function(message) {
+        var $alert = $("<div class='alert alert-warning alert-dismissible' role='alert'>" +
+        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+        "<span aria-hidden='true'>&times;</span></button>" +
+        "<strong>Error:</strong> " + message + "</div>");
+        $("#alert").append($alert);
+    };
 
-        var alertError = function(message) {
-            var $alert = $("<div class='alert alert-warning alert-dismissible' role='alert'>" +
-            "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
-            "<span aria-hidden='true'>&times;</span></button>" +
-            "<strong>Error:</strong> " + message + "</div>");
-            $("#alert").append($alert);
-        };
+    $(".alert").remove();
 
-        $(".alert").remove();
+    if (!passwordValue || passwordValue === "") {
+        alertError("Password is empty.");
+        return false;
+    }
 
-        if (!passwordValue || passwordValue === "") {
-            alertError("Password is empty.");
-            return false;
-        }
-
-        if (passwordValue !== confirmValue) {
-            alertError("Passwords are mismatched.");
-            return false;
-        }
-    });
-    /*]]>*/
+    if (passwordValue !== confirmValue) {
+        alertError("Passwords are mismatched.");
+        return false;
+    }
+});
+/*]]>*/
 </script>
 </body>
 </html>
