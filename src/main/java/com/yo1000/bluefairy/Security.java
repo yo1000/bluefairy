@@ -39,6 +39,14 @@ public class Security extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .regexMatchers("^/auth/login.*").permitAll()
                 .regexMatchers("^/auth/register.*").permitAll()
+                .regexMatchers("^/container.*").hasAnyAuthority("ADMIN", "DEVEL", "USER")
+                .regexMatchers("^/image.*").hasAnyAuthority("ADMIN", "DEVEL")
+                .regexMatchers("^/search.*").hasAnyAuthority("ADMIN", "DEVEL")
+                .regexMatchers("^/info.*").hasAnyAuthority("ADMIN", "DEVEL", "USER")
+                .regexMatchers("^/version.*").hasAnyAuthority("ADMIN", "DEVEL", "USER")
+                .regexMatchers("^/user/$").hasAnyAuthority("ADMIN")
+                .regexMatchers("^/user/(?!(?:all|register|update)).+").hasAnyAuthority("ADMIN")
+                .regexMatchers("^/user/register.*").hasAnyAuthority("ADMIN")
                 .anyRequest().authenticated();
 
         http.formLogin()

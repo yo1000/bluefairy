@@ -18,9 +18,10 @@
                     width="24px" height="24px"/> bluefairy</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav"
-                sec:authorize="isAuthenticated()">
-                <li class="dropdown">
+            <ul sec:authorize="isAuthenticated()"
+                class="nav navbar-nav">
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVEL', 'USER')"
+                    class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                        data-hover="dropdown" data-delay="50" data-close-others="false"
                        role="button" aria-expanded="false">Containers <span class="caret"></span></a>
@@ -29,7 +30,8 @@
                         <li><a href="#" th:href="@{/container/all}">All containers</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVEL')"
+                    class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                        data-hover="dropdown" data-delay="50" data-close-others="false"
                        role="button" aria-expanded="false">Images <span class="caret"></span></a>
@@ -38,13 +40,20 @@
                         <li><a href="#" th:href="@{/image/all}">All images</a></li>
                     </ul>
                 </li>
-                <li><a href="#" th:href="@{/search/}">Search</a></li>
-                <li><a href="#" th:href="@{/info/}">Info</a></li>
-                <li><a href="#" th:href="@{/version/}">Version</a></li>
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVEL')">
+                    <a href="#" th:href="@{/search/}">Search</a>
+                </li>
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVEL', 'USER')">
+                    <a href="#" th:href="@{/info/}">Info</a>
+                </li>
+                <li sec:authorize="hasAnyRole('ADMIN', 'DEVEL', 'USER')">
+                    <a href="#" th:href="@{/version/}">Version</a>
+                </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown"
-                    sec:authorize="isAuthenticated()">
+            <ul sec:authorize="isAuthenticated()"
+                class="nav navbar-nav navbar-right">
+                <li sec:authorize="hasAnyRole('ADMIN')"
+                    class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                        data-hover="dropdown" data-delay="50" data-close-others="false"
                        role="button" aria-expanded="false">Users <span class="caret"></span></a>
@@ -67,8 +76,8 @@
                             class="glyphicon glyphicon-question-sign" aria-hidden="true"
                             sec:authorize="isAnonymous()"></span>
                     </a>
-                    <ul class="dropdown-menu" role="menu"
-                        sec:authorize="isAuthenticated()">
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" th:href="@{/user/update}">Edit profile</a></li>
                         <li><a href="#" th:href="@{/auth/logout}">Logout</a></li>
                     </ul>
                 </li>
