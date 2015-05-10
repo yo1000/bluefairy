@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
+<body>
+<nav th:replace="_fragment :: navigator"></nav>
+<div class="container">
+    <div class="subject">
+        <h1 th:text="${title}">title</h1>
+        <p class="lead"></p>
+    </div>
+    <div>
+        <form action="user/update" method="POST" class="form-horizontal"
+              th:action="@{/user/update}">
+            <input name="id" type="hidden" th:value="${user.id}"/>
+            <div class="form-group">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6" id="alert"></div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="username">Username</label>
+                <div class="col-sm-2">
+                    <input name="username" type="text" placeholder="username"
+                           class="form-control input-sm"
+                           th:value="${user.username}"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="password">Password</label>
+                <div class="col-sm-2">
+                    <input name="password" type="password" placeholder="password"
+                           class="form-control input-sm"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="password-confirm">Confirm Password</label>
+                <div class="col-sm-2">
+                    <input name="passwordConfirm" type="password" placeholder="confirm password"
+                           class="form-control input-sm"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="role">Role</label>
+                <div class="col-sm-2">
+                    <select name="role" class="form-control">
+                        <option value="ADMIN" th:selected="${user.role} == 'ADMIN'">Administrator</option>
+                        <option value="DEVEL" th:selected="${user.role} == 'DEVEL'">Developer</option>
+                        <option value="USER" th:selected="${user.role} == 'USER'">User</option>
+                    </select>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </form>
+    </div>
+</div><!-- /.container -->
+
+<footer th:replace="_fragment :: footer"></footer>
+<script th:inline="javascript">
+/*<![CDATA[*/
+$("form").on("submit", function() {
+    var passwordValue = $("[name='password']").val();
+    var confirmValue = $("[name='passwordConfirm']").val();
+
+    var alertError = function(message) {
+        var $alert = $("<div class='alert alert-warning alert-dismissible' role='alert'>" +
+        "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>" +
+        "<span aria-hidden='true'>&times;</span></button>" +
+        "<strong>Error:</strong> " + message + "</div>");
+        $("#alert").append($alert);
+    };
+
+    $(".alert").remove();
+
+    if (passwordValue !== confirmValue) {
+        alertError("Passwords are mismatched.");
+        return false;
+    }
+});
+/*]]>*/
+</script>
+</body>
+</html>
+
