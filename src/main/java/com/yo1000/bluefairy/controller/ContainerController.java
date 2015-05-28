@@ -3,6 +3,8 @@ package com.yo1000.bluefairy.controller;
 import com.yo1000.bluefairy.model.entity.docker.ContainerCreated;
 import com.yo1000.bluefairy.model.entity.docker.ContainerInspect;
 import com.yo1000.bluefairy.model.service.ContainerService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ public class ContainerController {
     public String index(Model model) {
         model.addAttribute("title", "Containers");
         model.addAttribute("containers", this.getContainerService().getContainers());
+        model.addAttribute("containerUserMap", this.getContainerService().getContainerUserMap());
 
         return "containers";
     }
@@ -33,6 +36,7 @@ public class ContainerController {
     public String all(Model model) {
         model.addAttribute("title", "All containers");
         model.addAttribute("containers", this.getContainerService().getContainersAll());
+        model.addAttribute("containerUserMap", this.getContainerService().getContainerUserMap());
 
         return "containers";
     }
@@ -49,7 +53,12 @@ public class ContainerController {
 
     @RequestMapping(value = "run", method = RequestMethod.POST)
     public String run(@RequestParam String id, @RequestParam String repoTags) {
-        ContainerCreated container = this.getContainerService().runContainer(repoTags);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder
+                .getContext().getAuthentication().getDetails();
+        String username = userDetails.getUsername();
+
+        ContainerCreated container = this.getContainerService()
+                .runContainer(repoTags, username);
 
         return "redirect:/container/" + container.getId();
     }
