@@ -1,6 +1,7 @@
 package com.yo1000.bluefairy;
 
 import com.yo1000.bluefairy.model.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -24,14 +25,14 @@ import javax.annotation.Resource;
 @Configuration
 @EnableWebMvcSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-public class Security extends WebSecurityConfigurerAdapter {
-    @Resource
+public class SecurityContext extends WebSecurityConfigurerAdapter {
+    @Autowired
     private UserService userService;
 
-    @Resource
+    @Autowired
     private ShaPasswordEncoder shaPasswordEncoder;
 
-    @Resource
+    @Autowired
     private SaltSource saltSource;
 
     @Override

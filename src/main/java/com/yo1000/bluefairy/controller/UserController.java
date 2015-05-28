@@ -42,7 +42,7 @@ public class UserController {
         return "user/items";
     }
 
-    @RequestMapping("{id:(?!(?:all|register|update)).+}")
+    @RequestMapping("{id:(?!^(?:all|register|update)$)^.+$}")
     public String id(@PathVariable String id, Model model) {
         User user = this.getUserService().getUserById(id);
 
