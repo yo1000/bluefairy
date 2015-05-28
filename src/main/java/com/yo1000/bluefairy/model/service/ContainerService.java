@@ -1,11 +1,18 @@
 package com.yo1000.bluefairy.model.service;
 
+import com.yo1000.bluefairy.model.entity.ContainerUser;
+import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.entity.docker.*;
 import com.yo1000.bluefairy.model.repository.ContainerRepository;
+import com.yo1000.bluefairy.model.repository.ContainerUserRepository;
+import com.yo1000.bluefairy.model.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yoichi.kikuchi on 15/03/13.
@@ -14,6 +21,10 @@ import java.util.HashMap;
 public class ContainerService {
     @Resource
     private ContainerRepository containerRepository;
+    @Resource
+    private UserRepository userRepository;
+    @Resource
+    private ContainerUserRepository containerUserRepository;
 
     public Container[] getContainers() {
         return this.getContainerRepository().getJson();
@@ -25,6 +36,17 @@ public class ContainerService {
 
     public ContainerInspect getContainer(String id) {
         return this.getContainerRepository().getInspect(id);
+    }
+
+    public Map<String, ContainerUser> getContainerUserMap() {
+        List<ContainerUser> containerUsers = this.getContainerUserRepository().find();
+        Map<String, ContainerUser> containerUserMap = new HashMap<String, ContainerUser>();
+
+        for (ContainerUser containerUser : containerUsers) {
+            containerUserMap.put(containerUser.getId(), containerUser);
+        }
+
+        return containerUserMap;
     }
 
     public void startContainer(String id) {
@@ -40,8 +62,16 @@ public class ContainerService {
     }
 
     public ContainerCreated runContainer(String image) {
+        return this.runContainer(image, null);
+    }
+
+    public ContainerCreated runContainer(String image, String username) {
         ContainerCreated container = this.createContainer(image);
         this.startContainer(container.getId());
+
+        if (username != null) {
+            this.writeContainerUser(container.getId(), username);
+        }
 
         return container;
     }
@@ -51,10 +81,28 @@ public class ContainerService {
     }
 
     public ContainerCreated runContainer(ContainerCreate containerCreate, String name) {
+        return this.runContainer(containerCreate, name, null);
+    }
+
+    public ContainerCreated runContainer(ContainerCreate containerCreate, String name, String username) {
         ContainerCreated container = this.createContainer(containerCreate, name);
         this.startContainer(container.getId());
 
+        if (username != null) {
+            this.writeContainerUser(container.getId(), username);
+        }
+
         return container;
+    }
+
+    public void writeContainerUser(String id, String username) {
+        User user = this.getUserRepository().findByUsername(username);
+
+        ContainerUser containerUser = new ContainerUser();
+        containerUser.setId(id);
+        containerUser.setUser(user);
+
+        this.getContainerUserRepository().create(containerUser);
     }
 
     public ContainerCreated createContainer(ContainerCreate container) {
@@ -131,5 +179,13 @@ public class ContainerService {
 
     protected ContainerRepository getContainerRepository() {
         return containerRepository;
+    }
+
+    protected UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    protected ContainerUserRepository getContainerUserRepository() {
+        return containerUserRepository;
     }
 }

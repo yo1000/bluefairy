@@ -39,10 +39,12 @@ public class ContainerRestController {
     @RequestMapping(value = "create", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
-    public ContainerCreated postCreate(@RequestBody ContainerCreate containerCreate, @RequestParam String name) {
+    public ContainerCreated postCreate(@RequestBody ContainerCreate containerCreate,
+                                       @RequestParam String name,
+                                       @RequestHeader(value = "X-LOGIN-USER", required = false) String username) {
         Assert.isTrue(name.isEmpty() || name.matches("^/?[a-zA-Z0-9_-]+$"), "Name format is invalid.");
 
-        return this.getContainerService().runContainer(containerCreate, name);
+        return this.getContainerService().runContainer(containerCreate, name, username);
     }
 
     protected ContainerService getContainerService() {
