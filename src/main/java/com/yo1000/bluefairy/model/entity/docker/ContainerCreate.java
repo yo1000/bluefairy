@@ -35,7 +35,7 @@ public class ContainerCreate {
     @JsonProperty("StdinOnce")
     private Boolean stdinOnce;
     @JsonProperty("Env")
-    private String env;
+    private String[] env;
     @JsonProperty("Cmd")
     private String[] cmd;
     @JsonProperty("Entrypoint")
@@ -161,11 +161,11 @@ public class ContainerCreate {
         this.stdinOnce = stdinOnce;
     }
 
-    public String getEnv() {
+    public String[] getEnv() {
         return env;
     }
 
-    public void setEnv(String env) {
+    public void setEnv(String[] env) {
         this.env = env;
     }
 

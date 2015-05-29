@@ -114,13 +114,13 @@ public class ContainerService {
 
     public ContainerCreated createContainer(String image) {
         ContainerCreate container = new ContainerCreate();
-        container.setHostname("");
-        container.setDomainname("");
-        container.setUser("");
+        container.setHostname(null);
+        container.setDomainname(null);
+        container.setUser(null);
         container.setMemory(0L);
         container.setMemorySwap(0L);
         container.setCpuShares(0);
-        container.setCpuset("0");
+        container.setCpuset(null);
         container.setAttachStdin(false);
         container.setAttachStdout(false);
         container.setAttachStderr(false);
@@ -131,26 +131,18 @@ public class ContainerService {
         container.setCmd(new String[] {});
         container.setEntrypoint(new String[] {});
         container.setImage(image);
-        container.setVolumes(new HashMap<String, HashMap<String, String>>() {
-            {
-
-            }
-        });
-        container.setWorkingDir("");
+        container.setVolumes(new HashMap<String, HashMap<String, String>>() {});
+        container.setWorkingDir(null);
         container.setNetworkDisabled(false);
         container.setMacAddress(null);
-        container.setExposedPorts(new HashMap<String, HashMap<String, String>>() {
-            {
-
-            }
-        });
-        container.setSecurityOpts(new String[] {""});
+        container.setExposedPorts(new HashMap<String, HashMap<String, String>>() {});
+        container.setSecurityOpts(new String[] {});
 
         HostConfig hostConfig = new HostConfig();
         container.setHostConfig(hostConfig);
 
-        hostConfig.setBinds(new String[]{});
-        hostConfig.setLinks(new String[]{});
+        hostConfig.setBinds(new String[] {});
+        hostConfig.setLinks(new String[] {});
 
         hostConfig.setPortBindings(new HashMap<String, PortBinding[]>());
         hostConfig.setPublishAllPorts(true);
@@ -166,7 +158,7 @@ public class ContainerService {
         HostConfig.RestartPolicy restartPolicy = new HostConfig.RestartPolicy();
         hostConfig.setRestartPolicy(restartPolicy);
 
-        restartPolicy.setName("");
+        restartPolicy.setName(null);
         restartPolicy.setMaximumRetryCount(0);
 
         hostConfig.setRestartPolicy(new HostConfig.RestartPolicy());
