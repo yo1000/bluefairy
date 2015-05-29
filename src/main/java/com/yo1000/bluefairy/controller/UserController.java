@@ -42,7 +42,7 @@ public class UserController {
         return "user/items";
     }
 
-    @RequestMapping("{id:(?!(?:all|register|update)).+}")
+    @RequestMapping("{id:(?!^(?:all|register|update)$)^.+$}")
     public String id(@PathVariable String id, Model model) {
         User user = this.getUserService().getUserById(id);
 
@@ -79,10 +79,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public String update(@RequestParam String id, @RequestParam String username,
-                         @RequestParam String password, @RequestParam String role,
+    public String update(@RequestParam String id,
+                         @RequestParam String username, @RequestParam String password,
+                         @RequestParam String role, @RequestParam String fullname,
                          HttpServletRequest request) throws ServletException {
-        this.getUserService().updateUser(id, username, password, role);
+        this.getUserService().updateUser(id, username, password, role, fullname);
 
         return "redirect:/auth/logout";
     }

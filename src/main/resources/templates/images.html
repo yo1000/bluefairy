@@ -111,7 +111,8 @@
 /*<![CDATA[*/
 $.ajaxSetup({
     headers: {
-        "X-CSRF-TOKEN": /*[[ ${_csrf.token} ]]*/ "tokentoken"
+        "X-CSRF-TOKEN": /*[[ ${_csrf.token} ]]*/ "tokentoken",
+        "X-LOGIN-USER": /*[[ ${#authentication.name} ]]*/ "username"
     }
 });
 

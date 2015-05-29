@@ -4,10 +4,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Created by yoichi.kikuchi on 15/03/24.
  */
+@Document
 public class User {
     @Id
     private ObjectId id;
@@ -16,10 +18,12 @@ public class User {
     private String password;
     private String role;
     private String salt;
+    private String fullname;
 
     public User() {}
 
-    public User(ObjectId id, String username, String password, String role) {
+    public User(ObjectId id, String username, String password,
+                String role, String fullname) {
         this.setId(id);
         this.setUsername(username);
         this.setPassword(password);
@@ -64,5 +68,13 @@ public class User {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 }

@@ -1,6 +1,5 @@
 package com.yo1000.bluefairy.controller;
 
-import com.yo1000.bluefairy.Security;
 import com.yo1000.bluefairy.model.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
