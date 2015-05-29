@@ -9,11 +9,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Created by yoichi.kikuchi on 15/05/28.
  */
 @Document
-public class ContainerUser {
+public class ContainerCreator {
     @Id
     private String id;
     @DBRef
-    private User user;
+    private User creator;
 
     public String getId() {
         return id;
@@ -23,11 +23,11 @@ public class ContainerUser {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 }

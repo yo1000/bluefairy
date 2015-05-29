@@ -71,7 +71,8 @@ public class MongoUserRepository implements UserRepository {
                 .where("id").is(user.getId())), Update
                 .update("username", user.getUsername())
                 .set("password", user.getPassword())
-                .set("role", user.getRole()),
+                .set("role", user.getRole())
+                .set("fullname", user.getFullname()),
                 User.class);
     }
 

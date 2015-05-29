@@ -27,7 +27,8 @@ public class UserRestController {
             consumes = "application/json")
     public Object putItem(@PathVariable String id, @RequestBody User user) {
         this.getUserService().updateUser(id,
-                user.getUsername(), user.getPassword(), user.getRole());
+                user.getUsername(), user.getPassword(),
+                user.getRole(), user.getFullname());
 
         return new HashMap<String, Object>() {
             {

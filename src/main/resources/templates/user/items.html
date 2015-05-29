@@ -53,6 +53,15 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="modalFullname"
+                                   class="col-sm-4 control-label">Fullname</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="fullname"
+                                       placeholder="fullname"
+                                       class="form-control modal-form-fullname"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="modalRole" class="col-sm-4 control-label">Role</label>
                             <div class="col-sm-6">
                                 <select name="role" class="form-control modal-form-role">
@@ -90,6 +99,7 @@
                 <th class="fott-col-id">Id</th>
                 <th class="fott-col-username">Username</th>
                 <th class="fott-col-role">Role</th>
+                <th class="fott-col-fullname">Fullname</th>
                 <th></th>
             </tr>
             </thead>
@@ -99,10 +109,11 @@
                     th:text="${user.id}" th:attr="data-id=${user.id}">id</td>
                 <td class="fott-username filter-value" th:text="${user.username}">username</td>
                 <td class="fott-role filter-value" th:text="${user.role}">role</td>
+                <td class="fott-fullname filter-value" th:text="${user.fullname}">fullname</td>
                 <td>
                     <button type="button" class="btn btn-default btn-xs"
                             data-toggle="modal" data-target="#modal-form"
-                            th:attr="data-id=${user.id}, data-username=${user.username}, data-role=${user.role}"
+                            th:attr="data-id=${user.id}, data-username=${user.username}, data-role=${user.role}, data-role=${user.fullname}"
                             >Edit</button>
                 </td>
             </tr>
@@ -124,8 +135,9 @@ $.ajaxSetup({
  * fott
  */
 $(".fott-col-id").fott({fieldFilter: "fott-id", inputClasses: "form-control input-sm", placeholder: "id"});
-$(".fott-col-username").fott({fieldFilter: "fott-username", inputClasses: "form-control input-sm", placeholder: "name"});
+$(".fott-col-username").fott({fieldFilter: "fott-username", inputClasses: "form-control input-sm", placeholder: "user"});
 $(".fott-col-role").fott({fieldFilter: "fott-role", inputClasses: "form-control input-sm", placeholder: "role"});
+$(".fott-col-fullname").fott({fieldFilter: "fott-fullname", inputClasses: "form-control input-sm", placeholder: "full"});
 
 $("#modal-btn-ok").click(function() {
     var url = /*[[ @{/api/v1/user/} ]]*/ "#";
@@ -134,6 +146,7 @@ $("#modal-btn-ok").click(function() {
     var password = $("#modal-form form [name='password']").val();
     var passwordConfirm = $("#modal-form form [name='passwordConfirm']").val();
     var role = $("#modal-form form [name='role']").val();
+    var fullname = $("#modal-form form [name='fullname']").val();
 
     var message = function(message, status) {
         var statusMap = {
@@ -159,7 +172,8 @@ $("#modal-btn-ok").click(function() {
     var requestData = {
         username : username,
         password : password,
-        role     : role
+        role     : role,
+        fullname : fullname
     };
 
     $("#modal-form button").button('loading');
@@ -183,8 +197,6 @@ $("#modal-btn-ok").click(function() {
         var url = /*[[ @{/user/} ]]*/ "#";
         location.href = url + id;
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.dir(textStatus);
-        console.dir(errorThrown);
         message("Failed to update user.", "error");
     }).always(function(data) {
         $("#modal-form button").button("reset");
@@ -196,11 +208,13 @@ $("#modal-form").on("show.bs.modal", function (event) {
     var id = $button.data("id");
     var username = $button.data("username");
     var role = $button.data("role");
+    var fullname = $button.data("fullname");
 
     $(this).find(".modal-form-id").val(id);
     $(this).find(".modal-form-id").text(id);
     $(this).find(".modal-form-username").val(username);
     $(this).find(".modal-form-role").val(role);
+    $(this).find(".modal-form-fullname").val(fullname);
 
     $(this).find(".alert").remove();
 

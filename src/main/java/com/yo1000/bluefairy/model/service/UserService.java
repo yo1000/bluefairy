@@ -80,7 +80,8 @@ public class UserService implements UserDetailsService {
         this.getUserRepository().create(user);
     }
 
-    public void updateUser(String id, String username, String password, String role) {
+    public void updateUser(String id, String username, String password,
+                           String role, String fullname) {
         User user = this.getUserById(id);
 
         if (user == null) {
@@ -98,6 +99,10 @@ public class UserService implements UserDetailsService {
         if (password != null && !password.isEmpty()) {
             user.setPassword(this.encodePassword(user.getUsername(),
                     password, user.getSalt(), user.getRole()));
+        }
+
+        if (fullname != null && !fullname.isEmpty() && !fullname.equals(user.getFullname())) {
+            user.setFullname(fullname);
         }
 
         this.getUserRepository().update(user);
