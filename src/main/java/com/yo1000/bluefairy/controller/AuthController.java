@@ -35,12 +35,14 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@RequestParam String username, @RequestParam String password) {
+    public String register(@RequestParam String username,
+                           @RequestParam String password,
+                           @RequestParam String fullname) {
         if (this.getUserService().existsUser()) {
             throw new IllegalStateException("Already exists users.");
         }
 
-        this.getUserService().registerUser(username, password, "ADMIN");
+        this.getUserService().registerUser(username, password, "ADMIN", fullname);
 
         return "redirect:/auth/login/";
     }

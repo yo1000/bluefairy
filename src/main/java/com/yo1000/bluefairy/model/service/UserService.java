@@ -66,7 +66,8 @@ public class UserService implements UserDetailsService {
         return this.getUserRepository().count() > 0L;
     }
 
-    public void registerUser(String username, String password, String role) {
+    public void registerUser(String username, String password,
+                             String role, String fullname) {
         byte[] rnd = new byte[32];
         new SecureRandom().nextBytes(rnd);
         String salt = String.valueOf(Hex.encode(rnd));
@@ -76,6 +77,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(this.encodePassword(username, password, salt, role));
         user.setSalt(salt);
         user.setRole(role);
+        user.setFullname(fullname);
 
         this.getUserRepository().create(user);
     }
