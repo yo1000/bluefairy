@@ -1,12 +1,11 @@
 package com.yo1000.bluefairy.model.service;
 
-import com.yo1000.bluefairy.model.entity.ContainerUser;
+import com.yo1000.bluefairy.model.entity.ContainerCreator;
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.entity.docker.*;
 import com.yo1000.bluefairy.model.repository.ContainerRepository;
 import com.yo1000.bluefairy.model.repository.ContainerUserRepository;
 import com.yo1000.bluefairy.model.repository.UserRepository;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,12 +37,12 @@ public class ContainerService {
         return this.getContainerRepository().getInspect(id);
     }
 
-    public Map<String, ContainerUser> getContainerUserMap() {
-        List<ContainerUser> containerUsers = this.getContainerUserRepository().find();
-        Map<String, ContainerUser> containerUserMap = new HashMap<String, ContainerUser>();
+    public Map<String, ContainerCreator> getContainerUserMap() {
+        List<ContainerCreator> containerCreators = this.getContainerUserRepository().find();
+        Map<String, ContainerCreator> containerUserMap = new HashMap<String, ContainerCreator>();
 
-        for (ContainerUser containerUser : containerUsers) {
-            containerUserMap.put(containerUser.getId(), containerUser);
+        for (ContainerCreator containerCreator : containerCreators) {
+            containerUserMap.put(containerCreator.getId(), containerCreator);
         }
 
         return containerUserMap;
@@ -98,11 +97,11 @@ public class ContainerService {
     public void writeContainerUser(String id, String username) {
         User user = this.getUserRepository().findByUsername(username);
 
-        ContainerUser containerUser = new ContainerUser();
-        containerUser.setId(id);
-        containerUser.setUser(user);
+        ContainerCreator containerCreator = new ContainerCreator();
+        containerCreator.setId(id);
+        containerCreator.setCreator(user);
 
-        this.getContainerUserRepository().create(containerUser);
+        this.getContainerUserRepository().create(containerCreator);
     }
 
     public ContainerCreated createContainer(ContainerCreate container) {

@@ -63,6 +63,17 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-4"></div>
+                <label class="col-sm-2 control-label"
+                       for="fullname">Fullname</label>
+                <div class="col-sm-2">
+                    <input name="fullname" type="text" placeholder="fullname"
+                           class="form-control input-sm"
+                           th:value="${user.fullname}"/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2">
                     <button class="btn btn-primary" type="submit">Update</button>

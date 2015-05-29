@@ -1,6 +1,6 @@
 package com.yo1000.bluefairy.model.repository.mongo;
 
-import com.yo1000.bluefairy.model.entity.ContainerUser;
+import com.yo1000.bluefairy.model.entity.ContainerCreator;
 import com.yo1000.bluefairy.model.repository.ContainerUserRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -19,19 +19,19 @@ public class MongoContainerUserRepository implements ContainerUserRepository {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public ContainerUser findById(String id) {
+    public ContainerCreator findById(String id) {
         return this.getMongoTemplate().findOne(Query.query(Criteria
-                .where("id").is(id)), ContainerUser.class);
+                .where("id").is(id)), ContainerCreator.class);
     }
 
     @Override
-    public List<ContainerUser> find() {
-        return this.getMongoTemplate().findAll(ContainerUser.class);
+    public List<ContainerCreator> find() {
+        return this.getMongoTemplate().findAll(ContainerCreator.class);
     }
 
     @Override
-    public void create(ContainerUser containerUser) {
-        this.getMongoTemplate().insert(containerUser);
+    public void create(ContainerCreator containerCreator) {
+        this.getMongoTemplate().insert(containerCreator);
     }
 
     protected MongoTemplate getMongoTemplate() {

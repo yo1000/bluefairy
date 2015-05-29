@@ -1,6 +1,6 @@
 package com.yo1000.bluefairy.model.repository;
 
-import com.yo1000.bluefairy.model.entity.ContainerUser;
+import com.yo1000.bluefairy.model.entity.ContainerCreator;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by yoichi.kikuchi on 15/05/28.
  */
 public interface ContainerUserRepository {
-    public ContainerUser findById(String id);
-    public List<ContainerUser> find();
-    public void create(ContainerUser containerUser);
+    public ContainerCreator findById(String id);
+    public List<ContainerCreator> find();
+    public void create(ContainerCreator containerCreator);
 }

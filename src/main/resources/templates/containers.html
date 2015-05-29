@@ -49,7 +49,7 @@
                 <th class="fott-col-ports">Ports</th>
                 <th class="fott-col-status">Status</th>
                 <th class="fott-col-created">Created</th>
-                <th class="fott-col-user">User</th>
+                <th class="fott-col-creator">Creator</th>
                 <th></th>
             </tr>
             </thead>
@@ -73,7 +73,7 @@
                 </td>
                 <td class="fott-status filter-value" th:text="${container.status}">status</td>
                 <td class="fott-created filter-value" th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
-                <td class="fott-user filter-value" th:object="${containerUserMap[container.id]}" th:text="${#object} != null ? *{user.username}">username</td>
+                <td class="fott-creator filter-value" th:object="${containerUserMap[container.id]}" th:text="${#object} != null ? *{creator.fullname}">fullname</td>
                 <td>
                     <button type="button" class="btn btn-xs btn-danger"
                             data-toggle="modal" data-target="#action-modal"
@@ -116,7 +116,7 @@ $(".fott-col-names").fott({fieldFilter: "fott-names", inputClasses: "form-contro
 $(".fott-col-ports").fott({fieldFilter: "fott-ports", inputClasses: "form-control input-sm", placeholder: "ports"});
 $(".fott-col-status").fott({fieldFilter: "fott-status", inputClasses: "form-control input-sm", placeholder: "status"});
 $(".fott-col-created").fott({fieldFilter: "fott-created", inputClasses: "form-control input-sm", placeholder: "created"});
-$(".fott-col-user").fott({fieldFilter: "fott-user", inputClasses: "form-control input-sm", placeholder: "user"});
+$(".fott-col-creator").fott({fieldFilter: "fott-creator", inputClasses: "form-control input-sm", placeholder: "creator"});
 
 /**
  * popover
