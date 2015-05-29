@@ -61,8 +61,8 @@ public class UserController {
 
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public String register(@RequestParam String username, @RequestParam String password,
-                           @RequestParam String role) {
-        this.getUserService().registerUser(username, password, role);
+                           @RequestParam String role, @RequestParam String fullname) {
+        this.getUserService().registerUser(username, password, role, fullname);
         User user = this.getUserService().getUserByUsername(username);
 
         return "redirect:/user/" + user.getId();
