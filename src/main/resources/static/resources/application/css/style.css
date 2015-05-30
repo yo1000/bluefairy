@@ -83,3 +83,28 @@ th input.form-control.input-sm {
 .cell-ports {
     max-width: 16.0em;
 }
+
+#binds select {
+    -webkit-appearance: none;
+}
+
+#binds .input-group .form-control:first-child {
+    border-bottom-left-radius: 0;
+}
+
+#binds .input-group .form-control:nth-last-child(2) {
+    border-bottom-left-radius: 4px;
+}
+
+#binds .input-group .form-control:nth-child(n+1) {
+    margin-top: -1px;
+}
+
+#binds .input-group button {
+    height: 88px;
+    margin-top: -1px;
+}
+
+#binds .input-group {
+    margin-bottom: 6px;
+}
