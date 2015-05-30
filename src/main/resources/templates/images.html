@@ -51,6 +51,12 @@
                                 <div id="env-vars"></div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="binds" class="col-sm-4 control-label">Volume binds</label>
+                            <div class="col-sm-6">
+                                <div id="binds"></div>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -164,7 +170,21 @@ $("#action-modal-btn").click(function() {
         envVars.push($(this).val());
     });
 
-    console.dir(envVars);
+    var volumes = {};
+    var binds = new Array();
+
+    $("#action-modal form #binds .input-group").each(function() {
+        var bindsHost = $(this).find("[name=bindsHost]").val();
+        var bindsContainer = $(this).find("[name=bindsContainer]").val();
+        var bindsMode = $(this).find("[name=bindsMode]").val();
+
+        if (bindsHost === '' || bindsContainer === '' || bindsMode === '') {
+            return false;
+        }
+
+        volumes[bindsHost] = {};
+        binds.push(bindsHost + ":" + bindsContainer + ":" + bindsMode);
+    });
 
     var submitData = {
         Hostname        : null,
@@ -184,14 +204,14 @@ $("#action-modal-btn").click(function() {
         Cmd             : null,
         Entrypoint      : null,
         Image           : $("#action-modal form input[name='repoTags']").val(),
-        Volumes         : {}, // :HashMap<String, HashMap<String, String>>
+        Volumes         : volumes, // :HashMap<String, HashMap<String, String>>
         WorkingDir      : null,//"",
         NetworkDisabled : false,
         MacAddress      : null,
         ExposedPorts    : exposedPorts, // :HashMap<protoAndPort:String, HashMap<expIp:String, expPort:String>>
         SecurityOpts    : [],
         HostConfig      : {
-            Binds           : [],
+            Binds           : binds,
             //IpcMode         : null,
             //PidMode         : null,
             Links           : [],
@@ -306,7 +326,7 @@ $("#action-modal").on("show.bs.modal", function (event) {
     var appendEnvVars = function($envVars) {
         var $envVarsGroup = $('<div class="form-inline"></div>');
         var $envVarsInputGroup = $('<div class="input-group input-group-sm"></div>');
-        var $envVarsInput = $('<input type="text" name="env" class="form-control" placeholder="VAR=value">');
+        var $envVarsInput = $('<input type="text" name="env" class="form-control" placeholder="VAR=value"/>');
         var $envVarsBtnGroup = $('<span class="input-group-btn"></span>');
         var $envVarsBtn = $('<button class="btn btn-default" type="button">+</button>');
         var $envVarsLabel = $("<p class='form-control-static' style='padding-left:0;'>&nbsp;</p>");
@@ -337,6 +357,43 @@ $("#action-modal").on("show.bs.modal", function (event) {
     var $envVars = $("#env-vars");
     $envVars.children().remove();
     appendEnvVars($envVars);
+
+    var appendBinds = function($binds) {
+        var $bindsGroup = $('<div class="form"></div>');
+        var $bindsInputGroup = $('<div class="input-group input-group-sm"></div>');
+        var $bindsHostInput = $('<input type="text" name="bindsHost" class="form-control" placeholder="/mount/host/dir">');
+        var $bindsContainerInput = $('<input type="text" name="bindsContainer" class="form-control" placeholder="/mount/container/dir">');
+        var $bindsModeInput = $('<select name="bindsMode" class="form-control"><option value="ro">read only</option><option value="rw">read write</option></select>');
+        var $bindsBtnGroup = $('<span class="input-group-btn"></span>');
+        var $bindsBtn = $('<button class="btn btn-default" type="button">+</button>');
+
+        $bindsBtn.on('click', function(event) {
+            var existsEmpty = false;
+
+            $(event.target).closest('#binds').find('input').each(function() {
+                if ($(this).val() === '') {
+                    existsEmpty = true;
+                    return false;
+                }
+            });
+
+            if (existsEmpty) {
+                return;
+            }
+
+            appendBinds($binds);
+        });
+
+        $binds.append($bindsGroup);
+        $bindsGroup.append($bindsInputGroup);
+        $bindsInputGroup.append($bindsHostInput).append($bindsContainerInput)
+                .append($bindsModeInput).append($bindsBtnGroup);
+        $bindsBtnGroup.append($bindsBtn);
+    };
+
+    var $binds = $("#binds");
+    $binds.children().remove();
+    appendBinds($binds);
 
     var modal = $(this)
     modal.find('p.action-modal-id').text(actionModalId);
