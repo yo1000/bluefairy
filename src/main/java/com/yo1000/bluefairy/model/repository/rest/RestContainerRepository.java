@@ -7,9 +7,6 @@ import com.yo1000.bluefairy.model.entity.docker.ContainerInspect;
 import com.yo1000.bluefairy.model.repository.ContainerRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by yoichi.kikuchi on 15/03/12.
  */
