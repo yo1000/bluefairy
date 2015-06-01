@@ -1,8 +1,6 @@
 package com.yo1000.bluefairy.controller;
 
 import com.yo1000.bluefairy.model.entity.User;
-import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
-import com.yo1000.bluefairy.model.service.ImageService;
 import com.yo1000.bluefairy.model.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 
 /**
  * Created by yoichi.kikuchi on 15/02/19.

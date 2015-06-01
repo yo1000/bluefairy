@@ -1,23 +1,24 @@
 package com.yo1000.bluefairy.model.repository.mongo;
 
+import com.yo1000.bluefairy.ApplicationContext;
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
-
-import javax.annotation.Resource;
 
 /**
  * Created by yoichi.kikuchi on 15/03/22.
  */
 @Repository
+@ConditionalOnProperty(name = ApplicationContext.PROPS_DATA_TYPE, havingValue = ApplicationContext.PROPS_DATA_TYPE_MONGO)
 public class MongoUserRepository implements UserRepository {
-    @Resource
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     @Override

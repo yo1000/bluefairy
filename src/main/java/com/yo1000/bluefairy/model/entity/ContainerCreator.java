@@ -1,6 +1,5 @@
 package com.yo1000.bluefairy.model.entity;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +13,13 @@ public class ContainerCreator {
     private String id;
     @DBRef
     private User creator;
+
+    public ContainerCreator() {}
+
+    public ContainerCreator(String id, User creator) {
+        this.id = id;
+        this.creator = creator;
+    }
 
     public String getId() {
         return id;

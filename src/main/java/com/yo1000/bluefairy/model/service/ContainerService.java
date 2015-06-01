@@ -3,12 +3,12 @@ package com.yo1000.bluefairy.model.service;
 import com.yo1000.bluefairy.model.entity.ContainerCreator;
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.entity.docker.*;
+import com.yo1000.bluefairy.model.repository.ContainerCreatorRepository;
 import com.yo1000.bluefairy.model.repository.ContainerRepository;
-import com.yo1000.bluefairy.model.repository.ContainerUserRepository;
 import com.yo1000.bluefairy.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +18,14 @@ import java.util.Map;
  */
 @Service
 public class ContainerService {
-    @Resource
+    @Autowired
     private ContainerRepository containerRepository;
-    @Resource
+
+    @Autowired
     private UserRepository userRepository;
-    @Resource
-    private ContainerUserRepository containerUserRepository;
+
+    @Autowired
+    private ContainerCreatorRepository containerCreatorRepository;
 
     public Container[] getContainers() {
         return this.getContainerRepository().getJson();
@@ -38,7 +40,7 @@ public class ContainerService {
     }
 
     public Map<String, ContainerCreator> getContainerUserMap() {
-        List<ContainerCreator> containerCreators = this.getContainerUserRepository().find();
+        List<ContainerCreator> containerCreators = this.getContainerCreatorRepository().find();
         Map<String, ContainerCreator> containerUserMap = new HashMap<String, ContainerCreator>();
 
         for (ContainerCreator containerCreator : containerCreators) {
@@ -101,7 +103,7 @@ public class ContainerService {
         containerCreator.setId(id);
         containerCreator.setCreator(user);
 
-        this.getContainerUserRepository().create(containerCreator);
+        this.getContainerCreatorRepository().create(containerCreator);
     }
 
     public ContainerCreated createContainer(ContainerCreate container) {
@@ -176,7 +178,7 @@ public class ContainerService {
         return userRepository;
     }
 
-    protected ContainerUserRepository getContainerUserRepository() {
-        return containerUserRepository;
+    protected ContainerCreatorRepository getContainerCreatorRepository() {
+        return containerCreatorRepository;
     }
 }
