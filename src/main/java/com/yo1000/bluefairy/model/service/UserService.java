@@ -3,6 +3,7 @@ package com.yo1000.bluefairy.model.service;
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.entity.UserDetailsWithSalt;
 import com.yo1000.bluefairy.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,12 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.codec.Hex;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
@@ -25,13 +22,13 @@ import java.util.List;
  */
 @Service
 public class UserService implements UserDetailsService {
-    @Resource
+    @Autowired
     private UserRepository userRepository;
 
-    @Resource
+    @Autowired
     private ShaPasswordEncoder shaPasswordEncoder;
 
-    @Resource
+    @Autowired
     private SaltSource saltSource;
 
     @Override

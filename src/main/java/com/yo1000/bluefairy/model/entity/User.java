@@ -1,7 +1,5 @@
 package com.yo1000.bluefairy.model.entity;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class User {
     @Id
-    private ObjectId id;
+    private String id;
     @Indexed(unique=true)
     private String username;
     private String password;
@@ -22,19 +20,21 @@ public class User {
 
     public User() {}
 
-    public User(ObjectId id, String username, String password,
-                String role, String fullname) {
+    public User(String id, String username, String password,
+                String salt, String role, String fullname) {
         this.setId(id);
         this.setUsername(username);
         this.setPassword(password);
+        this.setSalt(salt);
         this.setRole(role);
+        this.setFullname(fullname);
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

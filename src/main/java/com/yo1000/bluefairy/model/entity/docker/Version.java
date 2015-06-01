@@ -2,8 +2,6 @@ package com.yo1000.bluefairy.model.entity.docker;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
 /**
  * Created by yoichi.kikuchi on 15/03/12.
  */

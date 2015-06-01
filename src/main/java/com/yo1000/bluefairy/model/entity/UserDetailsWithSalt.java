@@ -1,7 +1,6 @@
 package com.yo1000.bluefairy.model.entity;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.*;
 
 import java.util.Collection;
 
