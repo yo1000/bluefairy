@@ -8,7 +8,6 @@ import com.yo1000.bluefairy.model.entity.docker.ImageSearch;
 import com.yo1000.bluefairy.model.repository.ImageRepository;
 import org.apache.http.conn.EofSensorInputStream;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Repository;
@@ -19,7 +18,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * Created by yoichi.kikuchi on 15/03/12.

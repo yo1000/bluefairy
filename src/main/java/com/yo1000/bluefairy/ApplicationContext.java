@@ -1,7 +1,7 @@
 package com.yo1000.bluefairy;
 
-import com.mongodb.Mongo;
-import com.mongodb.MongoURI;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -11,11 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.authentication.UserCredentials;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -27,6 +32,14 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class ApplicationContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationContext.class);
+
+    public static final String PROPS_DATA = "bluefairy.data";
+    public static final String PROPS_DATA_JDBC = "bluefairy.data.jdbc";
+    public static final String PROPS_DATA_MONGO = "bluefairy.data.mongo";
+    public static final String PROPS_DATA_TYPE = "bluefairy.data.type";
+    public static final String PROPS_DATA_TYPE_JDBC = "JDBC";
+    public static final String PROPS_DATA_TYPE_MONGO = "MONGO";
+    public static final String PROPS_DOCKER = "bluefairy.docker";
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ApplicationContext.class, args);
@@ -66,62 +79,159 @@ public class ApplicationContext {
 
     @Bean
     @Autowired
-    public MongoTemplate mongoTemplate(
-            @Qualifier("mongoConfiguration") MongoConfiguration mongoConfiguration,
-            @Qualifier("mongo") Mongo mongo
-    ) throws Exception {
-        return new MongoTemplate(mongo,
-                mongoConfiguration.getDatabase(), new UserCredentials(
-                mongoConfiguration.getUsername(),
-                mongoConfiguration.getPassword()));
+    @ConditionalOnProperty(name = PROPS_DATA_TYPE, havingValue = PROPS_DATA_TYPE_JDBC)
+    public JdbcTemplate jdbcTemplate(
+            @Qualifier("jdbcConfiguration") JdbcConfiguration jdbcConfiguration
+    ) {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(jdbcConfiguration.getDriverClassName());
+        dataSource.setUrl(jdbcConfiguration.getUrl());
+        dataSource.setUsername(jdbcConfiguration.getUsername());
+        dataSource.setPassword(jdbcConfiguration.getPassword());
+
+        return new JdbcTemplate(dataSource);
     }
 
     @Bean
     @Autowired
-    public Mongo mongo(
+    @ConditionalOnProperty(name = PROPS_DATA_TYPE, havingValue = PROPS_DATA_TYPE_MONGO)
+    public MongoTemplate mongoTemplate(
             @Qualifier("mongoConfiguration") MongoConfiguration mongoConfiguration
     ) throws Exception {
-        return new Mongo(new MongoURI(mongoConfiguration.getUri()));
+        MongoClient client = new MongoClient(new ServerAddress(
+                mongoConfiguration.getHost(),
+                mongoConfiguration.getPort()
+        ));
+
+        MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(client, mongoConfiguration.getDatabase(),
+                new UserCredentials(mongoConfiguration.getUsername(), mongoConfiguration.getPassword()));
+
+        return new MongoTemplate(mongoDbFactory);
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "bluefairy.docker")
-    public DockerConfiguration dockerConfiguration() {
-        return new DockerConfiguration();
+    @ConfigurationProperties(prefix = PROPS_DATA)
+    public DataSourceConfiguration dataSourceConfiguration() {
+        return new DataSourceConfiguration();
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "bluefairy.mongo")
+    @ConfigurationProperties(prefix = PROPS_DATA_JDBC)
+    public JdbcConfiguration jdbcConfiguration() {
+        return new JdbcConfiguration();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = PROPS_DATA_MONGO)
     public MongoConfiguration mongoConfiguration() {
         return new MongoConfiguration();
     }
 
-    @SpringBootApplication
-    public static class DockerConfiguration {
-        private String remoteApi = "http://localhost:2376/";
+    @Bean
+    @ConfigurationProperties(prefix = PROPS_DOCKER)
+    public DockerConfiguration dockerConfiguration() {
+        return new DockerConfiguration();
+    }
 
-        public String getRemoteApi() {
-            return remoteApi;
+    public static enum DataSourceType {
+        JDBC(JdbcTemplate.class),
+        MONGO(MongoTemplate.class);
+
+        private Class<?> templateClass;
+
+        DataSourceType(Class<?> templateClass) {
+            this.templateClass = templateClass;
         }
 
-        public void setRemoteApi(String remoteApi) {
-            this.remoteApi = remoteApi;
+        public Class<?> getTemplateClass() {
+            return templateClass;
+        }
+    }
+
+    @SpringBootApplication
+    public static class DataSourceConfiguration {
+        private DataSourceType type = DataSourceType.JDBC;
+
+        public DataSourceType getType() {
+            return type;
+        }
+
+        public void setType(DataSourceType type) {
+            this.type = type;
+        }
+    }
+
+    @SpringBootApplication
+    public static class JdbcConfiguration {
+        private String driverClassName;
+        private String url;
+        private String username;
+        private String password;
+        private String schema;
+
+        public String getDriverClassName() {
+            return driverClassName;
+        }
+
+        public void setDriverClassName(String driverClassName) {
+            this.driverClassName = driverClassName;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getSchema() {
+            return schema;
+        }
+
+        public void setSchema(String schema) {
+            this.schema = schema;
         }
     }
 
     @SpringBootApplication
     public static class MongoConfiguration {
-        private String uri = "mongodb://localhost:27017/";
-        private String database = "bluefairy";
-        private String username = "admin";
-        private String password = "password";
+        private String host = "";
+        private int port = 27017;
+        private String database;
+        private String username;
+        private String password;
 
-        public String getUri() {
-            return uri;
+        public String getHost() {
+            return host;
         }
 
-        public void setUri(String uri) {
-            this.uri = uri;
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
         }
 
         public String getDatabase() {
@@ -146,6 +256,19 @@ public class ApplicationContext {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+    }
+
+    @SpringBootApplication
+    public static class DockerConfiguration {
+        private String remoteApi = "http://localhost:2376/";
+
+        public String getRemoteApi() {
+            return remoteApi;
+        }
+
+        public void setRemoteApi(String remoteApi) {
+            this.remoteApi = remoteApi;
         }
     }
 }
