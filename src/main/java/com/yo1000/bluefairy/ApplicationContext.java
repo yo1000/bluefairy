@@ -78,8 +78,8 @@ public class ApplicationContext {
     }
 
     @Bean
-    @Autowired
     @ConditionalOnProperty(name = PROPS_DATA_TYPE, havingValue = PROPS_DATA_TYPE_JDBC)
+    @Autowired
     public JdbcTemplate jdbcTemplate(
             @Qualifier("jdbcConfiguration") JdbcConfiguration jdbcConfiguration
     ) {
@@ -93,8 +93,8 @@ public class ApplicationContext {
     }
 
     @Bean
-    @Autowired
     @ConditionalOnProperty(name = PROPS_DATA_TYPE, havingValue = PROPS_DATA_TYPE_MONGO)
+    @Autowired
     public MongoTemplate mongoTemplate(
             @Qualifier("mongoConfiguration") MongoConfiguration mongoConfiguration
     ) throws Exception {
