@@ -20,7 +20,7 @@ import java.util.UUID;
 @Repository
 @ConditionalOnProperty(name = ApplicationContext.PROPS_DATA_TYPE, havingValue = ApplicationContext.PROPS_DATA_TYPE_JDBC)
 public class JdbcUserRepository implements UserRepository {
-    @Autowired(required = false)
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @ConditionalOnProperty(name = ApplicationContext.PROPS_DATA_TYPE, havingValue = ApplicationContext.PROPS_DATA_TYPE_JDBC)
 public class JdbcInitializeRepository {
-    @Autowired(required = false)
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private boolean initialized;
