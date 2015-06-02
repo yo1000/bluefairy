@@ -1,7 +1,12 @@
 # bluefairy
 A simple docker web client.
 
-## Usage
+## Usage (for JDBC)
+1. Installation of Docker. And enable DockerRemoteAPI.
+2. Set the DockerAPI endpoint connection info in the `application.properties`
+3. `mvn spring-boot:run`
+ 
+## Usage (for MongoDB)
 1. Installation of Docker. And enable DockerRemoteAPI.
 2. Installation of MongoDB. And configure to allow remote access.
 3. Set the DockerAPI endpoint and MongoDB connection info in the `application.properties`
