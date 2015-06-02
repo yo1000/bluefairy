@@ -22,7 +22,7 @@ public class JdbcInitializeRepository {
             throw new IllegalStateException(e);
         }
 
-        this.getJdbcTemplate().execute("CREATE TABLE APPLICATION_USER (" +
+        this.getJdbcTemplate().update("CREATE TABLE APPLICATION_USER (" +
                         "USER_ID  VARCHAR(64) NOT NULL, " +
                         "USERNAME VARCHAR(32) NOT NULL UNIQUE, " +
                         "PASSWORD VARCHAR(64) NOT NULL, " +
@@ -32,7 +32,7 @@ public class JdbcInitializeRepository {
                         "PRIMARY KEY(USER_ID))"
         );
 
-        this.getJdbcTemplate().execute("CREATE TABLE CONTAINER_CREATOR (" +
+        this.getJdbcTemplate().update("CREATE TABLE CONTAINER_CREATOR (" +
                         "CREATOR_ID VARCHAR(64) NOT NULL, " +
                         "USER_ID    VARCHAR(64) NOT NULL, " +
                         "PRIMARY KEY(CREATOR_ID))"
