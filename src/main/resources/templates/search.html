@@ -162,10 +162,13 @@ $("#modal-btn-action").click(function() {
     $.ajax({
         // endpoint
         type: "POST",
-        url : url + name,
+        url: url,
         // request
         contentType: "application/json",
         processData: false,
+        data: JSON.stringify({
+            name: name
+        }),
         // response
         dataType: "json",
         statusCode: {

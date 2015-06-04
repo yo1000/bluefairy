@@ -5,12 +5,10 @@ import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
 import com.yo1000.bluefairy.model.entity.docker.ImageCreated;
 import com.yo1000.bluefairy.model.service.ImageService;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * Created by yoichi.kikuchi on 15/04/17.
@@ -42,11 +40,11 @@ public class ImageRestController {
         return this.getImageService().getImage(id);
     }
 
-    @RequestMapping(value = "pull/{image}", method = RequestMethod.POST,
+    @RequestMapping(value = "pull", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
-    public ImageCreated postPull(@PathVariable String image) {
-        return this.getImageService().createImage(image);
+    public ImageCreated postPull(@RequestBody Map<String, String> imageMap) {
+        return this.getImageService().createImage(imageMap.get("name"));
     }
 
     protected ImageService getImageService() {
