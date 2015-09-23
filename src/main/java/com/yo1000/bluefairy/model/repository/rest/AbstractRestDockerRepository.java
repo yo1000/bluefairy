@@ -13,10 +13,10 @@ public class AbstractRestDockerRepository {
     private RestTemplate restTemplate;
 
     @Resource
-    private ApplicationContext.DockerConfiguration dockerConfiguration;
+    private ApplicationContext.DockerProperties dockerProperties;
 
     protected String makeDockerRemoteApiEndpoint(String resource) {
-        String baseUrl = this.getDockerConfiguration().getRemoteApi();
+        String baseUrl = this.getDockerProperties().getRemoteApi();
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
@@ -33,7 +33,7 @@ public class AbstractRestDockerRepository {
         return restTemplate;
     }
 
-    protected ApplicationContext.DockerConfiguration getDockerConfiguration() {
-        return dockerConfiguration;
+    protected ApplicationContext.DockerProperties getDockerProperties() {
+        return dockerProperties;
     }
 }

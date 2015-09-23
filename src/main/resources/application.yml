@@ -1,0 +1,38 @@
+server:
+  port:         41000
+  contextPath:  /bluefairy
+
+security:
+  basic:
+    enabled:  false
+
+logging:
+  level:
+    org.springframework.web:  INFO
+
+spring:
+  # DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+  datasource:
+    driver-class-name:  org.h2.Driver
+    url:                jdbc:h2:file:${application.data.file}
+    username:           sa
+    password:
+  # MONGODB (MongoProperties)
+  data:
+    mongodb:
+      host:     localhost
+      port:     27017
+      database: bluefairy
+      username: admin
+      password: password
+  # THYMELEAF (ThymeleafAutoConfiguration)
+  thymeleaf:
+    cache:  false
+
+application:
+  data:
+    type: JDBC
+    file: ./bluefairy.datastore
+  docker:
+    remoteApi:  http://10.37.129.3:2375/
+
