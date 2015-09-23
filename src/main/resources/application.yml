@@ -34,5 +34,5 @@ application:
     type: JDBC
     file: ./bluefairy.datastore
   docker:
-    remoteApi:  http://10.37.129.3:2375/
+    remoteApi:  http://localhost:2375/
 
