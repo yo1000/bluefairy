@@ -18,13 +18,12 @@ import java.util.List;
  * Created by yoichi.kikuchi on 15/05/31.
  */
 @Repository
-@ConditionalOnProperty(name = ApplicationContext.PROPS_DATA_TYPE, havingValue = ApplicationContext.PROPS_DATA_TYPE_JDBC)
+@ConditionalOnProperty(
+        name = ApplicationContext.APPLICATION_DATA_TYPE,
+        havingValue = ApplicationContext.APPLICATION_DATA_TYPE_JDBC)
 public class JdbcContainerCreatorRepository implements ContainerCreatorRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private JdbcInitializeRepository initializeRepository;
 
     @Override
     public ContainerCreator findById(String id) {
@@ -99,16 +98,12 @@ public class JdbcContainerCreatorRepository implements ContainerCreatorRepositor
     @Override
     public void create(ContainerCreator containerCreator) {
         this.getJdbcTemplate().update("INSERT INTO " +
-                "CONTAINER_CREATOR (CREATOR_ID, USER_ID) VALUES (?, ?)",
+                        "CONTAINER_CREATOR (CREATOR_ID, USER_ID) VALUES (?, ?)",
                 containerCreator.getId(),
                 containerCreator.getCreator().getId());
     }
 
     protected JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
-    }
-
-    protected JdbcInitializeRepository getInitializeRepository() {
-        return initializeRepository;
     }
 }

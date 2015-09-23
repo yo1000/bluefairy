@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.web.util.matcher.ELRequestMatcher;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.accept.PathExtensionContentNegotiationStrategy;
 
 /**
  * Created by yoichi.kikuchi on 15/03/21.
@@ -43,6 +46,7 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
                 .regexMatchers("^/user/$").hasAnyAuthority("ADMIN")
                 .regexMatchers("^/user/(?!(?:all|register|update)).+").hasAnyAuthority("ADMIN")
                 .regexMatchers("^/user/register.*").hasAnyAuthority("ADMIN")
+                .regexMatchers("^/profile$").authenticated()
                 .anyRequest().authenticated();
 
         http.formLogin()

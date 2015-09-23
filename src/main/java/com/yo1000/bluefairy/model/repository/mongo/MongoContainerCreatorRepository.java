@@ -16,7 +16,9 @@ import java.util.List;
  * Created by yoichi.kikuchi on 15/05/28.
  */
 @Repository
-@ConditionalOnProperty(name = ApplicationContext.PROPS_DATA_TYPE, havingValue = ApplicationContext.PROPS_DATA_TYPE_MONGO)
+@ConditionalOnProperty(
+    name = ApplicationContext.APPLICATION_DATA_TYPE,
+    havingValue = ApplicationContext.APPLICATION_DATA_TYPE_MONGO)
 public class MongoContainerCreatorRepository implements ContainerCreatorRepository {
     @Autowired
     private MongoTemplate mongoTemplate;

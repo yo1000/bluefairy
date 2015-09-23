@@ -16,7 +16,9 @@ import org.springframework.util.Assert;
  * Created by yoichi.kikuchi on 15/03/22.
  */
 @Repository
-@ConditionalOnProperty(name = ApplicationContext.PROPS_DATA_TYPE, havingValue = ApplicationContext.PROPS_DATA_TYPE_MONGO)
+@ConditionalOnProperty(
+    name = ApplicationContext.APPLICATION_DATA_TYPE,
+    havingValue = ApplicationContext.APPLICATION_DATA_TYPE_MONGO)
 public class MongoUserRepository implements UserRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
