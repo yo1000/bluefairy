@@ -3,13 +3,13 @@ A simple docker web client.
 
 ## Usage (for JDBC)
 1. Installation of Docker. And enable DockerRemoteAPI.
-2. Set the DockerAPI endpoint connection info in the `application.properties`
+2. Set the DockerAPI endpoint connection info in the `application.yml`
 3. `mvn spring-boot:run`
  
 ## Usage (for MongoDB)
 1. Installation of Docker. And enable DockerRemoteAPI.
 2. Installation of MongoDB. And configure to allow remote access.
-3. Set the DockerAPI endpoint and MongoDB connection info in the `application.properties`
+3. Set the DockerAPI endpoint and MongoDB connection info in the `application.yml`
 4. `mvn spring-boot:run`
 
 ## License
@@ -77,20 +77,37 @@ bind_ip = 0.0.0.0
 $ echo 'db.addUser("admin", "password12345678");' | mongo localhost/bluefairy
 ```
 
-Set the DockerAPI endpoint and MongoDB connection info in the `application.properties`
+Set the DockerAPI endpoint and MongoDB connection info in the `application.yml`
 ```bash
-$ vi src/main/resource/application.properties
+$ vi src/main/resource/application.yml
 
-server.port=41000
-server.contextPath=/bluefairy
-#logging.file=logs/bluefairy.log
-logging.level.org.springframework.web=INFO
-security.basic.enabled=false
-bluefairy.docker.remoteApi=http://10.37.129.10:2376/
-bluefairy.mongo.uri=mongodb://10.37.129.11:27017/
-bluefairy.mongo.database=bluefairy
-bluefairy.mongo.username=admin
-bluefairy.mongo.password=password12345678
+server:
+  port:         41000
+  contextPath:  /bluefairy
+
+security:
+  basic:
+    enabled:  false
+
+logging:
+  level:
+    org.springframework.web:  INFO
+
+spring:
+  # MONGODB (MongoProperties)
+  data:
+    mongodb:
+      host:     localhost
+      port:     27017
+      database: bluefairy
+      username: admin
+      password: password12345678
+
+application:
+  data:
+    type: MONGO
+  docker:
+    remote-api:  http://localhost:2375/
 ```
 
 Run spring-boot
