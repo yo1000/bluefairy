@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head th:replace="_fragment :: header (title=${title} + ' - bluefairy')"></head>
 <body>
 <nav th:replace="_fragment :: navigator"></nav>
@@ -54,7 +55,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="container : ${containers}">
+
+            <tr th:each="containerCreator, status : ${containerCreatorMap}"
+                th:with="container=${containerCreator.value.container}, creator=${containerCreator.value.creator}">
                 <td class="fott-id filter-value" th:text="${container.idToShort}" th:attr="data-id=${container.id}">id</td>
                 <td class="fott-image filter-value" th:text="${container.image}">image</td>
                 <td class="fott-names filter-value ellipsis cell-names"
@@ -73,28 +76,34 @@
                 </td>
                 <td class="fott-status filter-value" th:text="${container.status}">status</td>
                 <td class="fott-created filter-value" th:text="${#dates.format(container.createdToDate, 'yyyy-MM-dd HH:mm')}">created</td>
-                <td class="fott-creator filter-value" th:object="${containerUserMap[container.id]}" th:text="${#object} != null ? *{creator.fullname}">fullname</td>
+                <td class="fott-creator filter-value" th:object="${creator}" th:text="${#object} != null ? *{fullname}">fullname</td>
                 <td>
                     <button type="button" class="btn btn-xs btn-danger"
                             data-toggle="modal" data-target="#action-modal"
                             data-action="/stop" data-message="Stop the container:"
                             data-ok="Stop" data-ok-class="btn-danger"
                             th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
-                            th:if="${#strings.startsWith(container.status,'Up')}"
+                            th:if="(${#authorization.expression('hasRole(''ADMIN'')')}
+                                    or ${creator != null and creator.username == #authentication.name})
+                                    and (${#strings.startsWith(container.status,'Up')})"
                             >Stop</button>
                     <button type="button" class="btn btn-xs btn-default"
                             data-toggle="modal" data-target="#action-modal"
                             data-action="/start" data-message="Start the container:"
                             data-ok="Start" data-ok-class="btn-primary"
                             th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
-                            th:if="${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)}"
+                            th:if="(${#authorization.expression('hasRole(''ADMIN'')')}
+                                    or ${creator != null and creator.username == #authentication.name})
+                                    and (${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)})"
                             >Start</button>
                     <button type="button" class="btn btn-xs btn-danger"
                             data-toggle="modal" data-target="#action-modal"
                             data-action="/remove" data-message="Remove the container:"
                             data-ok="Remove" data-ok-class="btn-danger"
                             th:attr="data-id=${container.id}, data-id-short=${container.idToShort}"
-                            th:if="${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)}"
+                            th:if="(${#authorization.expression('hasRole(''ADMIN'')')}
+                                    or ${creator != null and creator.username == #authentication.name})
+                                    and (${#strings.startsWith(container.status,'Exited')} or ${#strings.isEmpty(container.status)})"
                             >Remove</button>
                 </td>
             </tr>

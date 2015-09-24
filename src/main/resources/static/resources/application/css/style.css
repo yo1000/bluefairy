@@ -2,6 +2,10 @@ body {
     padding-top: 50px;
 }
 
+th, td {
+    font-size: 12px;
+}
+
 .subject {
     padding: 20px 15px;
     text-align: center;
@@ -52,6 +56,10 @@ table ul li {
 .navbar-right .glyphicon {
     margin-left: 8px;
     margin-right: -6px;
+}
+
+.modal-body p {
+    word-break: break-all;
 }
 
 th div.filter,

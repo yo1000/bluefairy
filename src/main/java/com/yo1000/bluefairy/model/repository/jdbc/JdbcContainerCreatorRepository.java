@@ -26,9 +26,33 @@ public class JdbcContainerCreatorRepository implements ContainerCreatorRepositor
     private JdbcTemplate jdbcTemplate;
 
     @Override
+    public boolean existsByIdAndUsername(String id, String username) {
+        return this.getJdbcTemplate().queryForObject("SELECT " +
+                        "  COUNT(CONTAINER_ID) AS ITEM_COUNT " +
+                        "FROM " +
+                        "  CONTAINER_CREATOR " +
+                        "LEFT OUTER JOIN " +
+                        "  APPLICATION_USER " +
+                        "  ON CONTAINER_CREATOR.USER_ID=APPLICATION_USER.USER_ID " +
+                        "WHERE " +
+                        "  CONTAINER_ID=? " +
+                        "AND " +
+                        "  USERNAME=?",
+                new RowMapper<Integer>() {
+                    @Override
+                    public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+                        return resultSet.getInt("ITEM_COUNT");
+                    }
+                },
+                id,
+                username
+        ) > 0;
+    }
+
+    @Override
     public ContainerCreator findById(String id) {
         return this.getJdbcTemplate().queryForObject("SELECT " +
-                        "  CREATOR_ID, " +
+                        "  CONTAINER_ID, " +
                         "  CONTAINER_CREATOR.USER_ID AS USER_ID, " +
                         "  USERNAME, " +
                         "  PASSWORD, " +
@@ -41,12 +65,12 @@ public class JdbcContainerCreatorRepository implements ContainerCreatorRepositor
                         "  APPLICATION_USER " +
                         "  ON CONTAINER_CREATOR.USER_ID=APPLICATION_USER.USER_ID " +
                         "WHERE " +
-                        "  CREATOR_ID=?",
+                        "  CONTAINER_ID=?",
                 new RowMapper<ContainerCreator>() {
                     @Override
                     public ContainerCreator mapRow(ResultSet resultSet, int i) throws SQLException {
                         return new ContainerCreator(
-                                resultSet.getString("CREATOR_ID"),
+                                resultSet.getString("CONTAINER_ID"),
                                 new User(
                                         resultSet.getString("USER_ID"),
                                         resultSet.getString("USERNAME"),
@@ -57,14 +81,15 @@ public class JdbcContainerCreatorRepository implements ContainerCreatorRepositor
                                 )
                         );
                     }
-                }
+                },
+                id
         );
     }
 
     @Override
     public List<ContainerCreator> find() {
         return this.getJdbcTemplate().query("SELECT " +
-                        "  CREATOR_ID, " +
+                        "  CONTAINER_ID, " +
                         "  CONTAINER_CREATOR.USER_ID AS USER_ID, " +
                         "  USERNAME, " +
                         "  PASSWORD, " +
@@ -80,7 +105,7 @@ public class JdbcContainerCreatorRepository implements ContainerCreatorRepositor
                     @Override
                     public ContainerCreator mapRow(ResultSet resultSet, int i) throws SQLException {
                         return new ContainerCreator(
-                                resultSet.getString("CREATOR_ID"),
+                                resultSet.getString("CONTAINER_ID"),
                                 new User(
                                         resultSet.getString("USER_ID"),
                                         resultSet.getString("USERNAME"),
@@ -98,7 +123,7 @@ public class JdbcContainerCreatorRepository implements ContainerCreatorRepositor
     @Override
     public void create(ContainerCreator containerCreator) {
         this.getJdbcTemplate().update("INSERT INTO " +
-                        "CONTAINER_CREATOR (CREATOR_ID, USER_ID) VALUES (?, ?)",
+                        "CONTAINER_CREATOR (CONTAINER_ID, USER_ID) VALUES (?, ?)",
                 containerCreator.getId(),
                 containerCreator.getCreator().getId());
     }

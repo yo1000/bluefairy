@@ -39,6 +39,45 @@ public class ContainerService {
         return this.getContainerRepository().getInspect(id);
     }
 
+    public Map<String, ContainerCreator> getContainerCreatorMap() {
+        return this.getContainerCreatorMap(null, true);
+    }
+
+    public Map<String, ContainerCreator> getContainerCreatorMap(String username) {
+        return this.getContainerCreatorMap(username, false);
+    }
+
+    protected Map<String, ContainerCreator> getContainerCreatorMap(String username, boolean all) {
+        Map<String, ContainerCreator> creatorMap = new HashMap<String, ContainerCreator>();
+        List<ContainerCreator> containerCreators = this.getContainerCreatorRepository().find();
+
+        for (ContainerCreator containerCreator : containerCreators) {
+            creatorMap.put(containerCreator.getId(), containerCreator);
+        }
+
+        Map<String, ContainerCreator> containerCreatorMap = new HashMap<String, ContainerCreator>();
+        Container[] containers = all ? this.getContainersAll() : this.getContainers();
+
+        for (Container container : containers) {
+            ContainerCreator containerCreator = creatorMap.containsKey(container.getId())
+                    ? creatorMap.get(container.getId())
+                    : new ContainerCreator();
+
+            if (username != null && containerCreator.getCreator() == null) {
+                continue;
+            }
+
+            if (username != null && !containerCreator.getCreator().getUsername().equals(username)) {
+                continue;
+            }
+
+            containerCreator.setContainer(container);
+            containerCreatorMap.put(container.getId(), containerCreator);
+        }
+
+        return containerCreatorMap;
+    }
+
     public Map<String, ContainerCreator> getContainerUserMap() {
         List<ContainerCreator> containerCreators = this.getContainerCreatorRepository().find();
         Map<String, ContainerCreator> containerUserMap = new HashMap<String, ContainerCreator>();
@@ -54,11 +93,18 @@ public class ContainerService {
         this.getContainerRepository().postStart(id);
     }
 
-    public void stopContainer(String id) {
+    public void startContainer(String id, String username) {
+        this.validateCreator(id, username);
+        this.getContainerRepository().postStart(id);
+    }
+
+    public void stopContainer(String id, String username) {
+        this.validateCreator(id, username);
         this.getContainerRepository().postStop(id);
     }
 
-    public void removeContainer(String id) {
+    public void removeContainer(String id, String username) {
+        this.validateCreator(id, username);
         this.getContainerRepository().deleteRemove(id);
     }
 
@@ -67,12 +113,12 @@ public class ContainerService {
     }
 
     public ContainerCreated runContainer(String image, String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalStateException("Unspecified username.");
+        }
+
         ContainerCreated container = this.createContainer(image);
         this.startContainer(container.getId());
-
-        if (username != null) {
-            this.writeContainerUser(container.getId(), username);
-        }
 
         return container;
     }
@@ -86,12 +132,13 @@ public class ContainerService {
     }
 
     public ContainerCreated runContainer(ContainerCreate containerCreate, String name, String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalStateException("Unspecified username.");
+        }
+
         ContainerCreated container = this.createContainer(containerCreate, name);
         this.startContainer(container.getId());
-
-        if (username != null) {
-            this.writeContainerUser(container.getId(), username);
-        }
+        this.writeContainerUser(container.getId(), username);
 
         return container;
     }
@@ -104,6 +151,12 @@ public class ContainerService {
         containerCreator.setCreator(user);
 
         this.getContainerCreatorRepository().create(containerCreator);
+    }
+
+    public void validateCreator(String id, String username) {
+        if (!this.getContainerCreatorRepository().existsByIdAndUsername(id, username)) {
+            throw new IllegalStateException("Different container owners.");
+        }
     }
 
     public ContainerCreated createContainer(ContainerCreate container) {

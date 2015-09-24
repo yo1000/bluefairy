@@ -8,7 +8,8 @@ import java.util.List;
  * Created by yoichi.kikuchi on 15/05/28.
  */
 public interface ContainerCreatorRepository {
-    public ContainerCreator findById(String id);
-    public List<ContainerCreator> find();
-    public void create(ContainerCreator containerCreator);
+    boolean existsByIdAndUsername(String id, String username);
+    ContainerCreator findById(String id);
+    List<ContainerCreator> find();
+    void create(ContainerCreator containerCreator);
 }

@@ -35,9 +35,8 @@ public class ProfileController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String update(@RequestParam String id,
                          @RequestParam String username, @RequestParam String password,
-                         @RequestParam String role, @RequestParam String fullname,
-                         HttpServletRequest request) throws ServletException {
-        this.getUserService().updateUser(id, username, password, role, fullname);
+                         @RequestParam String fullname, HttpServletRequest request) throws ServletException {
+        this.getUserService().updateUser(id, username, password, null, fullname);
 
         return "redirect:/auth/logout";
     }
