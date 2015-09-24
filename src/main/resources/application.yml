@@ -10,13 +10,17 @@ logging:
   level:
     org.springframework.web:  INFO
 
+
 spring:
   # DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
   datasource:
-    driver-class-name:  org.h2.Driver
-    url:                jdbc:h2:file:${application.data.file}
+    #driver-class-name:  org.h2.Driver
+    #url:                jdbc:h2:file:${application.data.file}
+    driver-class-name:  net.sf.log4jdbc.DriverSpy
+    url:                jdbc:log4jdbc:h2:file:${application.data.file}
     username:           sa
     password:
+
   # MONGODB (MongoProperties)
   data:
     mongodb:
@@ -34,5 +38,5 @@ application:
     type: JDBC
     file: ./bluefairy.datastore
   docker:
-    remoteApi:  http://localhost:2375/
+    remote-api:  http://localhost:2375/
 

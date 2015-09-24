@@ -9,7 +9,7 @@
         <p class="lead"></p>
     </div>
     <div>
-        <form action="user/update" method="POST" class="form-horizontal"
+        <form action="profile" method="POST" class="form-horizontal"
               th:action="@{/profile}">
             <input name="id" type="hidden" th:value="${user.id}"/>
             <div class="form-group">
@@ -45,19 +45,6 @@
                 <div class="col-sm-2">
                     <input name="passwordConfirm" type="password" placeholder="confirm password"
                            class="form-control input-sm"/>
-                </div>
-                <div class="col-sm-4"></div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-4"></div>
-                <label class="col-sm-2 control-label"
-                       for="role">Role</label>
-                <div class="col-sm-2">
-                    <select name="role" class="form-control">
-                        <option value="ADMIN" th:selected="${user.role} == 'ADMIN'">Administrator</option>
-                        <option value="DEVEL" th:selected="${user.role} == 'DEVEL'">Developer</option>
-                        <option value="USER" th:selected="${user.role} == 'USER'">User</option>
-                    </select>
                 </div>
                 <div class="col-sm-4"></div>
             </div>

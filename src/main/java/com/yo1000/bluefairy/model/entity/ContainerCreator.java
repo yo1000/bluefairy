@@ -1,6 +1,8 @@
 package com.yo1000.bluefairy.model.entity;
 
+import com.yo1000.bluefairy.model.entity.docker.Container;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +15,8 @@ public class ContainerCreator {
     private String id;
     @DBRef
     private User creator;
+    @Transient
+    private Container container;
 
     public ContainerCreator() {}
 
@@ -35,5 +39,13 @@ public class ContainerCreator {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public Container getContainer() {
+        return container;
+    }
+
+    public void setContainer(Container container) {
+        this.container = container;
     }
 }

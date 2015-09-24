@@ -73,14 +73,14 @@ public class ApplicationContext {
     }
 
     @Bean
-    @ConditionalOnProperty(name = APPLICATION_DATA_TYPE, havingValue = APPLICATION_DATA_TYPE_JDBC)
+    @ConditionalOnProperty(value = APPLICATION_DATA_TYPE, havingValue = APPLICATION_DATA_TYPE_JDBC)
     @Autowired
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
     @Bean
-    @ConditionalOnProperty(name = APPLICATION_DATA_TYPE, havingValue = APPLICATION_DATA_TYPE_MONGO)
+    @ConditionalOnProperty(value = APPLICATION_DATA_TYPE, havingValue = APPLICATION_DATA_TYPE_MONGO)
     @Autowired
     public MongoTemplate mongoTemplate(MongoProperties properties) throws Exception {
         MongoClient client = new MongoClient(new ServerAddress(
