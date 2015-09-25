@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -82,12 +83,13 @@ public class ApplicationContext {
     @Bean
     @ConditionalOnProperty(value = APPLICATION_DATA_TYPE, havingValue = APPLICATION_DATA_TYPE_MONGO)
     @Autowired
-    public MongoTemplate mongoTemplate(MongoProperties properties) throws Exception {
+    public MongoTemplate mongoTemplate(MongoProperties properties,
+            @Value("${spring.data.mongodb.password}") String password) throws Exception {
         MongoClient client = new MongoClient(new ServerAddress(
             properties.getHost(), properties.getPort()));
 
         MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(client, properties.getDatabase(),
-            new UserCredentials(properties.getUsername(), new String(properties.getPassword())));
+            new UserCredentials(properties.getUsername(), password));
 
         return new MongoTemplate(mongoDbFactory);
     }
