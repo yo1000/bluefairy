@@ -42,7 +42,7 @@ public class ContainerRestController {
     public ContainerCreated postCreate(@RequestBody ContainerCreate containerCreate,
                                        @RequestParam String name,
                                        @RequestHeader(value = "X-LOGIN-USER", required = false) String username) {
-        Assert.isTrue(name.isEmpty() || name.matches("^/?[a-zA-Z0-9_-]+$"), "Name format is invalid.");
+        Assert.isTrue(name.isEmpty() || name.matches("^/?[a-zA-Z0-9-]+$"), "Name format is invalid.");
 
         return this.getContainerService().runContainer(containerCreate, name, username);
     }
