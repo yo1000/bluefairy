@@ -25,10 +25,12 @@ public class MongoContainerCreatorRepository implements ContainerCreatorReposito
 
     @Override
     public boolean existsByIdAndUsername(String id, String username) {
-        return this.getMongoTemplate().exists(Query.query(Criteria
+        ContainerCreator containerCreator = this.getMongoTemplate().findOne(Query.query(Criteria
                 .where("id").is(id)
-                .and("creator.username").is(username)),
-                ContainerCreator.class);
+        ), ContainerCreator.class);
+
+        return containerCreator != null && containerCreator.getCreator() != null
+                && containerCreator.getCreator().getUsername().equals(username);
     }
 
     @Override
