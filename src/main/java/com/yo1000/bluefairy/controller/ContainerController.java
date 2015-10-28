@@ -4,6 +4,7 @@ import com.yo1000.bluefairy.model.entity.docker.ContainerCreated;
 import com.yo1000.bluefairy.model.entity.docker.ContainerInspect;
 import com.yo1000.bluefairy.model.service.ContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class ContainerController {
     private ContainerService containerService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL', 'USER')")
     public String index(Model model) {
         model.addAttribute("title", "Containers");
         model.addAttribute("containers", this.getContainerService().getContainers());
@@ -35,6 +37,7 @@ public class ContainerController {
     }
 
     @RequestMapping(value = "all", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL', 'USER')")
     public String all(Model model) {
         model.addAttribute("title", "All containers");
         model.addAttribute("containers", this.getContainerService().getContainersAll());
@@ -45,6 +48,7 @@ public class ContainerController {
     }
 
     @RequestMapping(value = "{id:(?!^all$).+}", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL', 'USER')")
     public String id(@PathVariable String id, Model model) {
         ContainerInspect container = this.getContainerService().getContainer(id);
 
@@ -55,6 +59,7 @@ public class ContainerController {
     }
 
     @RequestMapping(value = "run", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public String run(@RequestParam String id, @RequestParam String repoTags) {
         ContainerCreated container = this.getContainerService()
                 .runContainer(repoTags, this.getUserDetails().getUsername());
@@ -63,6 +68,7 @@ public class ContainerController {
     }
 
     @RequestMapping(value = "{id}/start", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public String start(@PathVariable String id) {
         this.getContainerService().startContainer(id, this.getUserDetails().getUsername());
 
@@ -70,6 +76,7 @@ public class ContainerController {
     }
 
     @RequestMapping(value = "{id}/stop", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public String stop(@PathVariable String id) {
         this.getContainerService().stopContainer(id, this.getUserDetails().getUsername());
 
@@ -77,6 +84,7 @@ public class ContainerController {
     }
 
     @RequestMapping(value = "{id}/remove", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public String remove(@PathVariable String id) {
         this.getContainerService().removeContainer(id, this.getUserDetails().getUsername());
 

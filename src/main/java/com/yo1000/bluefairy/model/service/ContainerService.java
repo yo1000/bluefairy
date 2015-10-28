@@ -1,5 +1,6 @@
 package com.yo1000.bluefairy.model.service;
 
+import com.yo1000.bluefairy.SecurityContext;
 import com.yo1000.bluefairy.model.entity.ContainerCreator;
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.entity.docker.*;
@@ -154,6 +155,10 @@ public class ContainerService {
     }
 
     public void validateCreator(String id, String username) {
+        if (this.getUserRepository().findByUsername(username).getRole().equals(SecurityContext.ROLE_ADMIN)) {
+            return;
+        }
+
         if (!this.getContainerCreatorRepository().existsByIdAndUsername(id, username)) {
             throw new IllegalStateException("Different container owners.");
         }

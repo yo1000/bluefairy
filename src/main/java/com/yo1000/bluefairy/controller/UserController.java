@@ -2,6 +2,7 @@ package com.yo1000.bluefairy.controller;
 
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,12 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping("user")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class UserController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/")
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("title", "Users");
         model.addAttribute("users", this.getUserService().getUsersAll());
@@ -28,7 +30,7 @@ public class UserController {
         return "user/items";
     }
 
-    @RequestMapping("all")
+    @RequestMapping(value = "all", method = RequestMethod.GET)
     public String all(Model model) {
         model.addAttribute("title", "All users");
         model.addAttribute("users", this.getUserService().getUsersAll());
@@ -36,7 +38,7 @@ public class UserController {
         return "user/items";
     }
 
-    @RequestMapping("{id:(?!^(?:all|register|update)$)^.+$}")
+    @RequestMapping(value = "{id:(?!^(?:all|register|update)$)^.+$}", method = RequestMethod.GET)
     public String id(@PathVariable String id, Model model) {
         User user = this.getUserService().getUserById(id);
 

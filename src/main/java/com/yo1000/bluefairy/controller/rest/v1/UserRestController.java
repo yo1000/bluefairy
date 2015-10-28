@@ -1,13 +1,8 @@
 package com.yo1000.bluefairy.controller.rest.v1;
 
 import com.yo1000.bluefairy.model.entity.User;
-import com.yo1000.bluefairy.model.entity.docker.Container;
-import com.yo1000.bluefairy.model.entity.docker.ContainerCreate;
-import com.yo1000.bluefairy.model.entity.docker.ContainerCreated;
-import com.yo1000.bluefairy.model.service.ContainerService;
 import com.yo1000.bluefairy.model.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.Assert;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +13,7 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("api/v1/user")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class UserRestController {
     @Resource
     private UserService userService;

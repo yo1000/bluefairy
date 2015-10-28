@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by yoichi.kikuchi on 15/02/19.
  */
 @Controller
-@RequestMapping("")
+@RequestMapping
 public class IndexController {
-    @RequestMapping("")
+    @RequestMapping
     public String index() {
         return "redirect:/container/";
     }

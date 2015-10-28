@@ -2,6 +2,7 @@ package com.yo1000.bluefairy.controller;
 
 import com.yo1000.bluefairy.model.entity.User;
 import com.yo1000.bluefairy.model.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("profile")
+@PreAuthorize("isAuthenticated()")
 public class ProfileController {
     @Resource
     private UserService userService;

@@ -5,18 +5,18 @@ import com.yo1000.bluefairy.model.entity.docker.ContainerCreate;
 import com.yo1000.bluefairy.model.entity.docker.ContainerCreated;
 import com.yo1000.bluefairy.model.service.ContainerService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.IllegalFormatConversionException;
-import java.util.IllegalFormatException;
 
 /**
  * Created by yoichi.kikuchi on 15/04/17.
  */
 @RestController
 @RequestMapping("api/v1/container")
+@PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
 public class ContainerRestController {
     @Resource
     private ContainerService containerService;

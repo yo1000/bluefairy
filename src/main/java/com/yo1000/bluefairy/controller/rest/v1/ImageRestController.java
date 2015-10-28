@@ -1,9 +1,10 @@
 package com.yo1000.bluefairy.controller.rest.v1;
 
 import com.yo1000.bluefairy.model.entity.docker.Image;
-import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
 import com.yo1000.bluefairy.model.entity.docker.ImageCreated;
+import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
 import com.yo1000.bluefairy.model.service.ImageService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class ImageRestController {
     @RequestMapping(value = "", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public Image[] getItems() {
         return this.getImageService().getImages();
     }
@@ -29,6 +31,7 @@ public class ImageRestController {
     @RequestMapping(value = "all", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public Image[] getItemsAll() {
         return this.getImageService().getImagesAll();
     }
@@ -36,6 +39,7 @@ public class ImageRestController {
     @RequestMapping(value = "{id:(?!all)[a-zA-Z0-9_-]+}", method = RequestMethod.GET,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVEL')")
     public ImageInspect getItem(@PathVariable String id, Model model) {
         return this.getImageService().getImage(id);
     }
@@ -43,6 +47,7 @@ public class ImageRestController {
     @RequestMapping(value = "pull", method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ImageCreated postPull(@RequestBody Map<String, String> imageMap) {
         return this.getImageService().createImage(imageMap.get("name"));
     }
