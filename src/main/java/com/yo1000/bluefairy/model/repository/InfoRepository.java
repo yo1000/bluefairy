@@ -1,10 +1,10 @@
 package com.yo1000.bluefairy.model.repository;
 
-import com.yo1000.bluefairy.model.entity.docker.Info;
+import java.util.Map;
 
 /**
  * Created by yoichi.kikuchi on 15/03/13.
  */
 public interface InfoRepository {
-    public Info getJson();
+    Map<String, Object> getJson();
 }

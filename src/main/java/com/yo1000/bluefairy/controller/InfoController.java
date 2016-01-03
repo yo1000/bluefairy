@@ -1,5 +1,6 @@
 package com.yo1000.bluefairy.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yo1000.bluefairy.model.service.InfoService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ public class InfoController {
     private InfoService infoService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String index(Model model) {
+    public String index(Model model) throws JsonProcessingException {
         model.addAttribute("title", "Info");
         model.addAttribute("info", this.getInfoService().getInfo());
         model.addAttribute("title", "Info");

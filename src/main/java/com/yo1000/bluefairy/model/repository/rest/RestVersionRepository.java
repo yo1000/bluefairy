@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
  * Created by yoichi.kikuchi on 15/03/13.
  */
 @Repository
-public class RestVersionRepository extends AbstractRestDockerRepository
-        implements VersionRepository {
+public class RestVersionRepository extends AbstractRestDockerRepository implements VersionRepository {
     @Override
     public Version getJson() {
         return this.getRestTemplate().getForObject(

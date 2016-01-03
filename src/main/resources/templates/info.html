@@ -10,168 +10,18 @@
     </div>
     <div>
         <table class="table table-hover table-condensed">
+            <thead>
             <tr class="active">
                 <th>Key</th>
                 <th>Value</th>
             </tr>
-            <tr>
-                <th>Containers</th>
-                <td th:text="${info.containers}">containers</td>
+            </thead>
+            <tbody>
+            <tr th:each="key : ${info.keySet()}" th:object="${info.get(key)}">
+                <th th:text="${key}">key</th>
+                <td th:text="${info.get(key)}">value</td>
             </tr>
-            <tr>
-                <th>Debug</th>
-                <td th:text="${info.debug}">debug</td>
-            </tr>
-            <tr>
-                <th>Docker Root Dir</th>
-                <td th:text="${info.dockerRootDir}">dockerRootDir</td>
-            </tr>
-            <tr>
-                <th>Driver</th>
-                <td th:text="${info.driver}">driver</td>
-            </tr>
-            <tr>
-                <th>Driver Status</th>
-                <td>
-                    <ul class="list-inline"
-                        th:classappend="${info.driverStatus != null
-                            and #arrays.length(info.driverStatus) &gt;= 2} ? 'more'">
-                        <li th:each="driverStatus : ${info.driverStatus}">
-                            <div th:each="status : ${driverStatus}">
-                                <span th:text="${status}">status</span>
-                            </div>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th>Execution Driver</th>
-                <td th:text="${info.executionDriver}">executionDriver</td>
-            </tr>
-            <tr>
-                <th>ID</th>
-                <td th:text="${info.id}">id</td>
-            </tr>
-            <tr>
-                <th>IPv4 Forwarding</th>
-                <td th:text="${info.ipv4Forwarding}">ipv4Forwarding</td>
-            </tr>
-            <tr>
-                <th>Images</th>
-                <td th:text="${info.images}">images</td>
-            </tr>
-            <tr>
-                <th>Index Server Address</th>
-                <td th:text="${info.indexServerAddress}">indexServerAddress</td>
-            </tr>
-            <tr>
-                <th>Init Path</th>
-                <td th:text="${info.initPath}">initPath</td>
-            </tr>
-            <tr>
-                <th>Init Sha1</th>
-                <td th:text="${info.initSha1}">initSha1</td>
-            </tr>
-            <tr>
-                <th>Kernel Version</th>
-                <td th:text="${info.kernelVersion}">kernelVersion</td>
-            </tr>
-            <tr>
-                <th>Labels</th>
-                <td th:text="${info.labels}">labels</td>
-            </tr>
-            <tr>
-                <th>Mem Total</th>
-                <td th:text="${info.memTotal}">memTotal</td>
-            </tr>
-            <tr>
-                <th>Memory Limit</th>
-                <td th:text="${info.memoryLimit}">memoryLimit</td>
-            </tr>
-            <tr>
-                <th>NCPU</th>
-                <td th:text="${info.nCpu}">nCpu</td>
-            </tr>
-            <tr>
-                <th>NEvents Listener</th>
-                <td th:text="${info.nEventsListener}">nEventsListener</td>
-            </tr>
-            <tr>
-                <th>NFd</th>
-                <td th:text="${info.nFd}">nFd</td>
-            </tr>
-            <tr>
-                <th>NGoroutines</th>
-                <td th:text="${info.nGoroutines}">nGoroutines</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td th:text="${info.name}">name</td>
-            </tr>
-            <tr>
-                <th >Operating System</th>
-                <td th:text="${info.operatingSystem}">operatingSystem</td>
-            </tr>
-            <tr>
-                <th>Registry Config/Index Configs/DockerIO/Mirrors</th>
-                <td th:text="${
-                        info.registryConfig == null ? '' :
-                        info.registryConfig.indexConfigs == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO.mirrors
-                        }">
-                    info.registryConfig.indexConfigs.dockerIO.mirrors
-                </td>
-            </tr>
-            <tr>
-                <th>Registry Config/Index Configs/DockerIO/Name</th>
-                <td th:text="${
-                        info.registryConfig == null ? '' :
-                        info.registryConfig.indexConfigs == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO.name
-                        }">
-                    info.registryConfig.indexConfigs.dockerIO.name
-                </td>
-            </tr>
-            <tr>
-                <th>Registry Config/Index Configs/DockerIO/Official</th>
-                <td th:text="${
-                        info.registryConfig == null ? '' :
-                        info.registryConfig.indexConfigs == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO.official
-                        }">
-                    info.registryConfig.indexConfigs.dockerIO.official
-                </td>
-            </tr>
-            <tr>
-                <th>Registry Config/Index Configs/DockerIO/Secure</th>
-                <td th:text="${
-                        info.registryConfig == null ? '' :
-                        info.registryConfig.indexConfigs == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO == null ? '' :
-                        info.registryConfig.indexConfigs.dockerIO.secure
-                        }">
-                    info.registryConfig.indexConfigs.dockerIO.secure
-                </td>
-            </tr>
-            <tr>
-                <th>Registry Config/Index Configs/Insecure Registry CIDRs</th>
-                <td>
-                    <ul th:each="insecureRegistryCIDR : ${
-                            info.registryConfig == null ? '' :
-                            info.registryConfig.indexConfigs == null ? '' :
-                            info.registryConfig.indexConfigs.insecureRegistryCIDRs
-                            }">
-                        <li th:text="${insecureRegistryCIDR}">insecureRegistryCIDR</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th>Swap Limit</th>
-                <td th:text="${info.swapLimit}">swapLimit</td>
-            </tr>
+            </tbody>
         </table>
     </div>
 </div><!-- /.container -->
