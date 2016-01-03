@@ -177,7 +177,7 @@ $("#modal-btn-action").click(function() {
             }
         }
     }).done(function(data, textStatus, jqXHR) {
-        if (data.error !== null && data.error !== "") {
+        if (!data || data.error) {
             message(data.error, "error");
             return;
         }

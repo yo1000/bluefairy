@@ -1,7 +1,6 @@
 package com.yo1000.bluefairy.controller.rest.v1;
 
 import com.yo1000.bluefairy.model.entity.docker.Image;
-import com.yo1000.bluefairy.model.entity.docker.ImageCreated;
 import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
 import com.yo1000.bluefairy.model.service.ImageService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +47,7 @@ public class ImageRestController {
             produces = "application/json;charset=UTF-8",
             consumes = "application/json")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ImageCreated postPull(@RequestBody Map<String, String> imageMap) {
+    public Map<String, Object> postPull(@RequestBody Map<String, String> imageMap) {
         return this.getImageService().createImage(imageMap.get("name"));
     }
 

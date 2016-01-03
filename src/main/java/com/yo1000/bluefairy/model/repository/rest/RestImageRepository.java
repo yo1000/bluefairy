@@ -2,7 +2,6 @@ package com.yo1000.bluefairy.model.repository.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yo1000.bluefairy.model.entity.docker.Image;
-import com.yo1000.bluefairy.model.entity.docker.ImageCreated;
 import com.yo1000.bluefairy.model.entity.docker.ImageInspect;
 import com.yo1000.bluefairy.model.entity.docker.ImageSearch;
 import com.yo1000.bluefairy.model.repository.ImageRepository;
@@ -16,13 +15,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.util.UriTemplate;
-import org.springframework.web.util.UriUtils;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * Created by yoichi.kikuchi on 15/03/12.
@@ -64,7 +63,7 @@ public class RestImageRepository extends AbstractRestDockerRepository
     }
 
     @Override
-    public ImageCreated postCreate(String image) {
+    public Map<String, Object> postCreate(String image) {
         String url = "images/create?fromImage={image}";
         URI uri = null;
 
@@ -86,17 +85,17 @@ public class RestImageRepository extends AbstractRestDockerRepository
                 new RequestCallback() {
                     @Override
                     public void doWithRequest(ClientHttpRequest clientHttpRequest) throws IOException {
-                        //
+                        // nothing to do.
                     }
                 },
-                new ResponseExtractor<ImageCreated>() {
+                new ResponseExtractor<Map<String, Object>>() {
                     @Override
-                    public ImageCreated extractData(ClientHttpResponse clientHttpResponse) throws IOException {
+                    public Map<String, Object> extractData(ClientHttpResponse clientHttpResponse) throws IOException {
                         InputStream input = clientHttpResponse.getBody();
                         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
-                        ImageCreated imageCreated = new ObjectMapper().readValue(
-                                reader.readLine(), ImageCreated.class);
+                        Map<String, Object> imageCreated = new ObjectMapper().readValue(
+                                reader.readLine(), Map.class);
 
                         if (input instanceof EofSensorInputStream) {
                             EofSensorInputStream eofSensorInput = (EofSensorInputStream) input;
